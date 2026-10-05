@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 chlorobenzene.mol2
+loadamberparams chlorobenzene.frcmod
+saveamberparm MOL chlorobenzene.prmtop chlorobenzene.inpcrd
+quit

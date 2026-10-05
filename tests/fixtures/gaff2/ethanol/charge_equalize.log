@@ -1,0 +1,2 @@
+net charge target 0, raw sum 0.000001, residual -0.000001
+adjusted by -1.111111e-07 per atom; new sum 0.0000000001

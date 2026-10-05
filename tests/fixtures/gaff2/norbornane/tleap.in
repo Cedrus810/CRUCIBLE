@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 norbornane.mol2
+loadamberparams norbornane.frcmod
+saveamberparm MOL norbornane.prmtop norbornane.inpcrd
+quit

@@ -1,0 +1,6 @@
+$ parmchk2 -i nma.mol2 -f mol2 -o nma.frcmod -s gaff2
+--- stdout ---
+
+--- stderr ---
+
+--- exit 0 ---

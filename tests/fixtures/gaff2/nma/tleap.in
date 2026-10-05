@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 nma.mol2
+loadamberparams nma.frcmod
+saveamberparm MOL nma.prmtop nma.inpcrd
+quit

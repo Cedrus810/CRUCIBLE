@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 benzene.mol2
+loadamberparams benzene.frcmod
+saveamberparm MOL benzene.prmtop benzene.inpcrd
+quit

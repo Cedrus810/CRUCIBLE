@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 dmso.mol2
+loadamberparams dmso.frcmod
+saveamberparm MOL dmso.prmtop dmso.inpcrd
+quit

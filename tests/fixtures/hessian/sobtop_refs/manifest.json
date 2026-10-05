@@ -1,0 +1,71 @@
+{
+  "sobtop_version": "2026.1.16",
+  "cases": {
+    "sf6_fchk": {
+      "mol2_sha256": "3fa0e5189fa810f50a63e294f451ee49185faf0e908edfc8a4463b60e4f6965f",
+      "hessian_sha256": "69579d9200796775755c76ecf25e4c915ba80319a848e3560d3b264d725aafcf",
+      "hessian_source": "fchk"
+    },
+    "methyl_benzoate_fchk": {
+      "mol2_sha256": "3d353bc904ac636bdd20d656c740890cacc20d4cfc5ca4798d927e309b5dc40c",
+      "hessian_sha256": "642b6f92a1341d8227fbf6c78f3f44655f15029395c801be881b670857d8dea6",
+      "hessian_source": "fchk"
+    },
+    "acetate_gfn2": {
+      "mol2_sha256": "09b2a25ce6128591de7438221b84e4f931f2290ed3ccf5b5e9b3314cd86fbb4c",
+      "hessian_sha256": "5a9b0119877de75506b8e8e17deb954308f223de41302fe6750a4644eb98e473",
+      "hessian_source": "xtb-gfn2"
+    },
+    "benzene_gfn2": {
+      "mol2_sha256": "6b9656cc9f70b549ae906513e72e7b3adfc76d6c4a0d42652cad4c465607d8ad",
+      "hessian_sha256": "8e23f68fbf8285347a09d104e91798781344b62eac6a383fa95e0095b28fffc5",
+      "hessian_source": "xtb-gfn2"
+    },
+    "chlorobenzene_gfn2": {
+      "mol2_sha256": "f6806bdb6117aa54d4ee00db2d60b97ac73d1399ccac62f83b81d8526f0a6867",
+      "hessian_sha256": "0a8e1ad15291e2a481810ffb6e8b040c2abbf40867cc2e86fe5ba740af0e9359",
+      "hessian_source": "xtb-gfn2"
+    },
+    "cyclobutane_gfn2": {
+      "mol2_sha256": "2edb94654c14152f76cd71d50896fe0c60d33ff34566701065fc831b8a0aae43",
+      "hessian_sha256": "60e1e65014b2c4ffafcbb76769381a8ac1fd1c4e216e2e77c98d84500bb27351",
+      "hessian_source": "xtb-gfn2"
+    },
+    "cyclopropane_gfn2": {
+      "mol2_sha256": "c57be6bf4b243f71a187b5b799847e945bbeeeb652b590ef6a19a000befd6b81",
+      "hessian_sha256": "c6e52c3e8d5c388703414a420321ce881ad84423afa89759ba6276ef4dadf918",
+      "hessian_source": "xtb-gfn2"
+    },
+    "dmso_gfn2": {
+      "mol2_sha256": "9b37e7a5592a5e31a2f4e5877e07d680fbb8a6025c01a6da33ff725774e43a67",
+      "hessian_sha256": "c75950a6d409f131d6d689af19109559346f503f8bbd06fae6de979bc4c2bc3e",
+      "hessian_source": "xtb-gfn2"
+    },
+    "ethanol_gfn2": {
+      "mol2_sha256": "cb30fefce213e3537e47608e3b23b18969c10c9133ab37bf5b0cfa42ab4522e6",
+      "hessian_sha256": "8b0febb306c0544598f552cbe5194c87d23b99aa1d50fa9f66d9f8467f4caabd",
+      "hessian_source": "xtb-gfn2"
+    },
+    "methyl_benzoate_gfn2": {
+      "mol2_sha256": "3ed53de198c75585e09f8e76a073a289fe4e0c53960b21df8031f5f9649079ae",
+      "hessian_sha256": "ac9467ef2418a339cb6a135c9e7d5570f3a28b2559cf4cfc9f90bacaedef2e81",
+      "hessian_source": "xtb-gfn2"
+    },
+    "methylammonium_gfn2": {
+      "mol2_sha256": "751f07da549474411b9eb11dbf557331aa3b629ca5f7d262b0a2bfc76f95cc9f",
+      "hessian_sha256": "f82d0e87b6efb4ed97416673831e4263ebbc235a10d012f463b46ddd0b1e3c70",
+      "hessian_source": "xtb-gfn2"
+    },
+    "nma_gfn2": {
+      "mol2_sha256": "57b785c21d91bcf36ef9bb3f08b5586afc2db4b22d0d29f81cef652fbff1c9b7",
+      "hessian_sha256": "67314467dbb87386fcfa6dbed40841879a31671a6d4fcb8f2ea9511976988995",
+      "hessian_source": "xtb-gfn2"
+    },
+    "norbornane_gfn2": {
+      "mol2_sha256": "ca9dba8c43a83fa4eafd8889ade0448d3abbfadb2003434dd1ff62c5bba2559b",
+      "hessian_sha256": "4abb3c4cb609ebad174ba6cac6f1b6ce3967d6d1c8e524a242fd2bd6480bfc69",
+      "hessian_source": "xtb-gfn2"
+    }
+  },
+  "xtb_version": "6.7.1"
+}

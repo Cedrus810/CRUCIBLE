@@ -1,0 +1,6 @@
+$ parmchk2 -i dmso.mol2 -f mol2 -o dmso.frcmod -s gaff2
+--- stdout ---
+
+--- stderr ---
+
+--- exit 0 ---

@@ -1,0 +1,6 @@
+$ parmchk2 -i methyl_benzoate.mol2 -f mol2 -o methyl_benzoate.frcmod -s gaff2
+--- stdout ---
+
+--- stderr ---
+
+--- exit 0 ---

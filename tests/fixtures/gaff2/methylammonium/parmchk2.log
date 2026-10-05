@@ -1,0 +1,6 @@
+$ parmchk2 -i methylammonium.mol2 -f mol2 -o methylammonium.frcmod -s gaff2
+--- stdout ---
+
+--- stderr ---
+
+--- exit 0 ---

@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 methyl_benzoate.mol2
+loadamberparams methyl_benzoate.frcmod
+saveamberparm MOL methyl_benzoate.prmtop methyl_benzoate.inpcrd
+quit

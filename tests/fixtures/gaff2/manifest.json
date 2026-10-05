@@ -1,0 +1,151 @@
+{
+  "molecules": {
+    "ethanol": {
+      "smiles": "CCO",
+      "charge": 0,
+      "n_atoms": 9,
+      "files": {
+        "ethanol.sdf": "e262b4cb3b71ea190f62945d5028ca3fe3d6c7f27f668c625b1ad4cbca6b152c",
+        "ethanol.mol2": "4b45565195a7c2f56b4bd1e352e0afca335986d6774e947ae64a6f5cdc112978",
+        "ethanol.frcmod": "bf922808a85c35c2c11e49229322f906ba4bfc17fa247ee240d7221744a82dd5",
+        "ethanol.prmtop": "47beb57637da6db2ea26683b0618ef43101ceb51632499e226d673fe394b8563",
+        "ethanol.inpcrd": "44350931adcde460f6394fe09dbf47abc8769720dab23e12034b326c6085afda"
+      }
+    },
+    "benzene": {
+      "smiles": "c1ccccc1",
+      "charge": 0,
+      "n_atoms": 12,
+      "files": {
+        "benzene.sdf": "1f65f8c8e914bffe63ad674d73b9666370a1f91499c0a551bc678a305fa28c7a",
+        "benzene.mol2": "a96653fc37ed7802ee2aef9cf9fc104f23f00c0e67a0e9a91c21bfcc9511e089",
+        "benzene.frcmod": "fc680931286e00e6f211298007244d38bbf116658e96b90d5f096861b9cc7e82",
+        "benzene.prmtop": "3967b1fd411708783a1ae29b728f6f542bb0b8058ab59e3f23187c54d4e06d3a",
+        "benzene.inpcrd": "3f40c0225817d49a6b9891bc4b6ce6f906ac17a570b4e218a51acea560a3d84e"
+      }
+    },
+    "nma": {
+      "smiles": "CC(=O)NC",
+      "charge": 0,
+      "n_atoms": 12,
+      "files": {
+        "nma.sdf": "9b34e8555ca57daae5f812ca25c7974060b0a9be0aed1c09ef9b56eb5dbe80fa",
+        "nma.mol2": "b6895a2f74eb9d70e3006172ea653f6ff852aa9dc26113dfe4e477f0545c4c00",
+        "nma.frcmod": "effb3ea6c7b6877c227960e57421d7135ff4c3f0dc37016d645569f53def3e96",
+        "nma.prmtop": "c2bdb9d54bcc6e1dd5310dbec0dd2b60882001a0f98c7f895c6a11ab640955c7",
+        "nma.inpcrd": "00f296701095ae00ce7a297c1f0d9ecd605907254e16aa817240615f30acd10c"
+      }
+    },
+    "cyclopropane": {
+      "smiles": "C1CC1",
+      "charge": 0,
+      "n_atoms": 9,
+      "files": {
+        "cyclopropane.sdf": "78f1631998c435dbbd434415e67731b4a415ea85feeeb05fb55793503890a1dc",
+        "cyclopropane.mol2": "549b660d7cd089cdd140f8745ba4d1987e51c153f6c932b346bb9da0e9c38e27",
+        "cyclopropane.frcmod": "bf922808a85c35c2c11e49229322f906ba4bfc17fa247ee240d7221744a82dd5",
+        "cyclopropane.prmtop": "014db39280a040779d707da7b71d998494742bd46906339c23d678a03ede94b8",
+        "cyclopropane.inpcrd": "292f1ae817bd1cdde28e0986a25f6a4d5a1abf2c537e967b0dd52f3380b4d7d1"
+      }
+    },
+    "cyclobutane": {
+      "smiles": "C1CCC1",
+      "charge": 0,
+      "n_atoms": 12,
+      "files": {
+        "cyclobutane.sdf": "4762cd7e84131a74bda155a2350cd525fe42cd9778c4fc96d053f1106ceed0b1",
+        "cyclobutane.mol2": "8305513626e46c38f3519d094833df56ec4e4e33ffb1cd780824b0814c800bde",
+        "cyclobutane.frcmod": "bf922808a85c35c2c11e49229322f906ba4bfc17fa247ee240d7221744a82dd5",
+        "cyclobutane.prmtop": "1e12afe872db8b20471289d76de21791f0880f76d23e529e51c8aae50ff8ca39",
+        "cyclobutane.inpcrd": "f55d6ace7976ef1d9ea4d73b06c0315cfa826b3b44d6cdb148824a50c9a73227"
+      }
+    },
+    "norbornane": {
+      "smiles": "C1CC2CCC1C2",
+      "charge": 0,
+      "n_atoms": 19,
+      "files": {
+        "norbornane.sdf": "9b8bc50fd2e3e92566a26c57cc8a41bbad69e16676a326d91ff7658ba1413da0",
+        "norbornane.mol2": "32ed8685c0f0a6a7674c5e2b33c5a8e9e111fe6b1954c53db45058a0b2fd3c42",
+        "norbornane.frcmod": "2ac6b1feaf7518e652381be7e703d741d6193baa53b676ed9f6671ea6558f2d4",
+        "norbornane.prmtop": "4e33d5b01d3f1024e5e87a2229b9cb16183ff36dc7382291425a2c11753052e6",
+        "norbornane.inpcrd": "bc5ba12b9fd7a425b059bafb66a4a549bfc05411e36069283ae565186aead1d0"
+      }
+    },
+    "acetate": {
+      "smiles": "CC(=O)[O-]",
+      "charge": -1,
+      "n_atoms": 7,
+      "files": {
+        "acetate.sdf": "568e7b2e152f2fac8749fa82c501fc21c28e8de805ce85306802d310c895b01d",
+        "acetate.mol2": "022e714607ff69274124b42793a93c7d076ddeff12d570b0b226d7fca95053bd",
+        "acetate.frcmod": "9d98aa01596acf7fbe05df6c8718a29c51bea4363cbe77d6eb6f88b8c14b171b",
+        "acetate.prmtop": "8a72ea776a8bafe17196e702d41645772b2e4e700375e099caf9ac9379936b2e",
+        "acetate.inpcrd": "3bf65518657ec8485e11c4b6c4b11d1f2267282b67ac82c10111b421bd1b0972"
+      }
+    },
+    "methylammonium": {
+      "smiles": "C[NH3+]",
+      "charge": 1,
+      "n_atoms": 8,
+      "files": {
+        "methylammonium.sdf": "2bc6c42674c0c677e5d7e734828bee10491f655713bb74f770cf56b1da5b896c",
+        "methylammonium.mol2": "4f7127ec943217872103512bc549b2ec9f2fae1ad5853a649e848dd35507c920",
+        "methylammonium.frcmod": "bf922808a85c35c2c11e49229322f906ba4bfc17fa247ee240d7221744a82dd5",
+        "methylammonium.prmtop": "9ae0619b5833459e7408f44ac54bf2856c2a24da781f760c390303e039bc67d0",
+        "methylammonium.inpcrd": "b0e0f99bb0ae99b639c066d6643d7e4699c6edbad0d126f5a71bdec15d785918"
+      }
+    },
+    "chlorobenzene": {
+      "smiles": "Clc1ccccc1",
+      "charge": 0,
+      "n_atoms": 12,
+      "files": {
+        "chlorobenzene.sdf": "8dd1c2109eaeb818f9e80d4fe421a9b3dc865e950573b34f658c319c36b91d9a",
+        "chlorobenzene.mol2": "6dd5afb2b568b07a376f3833d891e11c3cd74d04605bad2ac5febe8cbde85ba6",
+        "chlorobenzene.frcmod": "fc680931286e00e6f211298007244d38bbf116658e96b90d5f096861b9cc7e82",
+        "chlorobenzene.prmtop": "b76c54f55f931c7a293dc79e6dda0a93a3c41d3b68c396216366821fe9d4bc3a",
+        "chlorobenzene.inpcrd": "dab5b3a417b4248b0372d22ddf85478bedd4012cc8d92e2da78a2fac94dff2ae"
+      }
+    },
+    "methyl_benzoate": {
+      "smiles": "COC(=O)c1ccccc1",
+      "charge": 0,
+      "n_atoms": 18,
+      "files": {
+        "methyl_benzoate.sdf": "f5eeefb273804629c933ade6116adced86dc0185b24f03ce1e07bae6142e68ef",
+        "methyl_benzoate.mol2": "f1833b46fcafbe619dddb7876d14059835ca6a886c9cfc7d0909a90a7b2d3088",
+        "methyl_benzoate.frcmod": "cc5ff3aa63447b9758f4bc07ba5c15f42154980bc747d26f808f40e5c453cec7",
+        "methyl_benzoate.prmtop": "437eb3f59125a7b63f1a0c33f021d66cf1b77ef41457694968082d4964c906b9",
+        "methyl_benzoate.inpcrd": "15ff54a63d638d87bada187fc211f894094c7e241ef929d6f5869b61b8ec1276"
+      }
+    },
+    "dmso": {
+      "smiles": "CS(C)=O",
+      "charge": 0,
+      "n_atoms": 10,
+      "files": {
+        "dmso.sdf": "486ce96f14ff6c1f48fb3da79f8c80eaeef47d35f4be7bf023f1244b18e98de9",
+        "dmso.mol2": "c18459e919de4442521283a202812b86cf2ced1ec6e239efccbf9ad7142e32f5",
+        "dmso.frcmod": "bf922808a85c35c2c11e49229322f906ba4bfc17fa247ee240d7221744a82dd5",
+        "dmso.prmtop": "860a838cc4395e36ef0ed1ec3fa54721f49fc1cbbd21e7faf700c52b5719c371",
+        "dmso.inpcrd": "8bfe201f0d07c5af259675dc1415307b87a484e9d725b2e6f71ea3c826999f56"
+      }
+    },
+    "acetonitrile": {
+      "smiles": "CC#N",
+      "charge": 0,
+      "n_atoms": 6,
+      "files": {
+        "acetonitrile.sdf": "e112d145a1b12907e63443403c5dfb6f386ae11ce87aa966c3a78c572217de06",
+        "acetonitrile.mol2": "11685545369e67705dd6d69c7e8b3729259929e7e8fcbd7f4d4fc7a7af93e847",
+        "acetonitrile.frcmod": "bf922808a85c35c2c11e49229322f906ba4bfc17fa247ee240d7221744a82dd5",
+        "acetonitrile.prmtop": "720e952fb814e173cc44e03cb974fdf1ae87e825671019220cb543182404291b",
+        "acetonitrile.inpcrd": "d05f5086113f78cd3c8731e5f773e3e8523eaf181530f25474f896c0375fed9d"
+      }
+    }
+  },
+  "generated": "2026-10-04T17:54:38",
+  "seed": 20261004,
+  "ambertools_version": "24.8"
+}

@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 acetonitrile.mol2
+loadamberparams acetonitrile.frcmod
+saveamberparm MOL acetonitrile.prmtop acetonitrile.inpcrd
+quit

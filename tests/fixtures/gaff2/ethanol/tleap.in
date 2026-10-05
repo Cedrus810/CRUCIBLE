@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 ethanol.mol2
+loadamberparams ethanol.frcmod
+saveamberparm MOL ethanol.prmtop ethanol.inpcrd
+quit

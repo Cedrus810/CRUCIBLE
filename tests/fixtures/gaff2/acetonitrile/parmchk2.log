@@ -1,0 +1,6 @@
+$ parmchk2 -i acetonitrile.mol2 -f mol2 -o acetonitrile.frcmod -s gaff2
+--- stdout ---
+
+--- stderr ---
+
+--- exit 0 ---

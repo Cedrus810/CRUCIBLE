@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 methylammonium.mol2
+loadamberparams methylammonium.frcmod
+saveamberparm MOL methylammonium.prmtop methylammonium.inpcrd
+quit

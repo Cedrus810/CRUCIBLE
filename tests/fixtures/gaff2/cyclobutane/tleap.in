@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 cyclobutane.mol2
+loadamberparams cyclobutane.frcmod
+saveamberparm MOL cyclobutane.prmtop cyclobutane.inpcrd
+quit

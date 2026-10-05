@@ -1,0 +1,5 @@
+source leaprc.gaff2
+MOL = loadmol2 acetate.mol2
+loadamberparams acetate.frcmod
+saveamberparm MOL acetate.prmtop acetate.inpcrd
+quit
