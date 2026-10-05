@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-04",
+  "timezone": "Asia/Tokyo",
+  "host": "node-A",
+  "review_verdict": "not_accepted",
+  "gromacs_path": "/home/user/gmx26.3/bin/gmx",
+  "gromacs_version": "2026.3",
+  "precision": "mixed",
+  "cpu_variant": "AVX2-fallback",
+  "module_path": "/home/user/modulefiles",
+  "module": "gromacs2026.3",
+  "matrix_dir": "/home/user/forcefield_compiler/jobs/gromacs_engine_audit_20261004_3",
+  "matrix_cases": 48,
+  "matrix_completed": 48,
+  "matrix_passed": 40,
+  "matrix_failed": 8,
+  "existing_gromacs_test": "failed",
+  "gate_actual_passed": true,
+  "gate_pytest_summary": {
+    "not external": {
+      "passed": 143,
+      "failed": 0,
+      "skipped": 0,
+      "returncode": 0
+    },
+    "external": {
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "returncode": 1
+    }
+  },
+  "gate_skipped_legs": {
+    "gmx": "gmx leg not implemented in MVP-0; run test_real_gromacs_rerun",
+    "sander-ours:angle/dihed": "near-linear angle(s) [(0, 1, 2)] (> 175.0 deg); engine-specific sander-vs-numpy difference (decision 0004.2)"
+  },
+  "audit_script_sha256": "1350eb471285aa20c7238e2082fe31f6bf4852cc0d5a764137a2259b4416a122",
+  "source_sha256": {
+    "src/ffcompiler/__init__.py": "2de87c7bd03d935339e1b01c83f8850c7e0730ac2d6346c0d6dee0c5207a702d",
+    "src/ffcompiler/cli.py": "1be9bc24d9446fd0f40ed3bc0a8992c74643fa83172fb0dad1b42032d5df557c",
+    "src/ffcompiler/exporters/__init__.py": "11b340913a5b69e5ac862702382680f16ca9f25eab2a1f43101d61cf63fe2af7",
+    "src/ffcompiler/exporters/amber.py": "764fd9d578eca31d371ca36bad0946f8c6c78e50a2f7cb74d5066d534ac85eb6",
+    "src/ffcompiler/exporters/gromacs.py": "a1597028e5424ed0599ebd36f39291635ddb0e689688d7860cf898977b690d1a",
+    "src/ffcompiler/exporters/openmm.py": "b6ed5b5548ea67f58d4bfc2d8176e20314932c0ebc99d7974669510544eb7be1",
+    "src/ffcompiler/importers/__init__.py": "abf197622f39a077cd2a93640278154727757dd975f89992ee843f664dff93de",
+    "src/ffcompiler/importers/amber_prmtop.py": "cc9051b8ac910c5d9ed0ab383a98c2f5c092cb1eed4a3a9a39265c0283cfbcbb",
+    "src/ffcompiler/ir/__init__.py": "29c58609c7ae895eace0ed91db5980759121b04f29f46a72ebcf111b8ca8ec17",
+    "src/ffcompiler/ir/energy.py": "0c30edd8b2d92e36bd4459a67ccc5296b8317b1d885ea8ed924e3b8f43ca3261",
+    "src/ffcompiler/ir/io.py": "5c66b4f5813ef84cd726ad5071b7661841f0c891dcdef363145afb1160d0c478",
+    "src/ffcompiler/ir/schema.py": "cb469cbeba10fd26705cad86bc7e9a27564c21b2a4972c805d1c376761518d59",
+    "src/ffcompiler/ir/topology.py": "f8d6c5035cb35a16dd08d82490d80dfb6915e53b0c53cbeb0dd45782c6df40b4",
+    "src/ffcompiler/ir/validation.py": "753fd9143a4b964633ee8f66b241d5046c9a857552b83fb0f851ae9d93e7d55a",
+    "src/ffcompiler/runtime.py": "07cfbf9013c38b4785503d83e7d91feef02d165628318fd1a23e8d86abea48fb",
+    "src/ffcompiler/validation/__init__.py": "52c9db0fe0ef63b167cfbbda328b156ef16071d81e80ef83fdce960f3cba80cd",
+    "src/ffcompiler/validation/engines.py": "0305bd67d61b4d7d5b931ac686d815289a65c23b17e3262e81508454ec6511f4"
+  },
+  "version_output": "/home/user/forcefield_compiler/jobs/gromacs_audit_20261004/version.txt",
+  "rerun_script_sha256": "e8cc9251212b1bd5b6376a354b931e4705641986a61a917bf70dd004d41b6e75",
+  "matrix_script_snapshot": "jobs/gromacs_engine_audit_20261004_3/audit_script_snapshot.py",
+  "post_run_script_change": "future failed runs raise SystemExit inside RunContext; add source hash to manifest"
+}

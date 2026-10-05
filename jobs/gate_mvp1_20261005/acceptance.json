@@ -1,0 +1,49 @@
+{
+  "gate": "G1",
+  "passed": false,
+  "criteria": {
+    "G1.1": true,
+    "G1.2": true,
+    "G1.3": true,
+    "G1.4": true,
+    "G1.5": false,
+    "G1.6": true,
+    "G1.7": true
+  },
+  "sobtop_match": {
+    "mseminario": "12/12",
+    "m2seminario": "12/12",
+    "drih": "12/12"
+  },
+  "m2_naming": "m2seminario",
+  "global_fit_self_consistency": 6.034851671252063e-09,
+  "cross_engine_all_passed": true,
+  "failures": [
+    {
+      "molecule": "cyclopropane",
+      "provider": "gfnff",
+      "method": "m2seminario",
+      "reason": "IRValidationError: angle (0,1,2) has force_constant=-33.61895840645948, must be > 0 | angle (0,2,1) has force_constant=-33.61895840645948, must be > 0 | angle (1,0,2) has force_constant=-33.61895840645948, must be > 0"
+    }
+  ],
+  "pytest_summary": {
+    "not external": {
+      "passed": 291,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    },
+    "external": {
+      "passed": 23,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    }
+  }
+}

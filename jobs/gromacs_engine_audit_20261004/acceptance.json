@@ -1,0 +1,90 @@
+{
+  "passed": false,
+  "total_passed": false,
+  "cases": 1,
+  "completed": 1,
+  "records": [
+    {
+      "passed": false,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.3560516535560536,
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.477045983076,
+          "numpy_ir": 0.47728667499867145,
+          "delta": 0.00024069192267145434,
+          "tol": 0.00010004772866749987,
+          "passed": false
+        },
+        {
+          "category": "angle",
+          "gromacs": 1.032401680946,
+          "numpy_ir": 1.032522936955701,
+          "delta": 0.00012125600970103179,
+          "tol": 0.00010010325229369558,
+          "passed": false
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.008653725497,
+          "numpy_ir": 0.008657437373630441,
+          "delta": 3.7118766304418405e-06,
+          "tol": 0.00010000086574373736,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.714553833008,
+          "numpy_ir": 0.714570943872145,
+          "delta": 1.7110864145020166e-05,
+          "tol": 0.00010007145709438721,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -34.886623382568,
+          "numpy_ir": -34.88660758113877,
+          "delta": 1.58014292281905e-05,
+          "tol": 0.00010348866075811388,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.016826309264,
+          "numpy_ir": -0.016826278220217112,
+          "delta": 3.1043782888068305e-08,
+          "tol": 0.00010000168262782203,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 24.221834182739,
+          "numpy_ir": 24.221821882394128,
+          "delta": 1.230034487065268e-05,
+          "tol": 0.00010242218218823942,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -8.448961257935,
+          "numpy_ir": -8.44857398376471,
+          "delta": 0.0003872741702899418,
+          "tol": 0.00010084485739837647,
+          "passed": false
+        }
+      ],
+      "name": "ethanol",
+      "config": 0,
+      "status": "completed"
+    }
+  ]
+}

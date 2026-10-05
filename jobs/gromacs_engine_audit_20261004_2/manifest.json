@@ -1,0 +1,45 @@
+{
+  "git_commit": null,
+  "git_dirty": null,
+  "argv": [
+    "jobs/gromacs_audit_20261004/run_real_gromacs.py",
+    "--names",
+    "ethanol",
+    "benzene",
+    "nma",
+    "--nconfigs",
+    "1"
+  ],
+  "host": "node-A",
+  "env_name": "",
+  "python": "3.12.13",
+  "packages": {
+    "numpy": "2.4.3",
+    "scipy": "1.17.1",
+    "openmm": "8.5.2",
+    "parmed": "4.3.1",
+    "rdkit": "2025.9.6"
+  },
+  "seed": 20261004,
+  "inputs": {
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/ethanol/ethanol.prmtop": "47beb57637da6db2ea26683b0618ef43101ceb51632499e226d673fe394b8563",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/ethanol/ethanol.inpcrd": "44350931adcde460f6394fe09dbf47abc8769720dab23e12034b326c6085afda",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/ethanol/ethanol.sdf": "e262b4cb3b71ea190f62945d5028ca3fe3d6c7f27f668c625b1ad4cbca6b152c",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/benzene/benzene.prmtop": "3967b1fd411708783a1ae29b728f6f542bb0b8058ab59e3f23187c54d4e06d3a",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/benzene/benzene.inpcrd": "3f40c0225817d49a6b9891bc4b6ce6f906ac17a570b4e218a51acea560a3d84e",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/benzene/benzene.sdf": "1f65f8c8e914bffe63ad674d73b9666370a1f91499c0a551bc678a305fa28c7a",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/nma/nma.prmtop": "c2bdb9d54bcc6e1dd5310dbec0dd2b60882001a0f98c7f895c6a11ab640955c7",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/nma/nma.inpcrd": "00f296701095ae00ce7a297c1f0d9ecd605907254e16aa817240615f30acd10c",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/nma/nma.sdf": "9b34e8555ca57daae5f812ca25c7974060b0a9be0aed1c09ef9b56eb5dbe80fa"
+  },
+  "started": "2026-10-04T19:17:11",
+  "ended": "2026-10-04T19:17:44",
+  "wall_s": 32.883307557029184,
+  "exit_status": 0,
+  "gromacs_executable": "/home/user/gmx26.3/bin/gmx",
+  "gromacs_version_text": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/forcefield_compiler/jobs/gromacs_engine_audit_20261004_2\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+  "precision_policy": "original file tolerance; mixed-precision build",
+  "mdp": "integrator = md\nnsteps = 0\ndt = 0.001\ncutoff-scheme = Verlet\nnstlist = 1\nverlet-buffer-tolerance = -1\nrlist = 4\ncoulombtype = Cut-off\ncoulomb-modifier = None\nrcoulomb = 4\nvdwtype = Cut-off\nvdw-modifier = None\nrvdw = 4\nDispCorr = no\npbc = xyz\nconstraints = none\ntcoupl = no\npcoupl = no\ncomm-mode = none\ngen-vel = no\ncontinuation = yes\nnstenergy = 1\nnstcalcenergy = 1\nnstlog = 1\n",
+  "module": "gromacs2026.3",
+  "coordinate_precision_nm": 1e-10
+}

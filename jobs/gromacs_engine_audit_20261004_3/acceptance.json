@@ -1,0 +1,4184 @@
+{
+  "passed": false,
+  "total_passed": false,
+  "cases": 48,
+  "completed": 48,
+  "records": [
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.36383482814934903,
+      "rigid_translation_nm": [
+        0.17405025623112036,
+        0.16520443848617256,
+        0.14944293266455874
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.477281630039,
+          "numpy_ir": 0.47728667499866134,
+          "delta": 5.044959661359982e-06,
+          "tol": 0.00010004772866749987,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 1.032522439957,
+          "numpy_ir": 1.0325229369557007,
+          "delta": 4.969987006386845e-07,
+          "tol": 0.00010010325229369558,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.008657442406,
+          "numpy_ir": 0.008657437373630499,
+          "delta": 5.0323695020143555e-09,
+          "tol": 0.00010000086574373736,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.714570403099,
+          "numpy_ir": 0.7145709438721468,
+          "delta": 5.407731468176635e-07,
+          "tol": 0.00010007145709438721,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -34.886600494385,
+          "numpy_ir": -34.886607581138776,
+          "delta": 7.086753775809029e-06,
+          "tol": 0.00010348866075811388,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.016826272011,
+          "numpy_ir": -0.01682627822021711,
+          "delta": 6.209217109226506e-09,
+          "tol": 0.00010000168262782203,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 24.22181892395,
+          "numpy_ir": 24.221821882394124,
+          "delta": 2.9584441243457604e-06,
+          "tol": 0.00010242218218823942,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -8.448575973511,
+          "numpy_ir": -8.44857398376473,
+          "delta": 1.989746269970283e-06,
+          "tol": 0.00010084485739837647,
+          "passed": true
+        }
+      ],
+      "name": "ethanol",
+      "status": "completed"
+    },
+    {
+      "passed": false,
+      "config": 1,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.36383482814934903,
+      "rigid_translation_nm": [
+        0.17405025623112036,
+        0.16520443848617256,
+        0.14944293266455874
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 100.224136352539,
+          "numpy_ir": 100.22430532432365,
+          "delta": 0.00016897178464603257,
+          "tol": 0.00011002243053243236,
+          "passed": false
+        },
+        {
+          "category": "angle",
+          "gromacs": 21.712972640991,
+          "numpy_ir": 21.712974829346166,
+          "delta": 2.188355164634004e-06,
+          "tol": 0.00010217129748293462,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.2951387465,
+          "numpy_ir": 0.29513871944639397,
+          "delta": 2.705360602206497e-08,
+          "tol": 0.00010002951387194464,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.169373765588,
+          "numpy_ir": 0.1693735140361758,
+          "delta": 2.515518242041104e-07,
+          "tol": 0.00010001693735140362,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -34.54967880249,
+          "numpy_ir": -34.549681190970475,
+          "delta": 2.3884804747353883e-06,
+          "tol": 0.00010345496811909706,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.014254547656,
+          "numpy_ir": -0.01425454276490288,
+          "delta": 4.891097121068055e-09,
+          "tol": 0.0001000014254542765,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 23.771856307983,
+          "numpy_ir": 23.771857008120577,
+          "delta": 7.001375763593387e-07,
+          "tol": 0.00010237718570081207,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 111.609550476074,
+          "numpy_ir": 111.60971366153758,
+          "delta": 0.00016318546357751984,
+          "tol": 0.00011116097136615376,
+          "passed": false
+        }
+      ],
+      "name": "ethanol",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.36383482814934903,
+      "rigid_translation_nm": [
+        0.17405025623112036,
+        0.16520443848617256,
+        0.14944293266455874
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 21.404148101807,
+          "numpy_ir": 21.404127088536235,
+          "delta": 2.101327076431403e-05,
+          "tol": 0.00010214041270885363,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 13.582838058472,
+          "numpy_ir": 13.582841094159535,
+          "delta": 3.035687536012688e-06,
+          "tol": 0.00010135828410941595,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.310337096453,
+          "numpy_ir": 0.31033691308244377,
+          "delta": 1.8337055623929288e-07,
+          "tol": 0.00010003103369130825,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.58298766613,
+          "numpy_ir": 0.5829905996326811,
+          "delta": 2.9335026811017073e-06,
+          "tol": 0.00010005829905996327,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -34.10782623291,
+          "numpy_ir": -34.10783545676554,
+          "delta": 9.223855542472847e-06,
+          "tol": 0.00010341078354567656,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.014373047277,
+          "numpy_ir": -0.014373047067024088,
+          "delta": 2.0997591165805574e-10,
+          "tol": 0.00010000143730470671,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 23.52402305603,
+          "numpy_ir": 23.524023708565814,
+          "delta": 6.52535813827626e-07,
+          "tol": 0.00010235240237085659,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 25.282133102417,
+          "numpy_ir": 25.282110900144144,
+          "delta": 2.2202272855764704e-05,
+          "tol": 0.00010252821109001442,
+          "passed": true
+        }
+      ],
+      "name": "ethanol",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 3,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.36383482814934903,
+      "rigid_translation_nm": [
+        0.17405025623112036,
+        0.16520443848617256,
+        0.14944293266455874
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 24.654163360596,
+          "numpy_ir": 24.654161488796074,
+          "delta": 1.871799927499751e-06,
+          "tol": 0.00010246541614887961,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 7.750799179077,
+          "numpy_ir": 7.750801910814676,
+          "delta": 2.731737676064938e-06,
+          "tol": 0.00010077508019108147,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.166676416993,
+          "numpy_ir": 0.1666765590109378,
+          "delta": 1.4201793779866634e-07,
+          "tol": 0.0001000166676559011,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 1.186173200607,
+          "numpy_ir": 1.18617442570337,
+          "delta": 1.2250963699056427e-06,
+          "tol": 0.00010011861744257034,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -35.218006134033,
+          "numpy_ir": -35.21801191580311,
+          "delta": 5.781770113344464e-06,
+          "tol": 0.00010352180119158031,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.017061889172,
+          "numpy_ir": -0.017061894035514554,
+          "delta": 4.863514552894133e-09,
+          "tol": 0.00010000170618940355,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 24.440330505371,
+          "numpy_ir": 24.4403340913218,
+          "delta": 3.5859508002999974e-06,
+          "tol": 0.00010244403340913219,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 22.96307182312,
+          "numpy_ir": 22.963074665808236,
+          "delta": 2.8426882359156025e-06,
+          "tol": 0.00010229630746658083,
+          "passed": true
+        }
+      ],
+      "name": "ethanol",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.500292424877599,
+      "rigid_translation_nm": [
+        0.2918,
+        0.28730000000000006,
+        0.05599192524096635
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.112640947104,
+          "numpy_ir": 0.11264188151665476,
+          "delta": 9.344126547655707e-07,
+          "tol": 0.00010001126418815168,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 0.011381306686,
+          "numpy_ir": 0.01138123040304515,
+          "delta": 7.628295485041792e-08,
+          "tol": 0.00010000113812304032,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 3.7968988e-05,
+          "numpy_ir": 3.3666737550542395e-05,
+          "delta": 4.3022504494576074e-06,
+          "tol": 0.00010000000336667377,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 2.743244e-06,
+          "numpy_ir": 3.399055072646462e-06,
+          "delta": 6.55811072646462e-07,
+          "tol": 0.00010000000033990552,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 12.120074272156,
+          "numpy_ir": 12.120070966154053,
+          "delta": 3.3060019468678092e-06,
+          "tol": 0.00010121200709661542,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -0.692635536194,
+          "numpy_ir": -0.6926374943193307,
+          "delta": 1.9581253307698887e-06,
+          "tol": 0.00010006926374943194,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.743242025375,
+          "numpy_ir": -0.7432418658522085,
+          "delta": 1.595227914208408e-07,
+          "tol": 0.00010007432418658523,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 10.628108024597,
+          "numpy_ir": 10.628104234337933,
+          "delta": 3.7902590666050173e-06,
+          "tol": 0.0001010628104234338,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 21.436367034912,
+          "numpy_ir": 21.436356018032768,
+          "delta": 1.1016879231107168e-05,
+          "tol": 0.00010214363560180329,
+          "passed": true
+        }
+      ],
+      "name": "benzene",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.500292424877599,
+      "rigid_translation_nm": [
+        0.2918,
+        0.28730000000000006,
+        0.05599192524096635
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 119.182472229004,
+          "numpy_ir": 119.18236924487351,
+          "delta": 0.00010298413049270039,
+          "tol": 0.00011191823692448735,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 19.415533065796,
+          "numpy_ir": 19.415534589127358,
+          "delta": 1.5233313561680006e-06,
+          "tol": 0.00010194155345891274,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 11.559325218201,
+          "numpy_ir": 11.559330012431543,
+          "delta": 4.794230543225808e-06,
+          "tol": 0.00010115593300124316,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 1.357187986374,
+          "numpy_ir": 1.3571881365700276,
+          "delta": 1.5019602761512374e-07,
+          "tol": 0.00010013571881365701,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 18.509218215942,
+          "numpy_ir": 18.509203601478138,
+          "delta": 1.4614463861306604e-05,
+          "tol": 0.00010185092036014782,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -0.717472553253,
+          "numpy_ir": -0.7174716825370977,
+          "delta": 8.7071590226806e-07,
+          "tol": 0.00010007174716825371,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.817886590958,
+          "numpy_ir": -0.8178862794230535,
+          "delta": 3.115349465065975e-07,
+          "tol": 0.00010008178862794231,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 10.776264190674,
+          "numpy_ir": 10.776267475200445,
+          "delta": 3.2845264446024203e-06,
+          "tol": 0.00010107762674752005,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 179.2646484375,
+          "numpy_ir": 179.26453509772088,
+          "delta": 0.0001133397791193147,
+          "tol": 0.00011792645350977209,
+          "passed": true
+        }
+      ],
+      "name": "benzene",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.500292424877599,
+      "rigid_translation_nm": [
+        0.2918,
+        0.28730000000000006,
+        0.05599192524096635
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 61.891410827637,
+          "numpy_ir": 61.891382753092984,
+          "delta": 2.8074544019318637e-05,
+          "tol": 0.0001061891382753093,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 28.573802947998,
+          "numpy_ir": 28.573776214100764,
+          "delta": 2.6733897236397297e-05,
+          "tol": 0.00010285737762141007,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 1.906648278236,
+          "numpy_ir": 1.9066474403433693,
+          "delta": 8.378926306118473e-07,
+          "tol": 0.00010019066474403434,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.229618579149,
+          "numpy_ir": 0.22961905833846663,
+          "delta": 4.791894666344998e-07,
+          "tol": 0.00010002296190583385,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 10.087232589722,
+          "numpy_ir": 10.087231689953073,
+          "delta": 8.997689260326069e-07,
+          "tol": 0.00010100872316899531,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -0.667421340942,
+          "numpy_ir": -0.6674225375053782,
+          "delta": 1.1965633781585439e-06,
+          "tol": 0.00010006674225375054,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.743427753448,
+          "numpy_ir": -0.7434275407712636,
+          "delta": 2.1267673644409513e-07,
+          "tol": 0.00010007434275407713,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 10.955219268799,
+          "numpy_ir": 10.955221425990686,
+          "delta": 2.157191685725479e-06,
+          "tol": 0.00010109552214259908,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 112.23307800293,
+          "numpy_ir": 112.2330285035427,
+          "delta": 4.949938730192116e-05,
+          "tol": 0.00011122330285035428,
+          "passed": true
+        }
+      ],
+      "name": "benzene",
+      "status": "completed"
+    },
+    {
+      "passed": false,
+      "config": 3,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.500292424877599,
+      "rigid_translation_nm": [
+        0.2918,
+        0.28730000000000006,
+        0.05599192524096635
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 80.823608398438,
+          "numpy_ir": 80.82374197916104,
+          "delta": 0.0001335807230447017,
+          "tol": 0.0001080823741979161,
+          "passed": false
+        },
+        {
+          "category": "angle",
+          "gromacs": 37.762191772461,
+          "numpy_ir": 37.76224292582934,
+          "delta": 5.1153368339385e-05,
+          "tol": 0.00010377622429258294,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 5.331384658813,
+          "numpy_ir": 5.33138959139687,
+          "delta": 4.932583870242979e-06,
+          "tol": 0.0001005331389591397,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.671134412289,
+          "numpy_ir": 0.671135811929822,
+          "delta": 1.3996408220195988e-06,
+          "tol": 0.00010006711358119298,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 12.78587436676,
+          "numpy_ir": 12.785872635241754,
+          "delta": 1.7315182461175027e-06,
+          "tol": 0.00010127858726352418,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -0.684116840363,
+          "numpy_ir": -0.6841122596420552,
+          "delta": 4.580720944780126e-06,
+          "tol": 0.00010006841122596422,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.755376219749,
+          "numpy_ir": -0.7553759440765953,
+          "delta": 2.756724047925374e-07,
+          "tol": 0.00010007553759440766,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 10.775915145874,
+          "numpy_ir": 10.775913174424435,
+          "delta": 1.971449565374428e-06,
+          "tol": 0.00010107759131744245,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 146.71061706543,
+          "numpy_ir": 146.71080791426462,
+          "delta": 0.00019084883462028301,
+          "tol": 0.00011467108079142647,
+          "passed": false
+        }
+      ],
+      "name": "benzene",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.5299900634314838,
+      "rigid_translation_nm": [
+        0.30309468141387785,
+        0.19717090233550183,
+        0.19334695520215084
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.950107038021,
+          "numpy_ir": 0.9501068381467708,
+          "delta": 1.998742292785849e-07,
+          "tol": 0.00010009501068381468,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 1.634767770767,
+          "numpy_ir": 1.6347616650389905,
+          "delta": 6.105728009631051e-06,
+          "tol": 0.0001001634761665039,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 104.205078125,
+          "numpy_ir": 104.20507362127948,
+          "delta": 4.5037205183007245e-06,
+          "tol": 0.00011042050736212795,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.817209243774,
+          "numpy_ir": 0.8172111871297384,
+          "delta": 1.9433557384429534e-06,
+          "tol": 0.00010008172111871298,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 4.869462966919,
+          "numpy_ir": 4.869462934454808,
+          "delta": 3.246419222335817e-08,
+          "tol": 0.00010048694629344549,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -158.700622558594,
+          "numpy_ir": -158.70062538755766,
+          "delta": 2.8289636588851863e-06,
+          "tol": 0.00011587006253875576,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.509404957294,
+          "numpy_ir": -0.5094049870317097,
+          "delta": 2.9737709628108178e-08,
+          "tol": 0.00010005094049870317,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": -1.240303993225,
+          "numpy_ir": -1.2403063793935771,
+          "delta": 2.386168577173109e-06,
+          "tol": 0.00010012403063793936,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -47.973705291748,
+          "numpy_ir": -47.97372050793316,
+          "delta": 1.5216185161648355e-05,
+          "tol": 0.00010479737205079332,
+          "passed": true
+        }
+      ],
+      "name": "nma",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.5299900634314838,
+      "rigid_translation_nm": [
+        0.30309468141387785,
+        0.19717090233550183,
+        0.19334695520215084
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 66.272689819336,
+          "numpy_ir": 66.27263928442486,
+          "delta": 5.0534911139266114e-05,
+          "tol": 0.00010662726392844249,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 18.359699249268,
+          "numpy_ir": 18.359681290534862,
+          "delta": 1.7958733138812022e-05,
+          "tol": 0.00010183596812905349,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 103.423095703125,
+          "numpy_ir": 103.4230996194783,
+          "delta": 3.916353293220709e-06,
+          "tol": 0.00011034230996194783,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.376540333033,
+          "numpy_ir": 0.3765435897545071,
+          "delta": 3.2567215070833377e-06,
+          "tol": 0.00010003765435897546,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 2.941752910614,
+          "numpy_ir": 2.941760681865943,
+          "delta": 7.771251943289315e-06,
+          "tol": 0.0001002941760681866,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -154.977508544922,
+          "numpy_ir": -154.97751356293466,
+          "delta": 5.0180126720533735e-06,
+          "tol": 0.00011549775135629348,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.467649757862,
+          "numpy_ir": -0.4676485324528835,
+          "delta": 1.2254091165120329e-06,
+          "tol": 0.0001000467648532453,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": -1.511583328247,
+          "numpy_ir": -1.511585096397813,
+          "delta": 1.7681508130973356e-06,
+          "tol": 0.00010015115850963979,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 34.417037963867,
+          "numpy_ir": 34.4169772742731,
+          "delta": 6.0689593901486205e-05,
+          "tol": 0.00010344169772742731,
+          "passed": true
+        }
+      ],
+      "name": "nma",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.5299900634314838,
+      "rigid_translation_nm": [
+        0.30309468141387785,
+        0.19717090233550183,
+        0.19334695520215084
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 56.89591217041,
+          "numpy_ir": 56.895938709883566,
+          "delta": 2.6539473566344896e-05,
+          "tol": 0.00010568959387098837,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 30.090372085571,
+          "numpy_ir": 30.09037898905461,
+          "delta": 6.903483608766692e-06,
+          "tol": 0.00010300903789890547,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 106.190711975098,
+          "numpy_ir": 106.19071696781131,
+          "delta": 4.992713314777575e-06,
+          "tol": 0.00011061907169678114,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.968452513218,
+          "numpy_ir": 0.9684522792776283,
+          "delta": 2.339403716300481e-07,
+          "tol": 0.00010009684522792777,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 5.668826580048,
+          "numpy_ir": 5.66883847371376,
+          "delta": 1.1893665759821204e-05,
+          "tol": 0.00010056688384737138,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -158.649703979492,
+          "numpy_ir": -158.6497147080112,
+          "delta": 1.0728519214353582e-05,
+          "tol": 0.00011586497147080113,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.448652893305,
+          "numpy_ir": -0.44865221100156344,
+          "delta": 6.823034365832648e-07,
+          "tol": 0.00010004486522110016,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": -1.699268341064,
+          "numpy_ir": -1.6992687725570321,
+          "delta": 4.3149303219358615e-07,
+          "tol": 0.0001001699268772557,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 39.016658782959,
+          "numpy_ir": 39.01668972817108,
+          "delta": 3.094521208168999e-05,
+          "tol": 0.00010390166897281712,
+          "passed": true
+        }
+      ],
+      "name": "nma",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 3,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.5299900634314838,
+      "rigid_translation_nm": [
+        0.30309468141387785,
+        0.19717090233550183,
+        0.19334695520215084
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 57.703006744385,
+          "numpy_ir": 57.70295687775901,
+          "delta": 4.986662599293368e-05,
+          "tol": 0.0001057702956877759,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 19.248075485229,
+          "numpy_ir": 19.24804173559525,
+          "delta": 3.374963374724871e-05,
+          "tol": 0.00010192480417355953,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 104.288017272949,
+          "numpy_ir": 104.28802002753112,
+          "delta": 2.7545821126295778e-06,
+          "tol": 0.00011042880200275312,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 2.423959732056,
+          "numpy_ir": 2.4239714636638925,
+          "delta": 1.173160789269545e-05,
+          "tol": 0.00010024239714636639,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 4.586627006531,
+          "numpy_ir": 4.586631091819185,
+          "delta": 4.085288185073921e-06,
+          "tol": 0.00010045866310918192,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -156.194580078125,
+          "numpy_ir": -156.1945843230711,
+          "delta": 4.244946097742286e-06,
+          "tol": 0.00011561945843230711,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.526477098465,
+          "numpy_ir": -0.5264760139024955,
+          "delta": 1.0845625044719753e-06,
+          "tol": 0.00010005264760139025,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": -1.411353588104,
+          "numpy_ir": -1.4113560646752066,
+          "delta": 2.4765712065555334e-06,
+          "tol": 0.00010014113560646753,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 30.117282867432,
+          "numpy_ir": 30.117204794719655,
+          "delta": 7.807271234483437e-05,
+          "tol": 0.00010301172047947197,
+          "passed": true
+        }
+      ],
+      "name": "nma",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.3338877839184944,
+      "rigid_translation_nm": [
+        0.13463287739281002,
+        0.19239822032693127,
+        0.14919564186238754
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.169828131795,
+          "numpy_ir": 0.16982814948436378,
+          "delta": 1.7689363779327394e-08,
+          "tol": 0.00010001698281494844,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 0.062545441091,
+          "numpy_ir": 0.06254336899630743,
+          "delta": 2.072094692578963e-06,
+          "tol": 0.00010000625433689964,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 26.971075057983,
+          "numpy_ir": 26.971074265584715,
+          "delta": 7.923982856539169e-07,
+          "tol": 0.00010269710742655848,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.025990620255,
+          "numpy_ir": 0.025990701047403045,
+          "delta": 8.079240304548208e-08,
+          "tol": 0.00010000259907010474,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 23.327024459839,
+          "numpy_ir": 23.327018921227268,
+          "delta": 5.538611731026322e-06,
+          "tol": 0.00010233270189212273,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 50.556465148926,
+          "numpy_ir": 50.556455406340056,
+          "delta": 9.74258594510502e-06,
+          "tol": 0.00010505564554063401,
+          "passed": true
+        }
+      ],
+      "name": "cyclopropane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.3338877839184944,
+      "rigid_translation_nm": [
+        0.13463287739281002,
+        0.19239822032693127,
+        0.14919564186238754
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 62.143974304199,
+          "numpy_ir": 62.14399433750284,
+          "delta": 2.003330384070523e-05,
+          "tol": 0.00010621439943375029,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 16.54109954834,
+          "numpy_ir": 16.54110786799155,
+          "delta": 8.319651549015816e-06,
+          "tol": 0.00010165411078679915,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 26.391536712646,
+          "numpy_ir": 26.391539056716326,
+          "delta": 2.344070324511449e-06,
+          "tol": 0.00010263915390567163,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.232081741095,
+          "numpy_ir": 0.23208244324549748,
+          "delta": 7.021504974946691e-07,
+          "tol": 0.00010002320824432455,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 23.762720108032,
+          "numpy_ir": 23.762717708125667,
+          "delta": 2.399906332328783e-06,
+          "tol": 0.00010237627177081257,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 129.071411132812,
+          "numpy_ir": 129.07144141358188,
+          "delta": 3.0280769891533055e-05,
+          "tol": 0.00011290714414135819,
+          "passed": true
+        }
+      ],
+      "name": "cyclopropane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.3338877839184944,
+      "rigid_translation_nm": [
+        0.13463287739281002,
+        0.19239822032693127,
+        0.14919564186238754
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 34.516326904297,
+          "numpy_ir": 34.516301390698096,
+          "delta": 2.551359890645699e-05,
+          "tol": 0.00010345163013906981,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 24.684076309204,
+          "numpy_ir": 24.684051954930844,
+          "delta": 2.4354273154614248e-05,
+          "tol": 0.0001024684051954931,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 26.428524017334,
+          "numpy_ir": 26.42852355195721,
+          "delta": 4.653767895490546e-07,
+          "tol": 0.00010264285235519573,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.214468613267,
+          "numpy_ir": 0.2144694669601097,
+          "delta": 8.536931097036238e-07,
+          "tol": 0.00010002144694669601,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 23.485572814941,
+          "numpy_ir": 23.48557173230636,
+          "delta": 1.082634639715252e-06,
+          "tol": 0.00010234855717323064,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 109.328964233398,
+          "numpy_ir": 109.32891809685262,
+          "delta": 4.61365453787721e-05,
+          "tol": 0.00011093289180968526,
+          "passed": true
+        }
+      ],
+      "name": "cyclopropane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 3,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.3338877839184944,
+      "rigid_translation_nm": [
+        0.13463287739281002,
+        0.19239822032693127,
+        0.14919564186238754
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 36.902782440186,
+          "numpy_ir": 36.90279134282824,
+          "delta": 8.902642235852909e-06,
+          "tol": 0.00010369027913428283,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 16.053373336792,
+          "numpy_ir": 16.053378909573507,
+          "delta": 5.572781507368063e-06,
+          "tol": 0.00010160533789095736,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 26.67794418335,
+          "numpy_ir": 26.677941803652516,
+          "delta": 2.379697484400367e-06,
+          "tol": 0.00010266779418036525,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.009423989803,
+          "numpy_ir": 0.009424188907732056,
+          "delta": 1.9910473205569934e-07,
+          "tol": 0.00010000094241889077,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 23.070314407349,
+          "numpy_ir": 23.070311282682166,
+          "delta": 3.1246668328321903e-06,
+          "tol": 0.00010230703112826822,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 102.713829040527,
+          "numpy_ir": 102.71384752764416,
+          "delta": 1.8487117159793343e-05,
+          "tol": 0.00011027138475276443,
+          "passed": true
+        }
+      ],
+      "name": "cyclopropane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.39861907524060036,
+      "rigid_translation_nm": [
+        0.24121248946592339,
+        0.2409469383058906,
+        0.1817022814280796
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.849212944508,
+          "numpy_ir": 0.8492151725970484,
+          "delta": 2.2280890483727944e-06,
+          "tol": 0.00010008492151725972,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 1.479562044144,
+          "numpy_ir": 1.4795563760141353,
+          "delta": 5.668129864799809e-06,
+          "tol": 0.00010014795563760142,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 27.156280517578,
+          "numpy_ir": 27.156279596287508,
+          "delta": 9.212904927835552e-07,
+          "tol": 0.00010271562795962875,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 3.629356384277,
+          "numpy_ir": 3.629357620034179,
+          "delta": 1.2357571788079724e-06,
+          "tol": 0.00010036293576200342,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 0.598302066326,
+          "numpy_ir": 0.5983036015873345,
+          "delta": 1.5352613345065436e-06,
+          "tol": 0.00010005983036015874,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.328413575888,
+          "numpy_ir": -0.32841342431280024,
+          "delta": 1.5157519978048484e-07,
+          "tol": 0.00010003284134243129,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 7.22546672821,
+          "numpy_ir": 7.225466807840821,
+          "delta": 7.963082104822661e-08,
+          "tol": 0.00010072254668078409,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 40.609764099121,
+          "numpy_ir": 40.609765750048226,
+          "delta": 1.6509272242615225e-06,
+          "tol": 0.00010406097657500483,
+          "passed": true
+        }
+      ],
+      "name": "cyclobutane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.39861907524060036,
+      "rigid_translation_nm": [
+        0.24121248946592339,
+        0.2409469383058906,
+        0.1817022814280796
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 115.255668640137,
+          "numpy_ir": 115.25570758815824,
+          "delta": 3.894802124193575e-05,
+          "tol": 0.00011152557075881583,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 75.386764526367,
+          "numpy_ir": 75.38676741060763,
+          "delta": 2.8842406294415923e-06,
+          "tol": 0.00010753867674106077,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 25.922073364258,
+          "numpy_ir": 25.922070535993907,
+          "delta": 2.8282640940346937e-06,
+          "tol": 0.0001025922070535994,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 4.241360187531,
+          "numpy_ir": 4.241364516620868,
+          "delta": 4.329089867916025e-06,
+          "tol": 0.00010042413645166209,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 0.608309090137,
+          "numpy_ir": 0.6083074285104918,
+          "delta": 1.6616265081648152e-06,
+          "tol": 0.00010006083074285106,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.294994026423,
+          "numpy_ir": -0.29499382651587164,
+          "delta": 1.9990712835094016e-07,
+          "tol": 0.00010002949938265159,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 7.251142501831,
+          "numpy_ir": 7.251141814362425,
+          "delta": 6.874685745117404e-07,
+          "tol": 0.00010072511418143625,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 228.370315551758,
+          "numpy_ir": 228.37036546773768,
+          "delta": 4.9915979673187394e-05,
+          "tol": 0.00012283703654677376,
+          "passed": true
+        }
+      ],
+      "name": "cyclobutane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.39861907524060036,
+      "rigid_translation_nm": [
+        0.24121248946592339,
+        0.2409469383058906,
+        0.1817022814280796
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 119.905052185059,
+          "numpy_ir": 119.9050120662404,
+          "delta": 4.011881860321864e-05,
+          "tol": 0.00011199050120662405,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 33.370506286621,
+          "numpy_ir": 33.37048999104135,
+          "delta": 1.629557964832884e-05,
+          "tol": 0.00010333704899910413,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 27.278308868408,
+          "numpy_ir": 27.27830650432436,
+          "delta": 2.3640836417371247e-06,
+          "tol": 0.00010272783065043244,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 4.082254886627,
+          "numpy_ir": 4.082253954172956,
+          "delta": 9.324540437560813e-07,
+          "tol": 0.0001004082253954173,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 0.262134969234,
+          "numpy_ir": 0.26213585530935635,
+          "delta": 8.860753563655344e-07,
+          "tol": 0.00010002621358553094,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.333060860634,
+          "numpy_ir": -0.33306078307078196,
+          "delta": 7.756321801499766e-08,
+          "tol": 0.00010003330607830708,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 7.130106925964,
+          "numpy_ir": 7.130106597661432,
+          "delta": 3.2830256824212256e-07,
+          "tol": 0.00010071301065976614,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 191.6953125,
+          "numpy_ir": 191.6952441856791,
+          "delta": 6.831432091303213e-05,
+          "tol": 0.00011916952441856791,
+          "passed": true
+        }
+      ],
+      "name": "cyclobutane",
+      "status": "completed"
+    },
+    {
+      "passed": false,
+      "config": 3,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.39861907524060036,
+      "rigid_translation_nm": [
+        0.24121248946592339,
+        0.2409469383058906,
+        0.1817022814280796
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 127.746437072754,
+          "numpy_ir": 127.74635117600712,
+          "delta": 8.589674688153082e-05,
+          "tol": 0.00011277463511760071,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 49.872566223145,
+          "numpy_ir": 49.87253575626095,
+          "delta": 3.0466884048507836e-05,
+          "tol": 0.0001049872535756261,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 28.118745803833,
+          "numpy_ir": 28.118744069747464,
+          "delta": 1.734085536497787e-06,
+          "tol": 0.00010281187440697475,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 3.774944067001,
+          "numpy_ir": 3.7749445772434207,
+          "delta": 5.102424207592549e-07,
+          "tol": 0.00010037749445772435,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 0.641752541065,
+          "numpy_ir": 0.641752168056598,
+          "delta": 3.7300840205478636e-07,
+          "tol": 0.00010006417521680566,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.36034616828,
+          "numpy_ir": -0.36034618073758434,
+          "delta": 1.245758435297617e-08,
+          "tol": 0.00010003603461807376,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 7.197534561157,
+          "numpy_ir": 7.197534312564892,
+          "delta": 2.485921077877151e-07,
+          "tol": 0.0001007197534312565,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 216.991638183594,
+          "numpy_ir": 216.99151587914287,
+          "delta": 0.00012230445113914357,
+          "tol": 0.00012169915158791429,
+          "passed": false
+        }
+      ],
+      "name": "cyclobutane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.4920059905244712,
+      "rigid_translation_nm": [
+        0.25437844405826066,
+        0.24263258666068932,
+        0.2726856674605254
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 1.431225419044,
+          "numpy_ir": 1.431229985004926,
+          "delta": 4.565960926017354e-06,
+          "tol": 0.0001001431229985005,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 19.877882003784,
+          "numpy_ir": 19.877874542041855,
+          "delta": 7.461742143277661e-06,
+          "tol": 0.00010198778745420419,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 39.151691436768,
+          "numpy_ir": 39.15169398649295,
+          "delta": 2.54972495383754e-06,
+          "tol": 0.00010391516939864929,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 12.667238235474,
+          "numpy_ir": 12.667237140604382,
+          "delta": 1.0948696189672091e-06,
+          "tol": 0.00010126672371406044,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -27.006759643555,
+          "numpy_ir": -27.006755955225998,
+          "delta": 3.688329002216051e-06,
+          "tol": 0.0001027006755955226,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -1.73438680172,
+          "numpy_ir": -1.7343866132530716,
+          "delta": 1.8846692828589084e-07,
+          "tol": 0.00010017343866132531,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 21.847770690918,
+          "numpy_ir": 21.847768474858512,
+          "delta": 2.2160594888021024e-06,
+          "tol": 0.00010218477684748586,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 66.234664916992,
+          "numpy_ir": 66.23466156052356,
+          "delta": 3.3564684400744227e-06,
+          "tol": 0.00010662346615605236,
+          "passed": true
+        }
+      ],
+      "name": "norbornane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.4920059905244712,
+      "rigid_translation_nm": [
+        0.25437844405826066,
+        0.24263258666068932,
+        0.2726856674605254
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 88.756492614746,
+          "numpy_ir": 88.75652229035478,
+          "delta": 2.967560878630593e-05,
+          "tol": 0.00010887565222903549,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 72.523338317871,
+          "numpy_ir": 72.52331225873631,
+          "delta": 2.6059134683009688e-05,
+          "tol": 0.00010725233122587364,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 39.840106964111,
+          "numpy_ir": 39.840111663018426,
+          "delta": 4.69890742493817e-06,
+          "tol": 0.00010398401116630185,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 13.245847702026,
+          "numpy_ir": 13.245853133958162,
+          "delta": 5.431932162736075e-06,
+          "tol": 0.00010132458531339582,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -26.898860931396,
+          "numpy_ir": -26.898852192611123,
+          "delta": 8.738784877948547e-06,
+          "tol": 0.00010268988521926111,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -1.655155777931,
+          "numpy_ir": -1.6551542828326014,
+          "delta": 1.495098398640593e-06,
+          "tol": 0.00010016551542828327,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 21.787384033203,
+          "numpy_ir": 21.787385354945833,
+          "delta": 1.3217428325162928e-06,
+          "tol": 0.00010217873853549458,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 207.599151611328,
+          "numpy_ir": 207.5991782255698,
+          "delta": 2.6614241789957305e-05,
+          "tol": 0.00012075991782255698,
+          "passed": true
+        }
+      ],
+      "name": "norbornane",
+      "status": "completed"
+    },
+    {
+      "passed": false,
+      "config": 2,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.4920059905244712,
+      "rigid_translation_nm": [
+        0.25437844405826066,
+        0.24263258666068932,
+        0.2726856674605254
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 78.59105682373,
+          "numpy_ir": 78.59119921740125,
+          "delta": 0.00014239367125412628,
+          "tol": 0.00010785911992174013,
+          "passed": false
+        },
+        {
+          "category": "angle",
+          "gromacs": 72.063598632812,
+          "numpy_ir": 72.06360489863296,
+          "delta": 6.265820957196411e-06,
+          "tol": 0.0001072063604898633,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 38.305610656738,
+          "numpy_ir": 38.305602711832854,
+          "delta": 7.944905142664993e-06,
+          "tol": 0.00010383056027118329,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 12.040852546692,
+          "numpy_ir": 12.0408582251678,
+          "delta": 5.678475799797411e-06,
+          "tol": 0.00010120408582251678,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -26.729131698608,
+          "numpy_ir": -26.72913644541203,
+          "delta": 4.7468040307308e-06,
+          "tol": 0.0001026729136445412,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -1.94475209713,
+          "numpy_ir": -1.944750646961453,
+          "delta": 1.4501685470236225e-06,
+          "tol": 0.00010019447506469616,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 21.601055145264,
+          "numpy_ir": 21.60105530398712,
+          "delta": 1.5872312175702064e-07,
+          "tol": 0.00010216010553039872,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 193.928298950195,
+          "numpy_ir": 193.9284332646485,
+          "delta": 0.0001343144535042029,
+          "tol": 0.00011939284332646485,
+          "passed": false
+        }
+      ],
+      "name": "norbornane",
+      "status": "completed"
+    },
+    {
+      "passed": false,
+      "config": 3,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.4920059905244712,
+      "rigid_translation_nm": [
+        0.25437844405826066,
+        0.24263258666068932,
+        0.2726856674605254
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 77.962890625,
+          "numpy_ir": 77.96302342965382,
+          "delta": 0.00013280465381626527,
+          "tol": 0.00010779630234296538,
+          "passed": false
+        },
+        {
+          "category": "angle",
+          "gromacs": 64.744926452637,
+          "numpy_ir": 64.74494502507042,
+          "delta": 1.857243341873982e-05,
+          "tol": 0.00010647449450250704,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 39.065925598145,
+          "numpy_ir": 39.06591783572241,
+          "delta": 7.762422590928963e-06,
+          "tol": 0.00010390659178357225,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 13.23482131958,
+          "numpy_ir": 13.234829115048761,
+          "delta": 7.795468761173652e-06,
+          "tol": 0.00010132348291150488,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -26.91805267334,
+          "numpy_ir": -26.918054242739274,
+          "delta": 1.5693992736487417e-06,
+          "tol": 0.00010269180542427393,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -1.374450206757,
+          "numpy_ir": -1.3744485563802187,
+          "delta": 1.6503767812370285e-06,
+          "tol": 0.00010013744485563802,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 22.075902938843,
+          "numpy_ir": 22.075902146688065,
+          "delta": 7.921549354250601e-07,
+          "tol": 0.00010220759021466881,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 188.791961669922,
+          "numpy_ir": 188.79211475306397,
+          "delta": 0.0001530831419813694,
+          "tol": 0.00011887921147530641,
+          "passed": false
+        }
+      ],
+      "name": "norbornane",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.3330789993845133,
+      "rigid_translation_nm": [
+        0.16502749980430198,
+        0.15862752335048444,
+        0.12469194651634392
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 9.441770553589,
+          "numpy_ir": 9.441754753421252,
+          "delta": 1.5800167748381e-05,
+          "tol": 0.00010094417547534213,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 12.587337493896,
+          "numpy_ir": 12.587299953604969,
+          "delta": 3.7540291030424555e-05,
+          "tol": 0.0001012587299953605,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 192.840560913086,
+          "numpy_ir": 192.84055941674393,
+          "delta": 1.4963420653657522e-06,
+          "tol": 0.0001192840559416744,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 1.645946e-06,
+          "numpy_ir": 1.7518093371460708e-06,
+          "delta": 1.0586333714607084e-07,
+          "tol": 0.00010000000017518093,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 1.638875722885,
+          "numpy_ir": 1.6388800824457783,
+          "delta": 4.359560778377514e-06,
+          "tol": 0.00010016388800824458,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -14.848819732666,
+          "numpy_ir": -14.84882028271292,
+          "delta": 5.500469200114821e-07,
+          "tol": 0.0001014848820282713,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 201.659729003906,
+          "numpy_ir": 201.65967567531234,
+          "delta": 5.3328593651258416e-05,
+          "tol": 0.00012016596756753124,
+          "passed": true
+        }
+      ],
+      "name": "acetate",
+      "status": "completed"
+    },
+    {
+      "passed": false,
+      "config": 1,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.3330789993845133,
+      "rigid_translation_nm": [
+        0.16502749980430198,
+        0.15862752335048444,
+        0.12469194651634392
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 37.725028991699,
+          "numpy_ir": 37.72496229447539,
+          "delta": 6.669722360896913e-05,
+          "tol": 0.00010377249622944754,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 20.449457168579,
+          "numpy_ir": 20.44942324741108,
+          "delta": 3.392116791900435e-05,
+          "tol": 0.0001020449423247411,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 193.450729370117,
+          "numpy_ir": 193.45071043575598,
+          "delta": 1.8934361008859923e-05,
+          "tol": 0.0001193450710435756,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.509014427662,
+          "numpy_ir": 0.5090147766992712,
+          "delta": 3.4903727119672823e-07,
+          "tol": 0.00010005090147766993,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 0.999628186226,
+          "numpy_ir": 0.999629350613789,
+          "delta": 1.1643877889655485e-06,
+          "tol": 0.00010009996293506138,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -14.538256645203,
+          "numpy_ir": -14.538257202528936,
+          "delta": 5.573259347357862e-07,
+          "tol": 0.0001014538257202529,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 238.595611572266,
+          "numpy_ir": 238.59548290242657,
+          "delta": 0.0001286698394267205,
+          "tol": 0.00012385954829024267,
+          "passed": false
+        }
+      ],
+      "name": "acetate",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.3330789993845133,
+      "rigid_translation_nm": [
+        0.16502749980430198,
+        0.15862752335048444,
+        0.12469194651634392
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 61.148090362549,
+          "numpy_ir": 61.148150513491174,
+          "delta": 6.0150942175596356e-05,
+          "tol": 0.00010611481505134912,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 81.140029907227,
+          "numpy_ir": 81.1399743931312,
+          "delta": 5.5514095805619945e-05,
+          "tol": 0.00010811399743931312,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 203.975723266602,
+          "numpy_ir": 203.97571856581456,
+          "delta": 4.700787428646436e-06,
+          "tol": 0.00012039757185658146,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.054722506553,
+          "numpy_ir": 0.05472210536519751,
+          "delta": 4.011878024859361e-07,
+          "tol": 0.00010000547221053653,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 3.645513534546,
+          "numpy_ir": 3.6455237070925373,
+          "delta": 1.017254653712385e-05,
+          "tol": 0.00010036455237070926,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -15.020974159241,
+          "numpy_ir": -15.020976538611517,
+          "delta": 2.379370517502366e-06,
+          "tol": 0.00010150209765386116,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 334.943115234375,
+          "numpy_ir": 334.94311274628313,
+          "delta": 2.488091865870956e-06,
+          "tol": 0.0001334943112746283,
+          "passed": true
+        }
+      ],
+      "name": "acetate",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 3,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.3330789993845133,
+      "rigid_translation_nm": [
+        0.16502749980430198,
+        0.15862752335048444,
+        0.12469194651634392
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 79.676422119141,
+          "numpy_ir": 79.67650429808756,
+          "delta": 8.217894657036595e-05,
+          "tol": 0.00010796765042980876,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 31.37476348877,
+          "numpy_ir": 31.374763109209546,
+          "delta": 3.79560454177863e-07,
+          "tol": 0.00010313747631092096,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 191.307052612305,
+          "numpy_ir": 191.30706891224165,
+          "delta": 1.629993664664653e-05,
+          "tol": 0.00011913070689122416,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.035475905985,
+          "numpy_ir": 0.035475882216677815,
+          "delta": 2.3768322185424573e-08,
+          "tol": 0.00010000354758822167,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 1.732409238815,
+          "numpy_ir": 1.7324096735738155,
+          "delta": 4.347588153930104e-07,
+          "tol": 0.00010017324096735739,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -14.873434066772,
+          "numpy_ir": -14.873435370694606,
+          "delta": 1.3039226054445407e-06,
+          "tol": 0.00010148734353706946,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 289.252685546875,
+          "numpy_ir": 289.2527865046346,
+          "delta": 0.00010095775962781772,
+          "tol": 0.00012892527865046346,
+          "passed": true
+        }
+      ],
+      "name": "acetate",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.30121806216705466,
+      "rigid_translation_nm": [
+        0.1695601102449038,
+        0.1469771020372092,
+        0.14761305214037412
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.096323914826,
+          "numpy_ir": 0.09632231627399988,
+          "delta": 1.5985520001177145e-06,
+          "tol": 0.0001000096322316274,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 0.443445384502,
+          "numpy_ir": 0.44344518867615357,
+          "delta": 1.9582584642741097e-07,
+          "tol": 0.00010004434451886762,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 1.0438293e-05,
+          "numpy_ir": 1.040343703695389e-05,
+          "delta": 3.4855963046110676e-08,
+          "tol": 0.0001000000010403437,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.045809291303,
+          "numpy_ir": -0.04580930016568385,
+          "delta": 8.862683850696662e-09,
+          "tol": 0.00010000458093001658,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 227.101776123047,
+          "numpy_ir": 227.10180329881274,
+          "delta": 2.7175765751508152e-05,
+          "tol": 0.00012271018032988129,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 227.595748901367,
+          "numpy_ir": 227.59577190703425,
+          "delta": 2.3005667259212714e-05,
+          "tol": 0.00012275957719070342,
+          "passed": true
+        }
+      ],
+      "name": "methylammonium",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.30121806216705466,
+      "rigid_translation_nm": [
+        0.1695601102449038,
+        0.1469771020372092,
+        0.14761305214037412
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 138.73908996582,
+          "numpy_ir": 138.73911394248313,
+          "delta": 2.3976663129587905e-05,
+          "tol": 0.00011387391139424832,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 27.019104003906,
+          "numpy_ir": 27.019090359440156,
+          "delta": 1.3644465845175091e-05,
+          "tol": 0.00010270190903594402,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.171238914132,
+          "numpy_ir": 0.17123886793191487,
+          "delta": 4.620008511868612e-08,
+          "tol": 0.0001000171238867932,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.050657130778,
+          "numpy_ir": -0.05065713364887285,
+          "delta": 2.8708728519455384e-09,
+          "tol": 0.00010000506571336489,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 230.405029296875,
+          "numpy_ir": 230.4050256092778,
+          "delta": 3.687597200041637e-06,
+          "tol": 0.00012304050256092778,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 396.283813476562,
+          "numpy_ir": 396.28381164548415,
+          "delta": 1.8310778386876336e-06,
+          "tol": 0.00013962838116454842,
+          "passed": true
+        }
+      ],
+      "name": "methylammonium",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.30121806216705466,
+      "rigid_translation_nm": [
+        0.1695601102449038,
+        0.1469771020372092,
+        0.14761305214037412
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 36.759590148926,
+          "numpy_ir": 36.75957680336571,
+          "delta": 1.3345560290645153e-05,
+          "tol": 0.00010367595768033658,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 15.47670173645,
+          "numpy_ir": 15.476698944728644,
+          "delta": 2.791721355421828e-06,
+          "tol": 0.00010154766989447287,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.180134668946,
+          "numpy_ir": 0.18013458444635683,
+          "delta": 8.449964317147618e-08,
+          "tol": 0.00010001801345844464,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.048195708543,
+          "numpy_ir": -0.04819571467308393,
+          "delta": 6.130083926580987e-09,
+          "tol": 0.00010000481957146732,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 228.927764892578,
+          "numpy_ir": 228.92775609401738,
+          "delta": 8.798560628520136e-06,
+          "tol": 0.00012289277560940175,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 281.295989990234,
+          "numpy_ir": 281.295970711885,
+          "delta": 1.9278348986517813e-05,
+          "tol": 0.0001281295970711885,
+          "passed": true
+        }
+      ],
+      "name": "methylammonium",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 3,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.30121806216705466,
+      "rigid_translation_nm": [
+        0.1695601102449038,
+        0.1469771020372092,
+        0.14761305214037412
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 13.78382396698,
+          "numpy_ir": 13.783835174218869,
+          "delta": 1.1207238868493619e-05,
+          "tol": 0.00010137838351742189,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 15.625472068787,
+          "numpy_ir": 15.625467288221202,
+          "delta": 4.780565797446457e-06,
+          "tol": 0.00010156254672882213,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.204629465938,
+          "numpy_ir": 0.20462935265399512,
+          "delta": 1.1328400487120582e-07,
+          "tol": 0.0001000204629352654,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.045406598598,
+          "numpy_ir": -0.045406610589145885,
+          "delta": 1.1991145881795617e-08,
+          "tol": 0.00010000454066105892,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 226.501678466797,
+          "numpy_ir": 226.5016796955356,
+          "delta": 1.22873862551387e-06,
+          "tol": 0.00012265016796955358,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 256.070190429688,
+          "numpy_ir": 256.07020490004055,
+          "delta": 1.447035253931972e-05,
+          "tol": 0.00012560702049000405,
+          "passed": true
+        }
+      ],
+      "name": "methylammonium",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.559263095510512,
+      "rigid_translation_nm": [
+        0.3007,
+        0.2889706100196877,
+        0.06031154890773263
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 1.166234016418,
+          "numpy_ir": 1.1662309531994124,
+          "delta": 3.063218587673333e-06,
+          "tol": 0.00010011662309531994,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 0.099339693785,
+          "numpy_ir": 0.09933909937470597,
+          "delta": 5.944102940275142e-07,
+          "tol": 0.00010000993390993747,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.000127467327,
+          "numpy_ir": 0.0001286021830991336,
+          "delta": 1.1348560991336068e-06,
+          "tol": 0.00010000001286021832,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 1.3167572e-05,
+          "numpy_ir": 1.3036401131920618e-05,
+          "delta": 1.3117086807938086e-07,
+          "tol": 0.00010000000130364012,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 12.266119003296,
+          "numpy_ir": 12.2661139797769,
+          "delta": 5.0235190993674905e-06,
+          "tol": 0.00010122661139797769,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -3.554683685303,
+          "numpy_ir": -3.554685334090955,
+          "delta": 1.6487879550552975e-06,
+          "tol": 0.0001003554685334091,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -1.15628862381,
+          "numpy_ir": -1.156288482221438,
+          "delta": 1.4158856198598357e-07,
+          "tol": 0.00010011562884822215,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 5.839891433716,
+          "numpy_ir": 5.8398912232074,
+          "delta": 2.1050859988491766e-07,
+          "tol": 0.00010058398912232075,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 14.660753250122,
+          "numpy_ir": 14.660743077830256,
+          "delta": 1.0172291743160145e-05,
+          "tol": 0.00010146607430778302,
+          "passed": true
+        }
+      ],
+      "name": "chlorobenzene",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.559263095510512,
+      "rigid_translation_nm": [
+        0.3007,
+        0.2889706100196877,
+        0.06031154890773263
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 42.016639709473,
+          "numpy_ir": 42.016673519258404,
+          "delta": 3.380978540690194e-05,
+          "tol": 0.00010420166735192585,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 19.867258071899,
+          "numpy_ir": 19.867226011870027,
+          "delta": 3.206002897115923e-05,
+          "tol": 0.00010198672260118701,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 18.574724197388,
+          "numpy_ir": 18.57472493144227,
+          "delta": 7.340542680367435e-07,
+          "tol": 0.00010185747249314423,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 2.569097995758,
+          "numpy_ir": 2.5690994143694756,
+          "delta": 1.4186114758452106e-06,
+          "tol": 0.00010025690994143695,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 13.834174156189,
+          "numpy_ir": 13.834161649242548,
+          "delta": 1.2506946452717216e-05,
+          "tol": 0.00010138341616492426,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -4.261988639832,
+          "numpy_ir": -4.261994596140937,
+          "delta": 5.956308936738708e-06,
+          "tol": 0.0001004261994596141,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -1.202163815498,
+          "numpy_ir": -1.2021636242501972,
+          "delta": 1.9124780292756327e-07,
+          "tol": 0.00010012021636242503,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 5.927142620087,
+          "numpy_ir": 5.9271438044827995,
+          "delta": 1.184395799214144e-06,
+          "tol": 0.00010059271438044829,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 97.324882507324,
+          "numpy_ir": 97.32487111027439,
+          "delta": 1.1397049618722122e-05,
+          "tol": 0.00010973248711102744,
+          "passed": true
+        }
+      ],
+      "name": "chlorobenzene",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.559263095510512,
+      "rigid_translation_nm": [
+        0.3007,
+        0.2889706100196877,
+        0.06031154890773263
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 107.390838623047,
+          "numpy_ir": 107.39090428079209,
+          "delta": 6.565774508260347e-05,
+          "tol": 0.00011073909042807921,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 16.405309677124,
+          "numpy_ir": 16.405299292010334,
+          "delta": 1.0385113665023482e-05,
+          "tol": 0.00010164052992920103,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 8.484656333923,
+          "numpy_ir": 8.484664366643164,
+          "delta": 8.032720163697604e-06,
+          "tol": 0.00010084846643666432,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 1.125783443451,
+          "numpy_ir": 1.1257825760386762,
+          "delta": 8.674123237462084e-07,
+          "tol": 0.00010011257825760388,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 9.366007804871,
+          "numpy_ir": 9.366010817023422,
+          "delta": 3.0121524225990015e-06,
+          "tol": 0.00010093660108170235,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -3.593166351318,
+          "numpy_ir": -3.593168602533277,
+          "delta": 2.251215276860563e-06,
+          "tol": 0.00010035931686025333,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -1.162572026253,
+          "numpy_ir": -1.162571944982429,
+          "delta": 8.127057093965107e-08,
+          "tol": 0.00010011625719449824,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 6.401360034943,
+          "numpy_ir": 6.401359455795505,
+          "delta": 5.791474952943076e-07,
+          "tol": 0.00010064013594557955,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 144.418228149414,
+          "numpy_ir": 144.41828024078748,
+          "delta": 5.2091373476059744e-05,
+          "tol": 0.00011444182802407876,
+          "passed": true
+        }
+      ],
+      "name": "chlorobenzene",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 3,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.559263095510512,
+      "rigid_translation_nm": [
+        0.3007,
+        0.2889706100196877,
+        0.06031154890773263
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 20.811017990112,
+          "numpy_ir": 20.811026740042514,
+          "delta": 8.749930515250526e-06,
+          "tol": 0.00010208110267400425,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 27.511232376099,
+          "numpy_ir": 27.51123926699491,
+          "delta": 6.890895910771633e-06,
+          "tol": 0.0001027511239266995,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 1.569990754128,
+          "numpy_ir": 1.5699881596221206,
+          "delta": 2.5945058794718534e-06,
+          "tol": 0.00010015699881596221,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.189222946763,
+          "numpy_ir": 0.18922284198585373,
+          "delta": 1.0477714626477841e-07,
+          "tol": 0.00010001892228419859,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 12.438381195068,
+          "numpy_ir": 12.438376054032167,
+          "delta": 5.141035833489127e-06,
+          "tol": 0.00010124383760540322,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -3.324239730835,
+          "numpy_ir": -3.3242391331583647,
+          "delta": 5.976766352944196e-07,
+          "tol": 0.00010033242391331584,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -1.160602331161,
+          "numpy_ir": -1.1606020533415482,
+          "delta": 2.77819451888206e-07,
+          "tol": 0.00010011606020533416,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 6.0493516922,
+          "numpy_ir": 6.0493532902674225,
+          "delta": 1.5980674223925462e-06,
+          "tol": 0.00010060493532902674,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 64.084358215332,
+          "numpy_ir": 64.08436516644508,
+          "delta": 6.951113078912385e-06,
+          "tol": 0.00010640843651664451,
+          "passed": true
+        }
+      ],
+      "name": "chlorobenzene",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.800210583189066,
+      "rigid_translation_nm": [
+        0.451,
+        0.17301099040376033,
+        0.2592865850618929
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.223800525069,
+          "numpy_ir": 0.2238031184406722,
+          "delta": 2.593371672188205e-06,
+          "tol": 0.00010002238031184407,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 3.175030946732,
+          "numpy_ir": 3.1750036659415644,
+          "delta": 2.7280790435568747e-05,
+          "tol": 0.00010031750036659415,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 13.398802757263,
+          "numpy_ir": 13.398801515074377,
+          "delta": 1.2421886239621927e-06,
+          "tol": 0.00010133988015150745,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 1.5087842e-05,
+          "numpy_ir": 1.5131710027741986e-05,
+          "delta": 4.386802774198633e-08,
+          "tol": 0.00010000000151317101,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 24.789016723633,
+          "numpy_ir": 24.789025958285542,
+          "delta": 9.234652541323385e-06,
+          "tol": 0.00010247890259582855,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 85.176368713379,
+          "numpy_ir": 85.17636723859358,
+          "delta": 1.4747854208962963e-06,
+          "tol": 0.00010851763672385937,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 1.619219064713,
+          "numpy_ir": 1.6192210820002593,
+          "delta": 2.0172872592372215e-06,
+          "tol": 0.00010016192210820004,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": -93.354461669922,
+          "numpy_ir": -93.35445106327717,
+          "delta": 1.0606644835320367e-05,
+          "tol": 0.00010933544510632773,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 35.027786254883,
+          "numpy_ir": 35.02778664676886,
+          "delta": 3.918858624274435e-07,
+          "tol": 0.00010350277866467689,
+          "passed": true
+        }
+      ],
+      "name": "methyl_benzoate",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.800210583189066,
+      "rigid_translation_nm": [
+        0.451,
+        0.17301099040376033,
+        0.2592865850618929
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 104.314651489258,
+          "numpy_ir": 104.3147562967144,
+          "delta": 0.00010480745640961686,
+          "tol": 0.00011043147562967144,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 34.217403411865,
+          "numpy_ir": 34.21740395760405,
+          "delta": 5.457390486185432e-07,
+          "tol": 0.0001034217403957604,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 26.417264938354,
+          "numpy_ir": 26.417262148436883,
+          "delta": 2.7899171151091195e-06,
+          "tol": 0.0001026417262148437,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 1.262131810188,
+          "numpy_ir": 1.2621318462455366,
+          "delta": 3.6057536734190876e-08,
+          "tol": 0.00010012621318462456,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 30.492742538452,
+          "numpy_ir": 30.492730319063423,
+          "delta": 1.2219388576539814e-05,
+          "tol": 0.00010304927303190635,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 84.001205444336,
+          "numpy_ir": 84.00120770355431,
+          "delta": 2.2592183199776628e-06,
+          "tol": 0.00010840012077035543,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.694133937359,
+          "numpy_ir": 0.6941367119461872,
+          "delta": 2.7745871872264516e-06,
+          "tol": 0.00010006941367119462,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": -91.851638793945,
+          "numpy_ir": -91.85164461901745,
+          "delta": 5.8250724492836525e-06,
+          "tol": 0.00010918516446190174,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 189.547866821289,
+          "numpy_ir": 189.54798436454735,
+          "delta": 0.00011754325834090196,
+          "tol": 0.00011895479843645474,
+          "passed": true
+        }
+      ],
+      "name": "methyl_benzoate",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.800210583189066,
+      "rigid_translation_nm": [
+        0.451,
+        0.17301099040376033,
+        0.2592865850618929
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 118.268531799316,
+          "numpy_ir": 118.26856983256546,
+          "delta": 3.803324946716202e-05,
+          "tol": 0.00011182685698325654,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 57.525852203369,
+          "numpy_ir": 57.525907084531134,
+          "delta": 5.488116213570038e-05,
+          "tol": 0.00010575259070845311,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 28.625005722046,
+          "numpy_ir": 28.625017526365006,
+          "delta": 1.1804319004937724e-05,
+          "tol": 0.0001028625017526365,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 2.056019306183,
+          "numpy_ir": 2.0560226886396857,
+          "delta": 3.38245668585202e-06,
+          "tol": 0.00010020560226886398,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 25.103693008423,
+          "numpy_ir": 25.103701491468044,
+          "delta": 8.483045043305992e-06,
+          "tol": 0.00010251037014914681,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 87.546913146973,
+          "numpy_ir": 87.54689716425563,
+          "delta": 1.598271737179857e-05,
+          "tol": 0.00010875468971642557,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 3.34947347641,
+          "numpy_ir": 3.3494883779280182,
+          "delta": 1.4901518018195503e-05,
+          "tol": 0.0001003349488377928,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": -95.176429748535,
+          "numpy_ir": -95.17644842937248,
+          "delta": 1.8680837484907897e-05,
+          "tol": 0.00010951764484293726,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 227.299072265625,
+          "numpy_ir": 227.2991557363805,
+          "delta": 8.347075549863803e-05,
+          "tol": 0.00012272991557363806,
+          "passed": true
+        }
+      ],
+      "name": "methyl_benzoate",
+      "status": "completed"
+    },
+    {
+      "passed": false,
+      "config": 3,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.800210583189066,
+      "rigid_translation_nm": [
+        0.451,
+        0.17301099040376033,
+        0.2592865850618929
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 169.049987792969,
+          "numpy_ir": 169.0501322958229,
+          "delta": 0.00014450285388534212,
+          "tol": 0.0001169050132295823,
+          "passed": false
+        },
+        {
+          "category": "angle",
+          "gromacs": 51.044860839844,
+          "numpy_ir": 51.044882800533706,
+          "delta": 2.196068970761189e-05,
+          "tol": 0.00010510448828005337,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 21.914102554321,
+          "numpy_ir": 21.914098671714708,
+          "delta": 3.8826062933594585e-06,
+          "tol": 0.00010219140986717148,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 1.14459335804,
+          "numpy_ir": 1.1445922053819955,
+          "delta": 1.152658004599516e-06,
+          "tol": 0.00010011445922053821,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": 38.384006500244,
+          "numpy_ir": 38.38404920632105,
+          "delta": 4.270607705336715e-05,
+          "tol": 0.0001038384049206321,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": 82.953063964844,
+          "numpy_ir": 82.9530741740937,
+          "delta": 1.0209249694526079e-05,
+          "tol": 0.00010829530741740938,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 1.107402801514,
+          "numpy_ir": 1.107404928588538,
+          "delta": 2.12707453783878e-06,
+          "tol": 0.00010011074049285886,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": -92.6357421875,
+          "numpy_ir": -92.63573561627544,
+          "delta": 6.571224560047995e-06,
+          "tol": 0.00010926357356162754,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 272.962280273438,
+          "numpy_ir": 272.96249866618115,
+          "delta": 0.00021839274313606438,
+          "tol": 0.00012729624986661811,
+          "passed": false
+        }
+      ],
+      "name": "methyl_benzoate",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 0,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.4636381236162428,
+      "rigid_translation_nm": [
+        0.28475588624332565,
+        0.1585,
+        0.2087183736453227
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 2.191610336304,
+          "numpy_ir": 2.191600574940403,
+          "delta": 9.761363596982875e-06,
+          "tol": 0.00010021916005749404,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 1.538699269295,
+          "numpy_ir": 1.5386985943458542,
+          "delta": 6.749491456847778e-07,
+          "tol": 0.00010015386985943459,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.386487841606,
+          "numpy_ir": 0.38648813642790897,
+          "delta": 2.9482190894158933e-07,
+          "tol": 0.00010003864881364279,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.371838837862,
+          "numpy_ir": -0.37183847646335044,
+          "delta": 3.6139864956208356e-07,
+          "tol": 0.00010003718384764634,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -118.757232666016,
+          "numpy_ir": -118.75722076896602,
+          "delta": 1.189704997273111e-05,
+          "tol": 0.0001118757220768966,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.340317666531,
+          "numpy_ir": -0.3403176606281562,
+          "delta": 5.902843769334254e-09,
+          "tol": 0.00010003403176606281,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 25.807558059692,
+          "numpy_ir": 25.807556999376622,
+          "delta": 1.060315376832932e-06,
+          "tol": 0.00010258075569993767,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -89.545036315918,
+          "numpy_ir": -89.54503260096674,
+          "delta": 3.7149512621681424e-06,
+          "tol": 0.00010895450326009668,
+          "passed": true
+        }
+      ],
+      "name": "dmso",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.4636381236162428,
+      "rigid_translation_nm": [
+        0.28475588624332565,
+        0.1585,
+        0.2087183736453227
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 51.774219512939,
+          "numpy_ir": 51.77425323378662,
+          "delta": 3.37208476182127e-05,
+          "tol": 0.00010517742532337866,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 14.918475151062,
+          "numpy_ir": 14.918462536373177,
+          "delta": 1.2614688822409903e-05,
+          "tol": 0.00010149184625363732,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.632938683033,
+          "numpy_ir": 0.6329380943668887,
+          "delta": 5.886661113008174e-07,
+          "tol": 0.0001000632938094367,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.201988577843,
+          "numpy_ir": -0.20198805242323953,
+          "delta": 5.254197604775968e-07,
+          "tol": 0.00010002019880524232,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -118.17073059082,
+          "numpy_ir": -118.17072140609298,
+          "delta": 9.184727019828642e-06,
+          "tol": 0.0001118170721406093,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.349556535482,
+          "numpy_ir": -0.34955641172720864,
+          "delta": 1.237547913590653e-07,
+          "tol": 0.00010003495564117272,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 25.547369003296,
+          "numpy_ir": 25.547369466010437,
+          "delta": 4.62714435656153e-07,
+          "tol": 0.00010255473694660105,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -25.849267959595,
+          "numpy_ir": -25.84924253970631,
+          "delta": 2.5419888689981462e-05,
+          "tol": 0.00010258492425397063,
+          "passed": true
+        }
+      ],
+      "name": "dmso",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.4636381236162428,
+      "rigid_translation_nm": [
+        0.28475588624332565,
+        0.1585,
+        0.2087183736453227
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 50.850299835205,
+          "numpy_ir": 50.85031061930794,
+          "delta": 1.078410294041987e-05,
+          "tol": 0.00010508503106193079,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 20.557147979736,
+          "numpy_ir": 20.557172147606007,
+          "delta": 2.4167870005697978e-05,
+          "tol": 0.0001020557172147606,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.209854245186,
+          "numpy_ir": 0.20985375985047555,
+          "delta": 4.853355244360813e-07,
+          "tol": 0.00010002098537598505,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.51228582859,
+          "numpy_ir": -0.5122862071708998,
+          "delta": 3.785808997402995e-07,
+          "tol": 0.00010005122862071709,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -118.585746765137,
+          "numpy_ir": -118.58573615094463,
+          "delta": 1.0614192376579012e-05,
+          "tol": 0.00011185857361509447,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.35197108984,
+          "numpy_ir": -0.35197112307752393,
+          "delta": 3.323752395534285e-08,
+          "tol": 0.00010003519711230776,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 25.124164581299,
+          "numpy_ir": 25.124161315975343,
+          "delta": 3.265323655909924e-06,
+          "tol": 0.00010251241613159753,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -22.708534240723,
+          "numpy_ir": -22.708495638453286,
+          "delta": 3.860226971497127e-05,
+          "tol": 0.00010227084956384533,
+          "passed": true
+        }
+      ],
+      "name": "dmso",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 3,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.4636381236162428,
+      "rigid_translation_nm": [
+        0.28475588624332565,
+        0.1585,
+        0.2087183736453227
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 61.176303863525,
+          "numpy_ir": 61.17628609459588,
+          "delta": 1.7768929119199584e-05,
+          "tol": 0.0001061176286094596,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 56.940254211426,
+          "numpy_ir": 56.940285932185226,
+          "delta": 3.172075922464046e-05,
+          "tol": 0.00010569402859321853,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.48332208395,
+          "numpy_ir": 0.48332247494952657,
+          "delta": 3.909995265893862e-07,
+          "tol": 0.00010004833224749495,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.605702638626,
+          "numpy_ir": -0.60570235392033,
+          "delta": 2.8470567003946456e-07,
+          "tol": 0.00010006057023539204,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -116.430511474609,
+          "numpy_ir": -116.43050315387822,
+          "delta": 8.320730785271735e-06,
+          "tol": 0.00011164305031538783,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": -0.364766329527,
+          "numpy_ir": -0.36476642523987685,
+          "delta": 9.571287684639884e-08,
+          "tol": 0.000100036476642524,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 25.275175094604,
+          "numpy_ir": 25.275173643515405,
+          "delta": 1.4510885932850215e-06,
+          "tol": 0.00010252751736435154,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 26.474075317383,
+          "numpy_ir": 26.474096212207613,
+          "delta": 2.089482461187231e-05,
+          "tol": 0.00010264740962122077,
+          "passed": true
+        }
+      ],
+      "name": "dmso",
+      "status": "completed"
+    },
+    {
+      "passed": false,
+      "config": 0,
+      "total_passed": false,
+      "max_pair_distance_nm": 0.32890449969538094,
+      "rigid_translation_nm": [
+        0.14803847442244533,
+        0.13465945440570448,
+        0.11495491842821767
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 0.045874100178,
+          "numpy_ir": 0.04587591683068636,
+          "delta": 1.8166526863649946e-06,
+          "tol": 0.00010000458759168307,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 0.473385244608,
+          "numpy_ir": 0.4745081711183746,
+          "delta": 0.0011229265103746,
+          "tol": 0.00010004745081711184,
+          "passed": false
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.282547235489,
+          "numpy_ir": -0.2825473014589377,
+          "delta": 6.596993767926662e-08,
+          "tol": 0.0001000282547301459,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -29.019397735596,
+          "numpy_ir": -29.01939985367399,
+          "delta": 2.118077986779099e-06,
+          "tol": 0.0001029019399853674,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -28.782686233521,
+          "numpy_ir": -28.781563067183864,
+          "delta": 0.0011231663371376044,
+          "tol": 0.0001028781563067184,
+          "passed": false
+        }
+      ],
+      "name": "acetonitrile",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 1,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.32890449969538094,
+      "rigid_translation_nm": [
+        0.14803847442244533,
+        0.13465945440570448,
+        0.11495491842821767
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 5.27007484436,
+          "numpy_ir": 5.270075831396564,
+          "delta": 9.870365644815138e-07,
+          "tol": 0.00010052700758313966,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 3.600636720657,
+          "numpy_ir": 3.6006240378225485,
+          "delta": 1.2682834451549496e-05,
+          "tol": 0.00010036006240378226,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.270346879959,
+          "numpy_ir": -0.27034687515101297,
+          "delta": 4.807987008526027e-09,
+          "tol": 0.0001000270346875151,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -29.209491729736,
+          "numpy_ir": -29.209493544786746,
+          "delta": 1.8150507443692732e-06,
+          "tol": 0.00010292094935447868,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -20.609127044678,
+          "numpy_ir": -20.609140550718646,
+          "delta": 1.3506040644983841e-05,
+          "tol": 0.00010206091405507188,
+          "passed": true
+        }
+      ],
+      "name": "acetonitrile",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 2,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.32890449969538094,
+      "rigid_translation_nm": [
+        0.14803847442244533,
+        0.13465945440570448,
+        0.11495491842821767
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 48.053649902344,
+          "numpy_ir": 48.05368473022677,
+          "delta": 3.482788277153759e-05,
+          "tol": 0.00010480536847302268,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 34.306781768799,
+          "numpy_ir": 34.30677353135131,
+          "delta": 8.237447687520216e-06,
+          "tol": 0.00010343067735313513,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.27527320385,
+          "numpy_ir": -0.2752731221016504,
+          "delta": 8.174834958962762e-08,
+          "tol": 0.00010002752731221017,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -28.956844329834,
+          "numpy_ir": -28.95685034823662,
+          "delta": 6.018402622487429e-06,
+          "tol": 0.00010289568503482366,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": 53.128307342529,
+          "numpy_ir": 53.12833479123981,
+          "delta": 2.744871081006295e-05,
+          "tol": 0.00010531283347912399,
+          "passed": true
+        }
+      ],
+      "name": "acetonitrile",
+      "status": "completed"
+    },
+    {
+      "passed": true,
+      "config": 3,
+      "total_passed": true,
+      "max_pair_distance_nm": 0.32890449969538094,
+      "rigid_translation_nm": [
+        0.14803847442244533,
+        0.13465945440570448,
+        0.11495491842821767
+      ],
+      "rows": [
+        {
+          "category": "bond",
+          "gromacs": 7.59947013855,
+          "numpy_ir": 7.599469008172726,
+          "delta": 1.1303772744497564e-06,
+          "tol": 0.00010075994690081728,
+          "passed": true
+        },
+        {
+          "category": "angle",
+          "gromacs": 12.965874671936,
+          "numpy_ir": 12.96587611360728,
+          "delta": 1.4416712801335052e-06,
+          "tol": 0.00010129658761136073,
+          "passed": true
+        },
+        {
+          "category": "proper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "improper",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "lj14",
+          "gromacs": -0.294843733311,
+          "numpy_ir": -0.2948437012652545,
+          "delta": 3.2045745501640965e-08,
+          "tol": 0.00010002948437012653,
+          "passed": true
+        },
+        {
+          "category": "coulomb14",
+          "gromacs": -28.487777709961,
+          "numpy_ir": -28.487780910690418,
+          "delta": 3.200729416619197e-06,
+          "tol": 0.00010284877809106905,
+          "passed": true
+        },
+        {
+          "category": "lj",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "coulomb",
+          "gromacs": 0.0,
+          "numpy_ir": 0.0,
+          "delta": 0.0,
+          "tol": 0.0001,
+          "passed": true
+        },
+        {
+          "category": "total",
+          "gromacs": -8.217275619507,
+          "numpy_ir": -8.217279490175667,
+          "delta": 3.870668667360633e-06,
+          "tol": 0.00010082172794901757,
+          "passed": true
+        }
+      ],
+      "name": "acetonitrile",
+      "status": "completed"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "gate": "G0",
+  "passed": true,
+  "n_fixtures": 12,
+  "n_geometries": 4,
+  "legs": {
+    "numpy-ir": {
+      "passed": 432,
+      "failed": 0
+    },
+    "openmm-ir": {
+      "passed": 432,
+      "failed": 0
+    },
+    "openmm-xml": {
+      "passed": 288,
+      "failed": 0
+    },
+    "openmm-prmtop": {
+      "passed": 288,
+      "failed": 0
+    },
+    "openmm-top": {
+      "passed": 288,
+      "failed": 0
+    },
+    "sander-ours": {
+      "passed": 332,
+      "failed": 0
+    },
+    "sander-tleap": {
+      "passed": 336,
+      "failed": 0
+    }
+  },
+  "max_rel_error_by_category": {
+    "bond": 3.588747595817399e-05,
+    "angle": 4.822394749264165e-05,
+    "proper": 7.495829818142835e-15,
+    "improper": 7.771561172376096e-15,
+    "lj": 3.208143279015962e-15,
+    "coulomb": 2.0907308697578298e-15,
+    "lj14": 1.4116950352929926e-15,
+    "coulomb14": 3.997781344782848e-15,
+    "total": 6.222640729549828e-08,
+    "torsion_all": 4.684007414597155e-10,
+    "nonbonded_all": 1.9062183860525055e-08,
+    "dihed": 4.680104054567702e-05,
+    "vdw": 4.928608228679798e-05,
+    "eel": 4.8361039034435426e-05,
+    "vdw14": 4.868550805063772e-05,
+    "eel14": 5.197306628983156e-05
+  },
+  "skipped_legs": {
+    "gmx": "gmx leg not implemented in MVP-0; run test_real_gromacs_rerun",
+    "sander-ours:angle/dihed": "near-linear angle(s) [(0, 1, 2)] (> 175.0 deg); engine-specific sander-vs-numpy difference (decision 0004.2)"
+  },
+  "pytest_summary": {
+    "not external": {
+      "passed": 143,
+      "failed": 0,
+      "skipped": 0,
+      "returncode": 0
+    },
+    "external": {
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "returncode": 1
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "git_commit": null,
+  "git_dirty": null,
+  "argv": [
+    "scripts/gate_mvp0.py"
+  ],
+  "host": "login-nodegw2.cluster.local",
+  "env_name": "openmm_dev",
+  "python": "3.12.13",
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.18.1",
+    "openmm": "8.5.2",
+    "parmed": "4.3.1",
+    "rdkit": "2025.9.6"
+  },
+  "seed": 20261004,
+  "inputs": {
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/ethanol/ethanol.prmtop": "47beb57637da6db2ea26683b0618ef43101ceb51632499e226d673fe394b8563",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/benzene/benzene.prmtop": "3967b1fd411708783a1ae29b728f6f542bb0b8058ab59e3f23187c54d4e06d3a",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/nma/nma.prmtop": "c2bdb9d54bcc6e1dd5310dbec0dd2b60882001a0f98c7f895c6a11ab640955c7",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/cyclopropane/cyclopropane.prmtop": "014db39280a040779d707da7b71d998494742bd46906339c23d678a03ede94b8",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/cyclobutane/cyclobutane.prmtop": "1e12afe872db8b20471289d76de21791f0880f76d23e529e51c8aae50ff8ca39",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/norbornane/norbornane.prmtop": "4e33d5b01d3f1024e5e87a2229b9cb16183ff36dc7382291425a2c11753052e6",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/acetate/acetate.prmtop": "8a72ea776a8bafe17196e702d41645772b2e4e700375e099caf9ac9379936b2e",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/methylammonium/methylammonium.prmtop": "9ae0619b5833459e7408f44ac54bf2856c2a24da781f760c390303e039bc67d0",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/chlorobenzene/chlorobenzene.prmtop": "b76c54f55f931c7a293dc79e6dda0a93a3c41d3b68c396216366821fe9d4bc3a",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/methyl_benzoate/methyl_benzoate.prmtop": "437eb3f59125a7b63f1a0c33f021d66cf1b77ef41457694968082d4964c906b9",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/dmso/dmso.prmtop": "860a838cc4395e36ef0ed1ec3fa54721f49fc1cbbd21e7faf700c52b5719c371",
+    "/home/user/forcefield_compiler/tests/fixtures/gaff2/acetonitrile/acetonitrile.prmtop": "720e952fb814e173cc44e03cb974fdf1ae87e825671019220cb543182404291b"
+  },
+  "started": "2026-10-04T18:52:30",
+  "ended": "2026-10-04T18:53:09",
+  "wall_s": 39.407712342217565,
+  "exit_status": 0
+}
