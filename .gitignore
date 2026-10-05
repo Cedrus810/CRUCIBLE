@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.claude/
+tools/sobtop/
+.git.nfs-initialization/
+mdinfo
+restrt
+jobs/**
+!jobs/**/
+!jobs/**/manifest.json
+!jobs/**/acceptance.json
+!jobs/**/report.md

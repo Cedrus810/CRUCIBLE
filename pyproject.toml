@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ffcompiler"
+version = "0.2.0"
+description = "Engine-independent small-molecule force field compiler: ForceFieldIR, native GROMACS/AMBER/OpenMM export, Hessian-derived bond/angle parameters"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy",
+    "scipy",
+]
+
+[project.optional-dependencies]
+engines = [
+    "openmm",
+    "rdkit",
+]
+
+[project.scripts]
+ffcompiler = "ffcompiler.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
