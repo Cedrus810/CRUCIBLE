@@ -11,6 +11,7 @@ BOHR_NM = 0.0529177210544
 ANGSTROM_NM = 0.1
 KCAL_KJ = 4.184
 C_CM_S = 2.99792458e10
+EV_KJ_MOL = 96.485332123  # 1 eV（ASE 能量单位）→ kJ/mol，MVP-2 计划 §2.2
 
 # Hartree/Bohr² → kJ/mol/nm²（fchk、xtb 的 Hessian 单位换算）
 HARTREE_KJ_MOL_PER_BOHR2_TO_KJ_MOL_PER_NM2 = HARTREE_KJ_MOL / BOHR_NM**2
@@ -21,5 +22,6 @@ __all__ = [
     "ANGSTROM_NM",
     "KCAL_KJ",
     "C_CM_S",
+    "EV_KJ_MOL",
     "HARTREE_KJ_MOL_PER_BOHR2_TO_KJ_MOL_PER_NM2",
 ]
