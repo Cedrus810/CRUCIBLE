@@ -1,5 +1,7 @@
 # 通用小分子力场参数化编译器：设计草案
 
+> **已作废（2026-10-10 用户确认）**：现行设计稿是 `forcefield_compiler_design.md`。本文件只作历史保留，不作为开工或验收依据。
+
 > 工作定位：不是简单复刻 Sobtop，而是把其已经成熟的拓扑/参数化流程重新拆成模块化、可测试、可扩展的 **force-field compiler**。  
 > 核心新增部分：**GFN-FF / xTB / QM Hessian 后端 + 三种实用 Hessian 参数提取方法 + 已有 MLP 二面角模块 + 新型电荷模型 + GROMACS / AMBER / OpenMM 多后端输出**。
 
