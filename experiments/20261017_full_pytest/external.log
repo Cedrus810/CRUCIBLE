@@ -1,0 +1,43 @@
+...........................................................              [100%]
+=============================== warnings summary ===============================
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+  /home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/e3nn/o3/_wigner.py:10: UserWarning: Environment variable TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD detected, since the`weights_only` argument was not explicitly passed to `torch.load`, forcing weights_only=False.
+    _Jd, _W3j_flat, _W3j_indices = torch.load(os.path.join(os.path.dirname(__file__), 'constants.pt'))
+
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+  /home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+tests/unit/test_cli.py: 180 warnings
+tests/unit/test_torsion_mace.py: 120 warnings
+  /home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/torch/jit/_serialization.py:176: DeprecationWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+    warnings.warn(
+
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+tests/unit/test_torsion_mace.py::test_ethanol_energy_matches_smoke
+tests/unit/test_torsion_mace.py::test_acetate_charges_sum_to_minus_one
+  /home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/mace/calculators/mace.py:226: UserWarning: Environment variable TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD detected, since the`weights_only` argument was not explicitly passed to `torch.load`, forcing weights_only=False.
+    torch.load(f=model_path, map_location=device)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+415.46s call     tests/unit/test_cli.py::test_derive_torsions_mace_ethanol
+43.57s call     tests/unit/test_charge_nagl.py::test_all_fixtures_conserve_charge_and_stay_near_am1bcc[ethanol]
+4.24s call     tests/cross_engine/test_cross_engine.py::test_compare_all_fixtures_pass[cyclobutane]
+4.24s call     tests/cross_engine/test_cross_engine.py::test_compare_all_fixtures_pass[ethanol]
+4.19s call     tests/cross_engine/test_cross_engine.py::test_compare_all_fixtures_pass[nma]
+4.19s call     tests/cross_engine/test_cross_engine.py::test_compare_all_fixtures_pass[norbornane]
+4.17s call     tests/cross_engine/test_cross_engine.py::test_compare_all_fixtures_pass[methyl_benzoate]
+4.16s call     tests/cross_engine/test_cross_engine.py::test_compare_all_fixtures_pass[chlorobenzene]
+4.12s call     tests/cross_engine/test_cross_engine.py::test_compare_all_fixtures_pass[benzene]
+4.11s call     tests/cross_engine/test_cross_engine.py::test_compare_all_fixtures_pass[methylammonium]
+59 passed, 502 deselected, 314 warnings in 545.54s (0:09:05)

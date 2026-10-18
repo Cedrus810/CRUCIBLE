@@ -1,0 +1,14 @@
+........................................................................ [ 14%]
+........................................................................ [ 28%]
+........................................................................ [ 43%]
+........................................................................ [ 57%]
+........................................................................ [ 71%]
+........................................................................ [ 86%]
+......................................................................   [100%]
+============================= slowest 5 durations ==============================
+6.98s call     tests/unit/test_torsion_mlp.py::test_scan_cache_reused
+6.96s call     tests/unit/test_cli.py::test_mm_reference_cache_is_frozen_for_refit_and_rescanned_for_other_charges
+6.57s call     tests/unit/test_torsion_mlp.py::test_self_consistency_single_quartet_bond
+6.13s call     tests/unit/test_torsion_mlp.py::test_model_file_recorded_and_change_forces_rescan
+5.52s call     tests/unit/test_torsion_mlp.py::test_dmso_both_rotors_parameterized
+502 passed, 59 deselected in 84.99s (0:01:24)
