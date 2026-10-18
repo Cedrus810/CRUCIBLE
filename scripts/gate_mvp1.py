@@ -119,6 +119,7 @@ def build_report(
     rows: list[dict],
     failures: list[dict],
     *,
+    full_matrix: bool,
     pytest_summary: dict,
     sobtop_match: dict[str, str],
     m2_naming: str,
@@ -161,6 +162,8 @@ def build_report(
 
     providers = sorted({row["provider"] for row in rows})
     report_lines = [REPORT_HEADER]
+    if not full_matrix:
+        report_lines.append("\n> 子集运行（scope=subset）：判据结果只供调试，不是正式通过（决策 0019）。\n")
     metric_keys = [
         ("freq_rmse_cm", "freq RMSE (cm⁻¹)"),
         ("kabsch_rmsd_pm", "Kabsch RMSD (pm)"),
@@ -249,7 +252,8 @@ def build_report(
 
     acceptance = {
         "gate": "G1",
-        "passed": all(criteria.values()),
+        "scope": "full" if full_matrix else "subset",
+        "passed": full_matrix and all(criteria.values()),
         "criteria": criteria,
         "sobtop_match": sobtop_match,
         "m2_naming": m2_naming,
@@ -529,7 +533,8 @@ def evaluate_matrix(keys, systems, hessian_for, run_dir: Path, skip_compare: boo
 def main() -> int:
     parser = argparse.ArgumentParser(prog="gate_mvp1")
     parser.add_argument("--providers", nargs="+", default=["gfnff", "gfn2"],
-                        choices=["gfnff", "gfn2"])
+                        choices=["gfnff", "gfn2"],
+                        help="（子集运行 passed 恒为 false，决策 0019）")
     parser.add_argument("--jobs", type=int, default=1, help="并行 xtb 运行数")
     parser.add_argument("--skip-compare", action="store_true",
                         help="调试用：跳过跨引擎比较（Gate 将判为未通过）")
@@ -577,6 +582,7 @@ def main() -> int:
         }
         report_md, metrics_csv, acceptance = build_report(
             rows, failures,
+            full_matrix=set(args.providers) == {"gfnff", "gfn2"},
             pytest_summary=pytest_summary, sobtop_match=sobtop_match,
             m2_naming="m2seminario", global_fit_self_consistency=self_consistency,
             review_focus=review_focus,

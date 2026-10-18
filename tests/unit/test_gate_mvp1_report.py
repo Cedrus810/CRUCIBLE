@@ -53,7 +53,7 @@ def _rows():
 
 def _build(rows=None, failures=None, **overrides):
     kwargs = dict(
-        pytest_summary=GOOD_PYTEST, sobtop_match=GOOD_SOBTOP, m2_naming="m2seminario",
+        full_matrix=True, pytest_summary=GOOD_PYTEST, sobtop_match=GOOD_SOBTOP, m2_naming="m2seminario",
         global_fit_self_consistency=4.3e-9, review_focus=GOOD_FOCUS,
     )
     kwargs.update(overrides)
@@ -248,3 +248,17 @@ def test_evaluate_matrix_records_every_exception(tmp_path: Path, monkeypatch) ->
     assert by[("good", "m2seminario")]["category"] == "method_limitation"
     assert all(("bad", m) in by and "xtb crashed" in by[("bad", m)]["reason"]
                for m in gate.METHODS)
+
+
+def test_subset_run_never_passes() -> None:
+    # 决策 0019：各判据全部满足，但只跑了子集 → passed=false、scope=subset
+    report_md, *_, acc = _build(full_matrix=False)
+    assert acc["scope"] == "subset"
+    assert acc["passed"] is False
+    assert all(acc["criteria"].values())
+    assert "scope=subset" in report_md
+
+
+def test_full_run_records_scope() -> None:
+    acc = _build()[-1]
+    assert acc["scope"] == "full" and acc["passed"] is True
