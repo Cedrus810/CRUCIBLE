@@ -3,6 +3,137 @@
 All notable changes to ffcompiler. Dates are Asia/Tokyo. Decision records live in
 [`docs/decisions/`](docs/decisions/README.md).
 
+## [Unreleased] — Optional sequential refinement (2026-10-18; verified, Gates G0–G3 re-run and passed: `jobs/gate_mvp*_20261018_2/`)
+
+- `derive-torsions --refinement-rounds {0,1,2,3}` adds bounded sweeps after the original single pass;
+  default 0 keeps single-pass behavior. Charge changes replay the same recorded protocol from the
+  original replaced terms and cached scans; original fallback bonds remain unchanged.
+- Reports include per-round in-sample profile metrics and the canonical update order. Fixed proper
+  dependencies are checked for staleness; reports cannot mutate recorded IR provenance.
+- Analytic coupled-profile tests and zero/three-sweep pipeline coverage. Written without running;
+  verified by the receiver on node-A: related files 66 passed, `pytest -m "not external"` 524 passed;
+  `refinement_rounds=3` reproduces the B3 experiment bit for bit and the default 0 reproduces the
+  previous single pass bit for bit (`experiments/20261018_refinement_verify/`). See
+  [`2026-10-18-sequential-refinement-handover.md`](docs/superpowers/plans/2026-10-18-sequential-refinement-handover.md).
+
+## [Unreleased] — 2026-10-17 build: ORCA .hess reader, C1–C5 pipeline contract, MVP-5 fallback framework, MVP-4 skeleton. Written on the login node untested; **accepted and fixed the same evening on node-A: `pytest -m "not external"` 502 passed** (`docs/superpowers/plans/2026-10-17-unbuilt-modules.md` §0)
+
+### Fixed (2026-10-17; decision 0021)
+- `RunContext` and `scripts/run_logged.sh` no longer probe Git in the NFS workspace.
+  Manifest Git fields remain null; source/input identity records and command exit-code logging remain.
+
+### Added (2026-10-18)
+- `scripts/b3_order_dependence.py`: all bond orders per molecule for the 3-round sequential refit
+  (`jobs/torsion_b3_order_20261018/`): every order tends to the same fixed point; the order-induced
+  difference in fitted torsion profiles is ≤ 2.5e-2 kJ/mol after round 1, ≤ 1.2e-3 after round 2,
+  ≤ 1e-4 after round 3 (in-sample; not checked against the joint least-squares solution).
+- `tests/unit/test_pipeline_chain.py::test_local_route_chain_with_torsions`: C2 chain in the design order
+  (Hessian bond/angle → charges → torsions → three backends) over `--ir-in`/`--coords-in`; all parameters
+  and the Hessian geometry survive, `check-staleness` is clean, and a later charge change refits the
+  torsions and refreshes the dependency record.
+
+### Verified (2026-10-18)
+- Gates G0–G3 re-run on the current source (`jobs/gate_mvp{0,1,2,3}_20261018/`), all passed with the same
+  numbers as 2026-10-13; pytest 502 + 59 passed in each; `git_commit` null (decision 0021).
+
+### Added (2026-10-17, B1/B2 diagnosis)
+- `scripts/diagnose_torsion_profiles.py`: read-only diagnosis of a G2 run (no MACE/xtb). Reproduces the
+  G2 metrics and decomposes each bond's profile on its own scan frames for GAFF2 / only-this-bond /
+  final IRs, with three energy identities checked. Run `jobs/torsion_diagnosis_20261017/`: the methyl
+  benzoate 1-2 defect comes entirely from replacing the other bonds' torsions (mainly the 0-1 methyl
+  rotor) after single-pass fitting; nma 1-3 scan shows 57 kJ/mol hysteresis.
+- `scripts/refit_torsions_sequential.py`: B3 mechanism experiment (read-only, provider defaults unchanged).
+  3-round sequential refit, each bond on its own scan against the others' current fits (not block
+  coordinate descent of the joint least squares). Run `jobs/torsion_b3_sequential_20261017/`: methyl
+  benzoate 1-2 3.36 → 0.44 kJ/mol, pooled residual 0.83 → 0.22, no bond notably worse (in-sample).
+
+### Fixed (2026-10-17, acceptance of the build below)
+- CLI `check-staleness` crashed on every call (`AttributeError: coords_in`).
+- `staleness` compared the whole `h_fixed_dependency` record instead of its `inputs` snapshot, so every
+  global_fit IR was reported stale right after fitting.
+- ORCA `.hess` reader rewritten against a real ORCA 6.1.1 file (`$orca_hessian_file` header, `$hessian`
+  column-blocked full matrix with dimension 3N, `$atoms` lines `El mass x y z`); the original guessed
+  layout could not read real files. Frequencies from the reader match ORCA's own to 5.7e-8 relative
+  (`experiments/20261017_orca_hess_format/`, fixture `tests/fixtures/hessian/orca/water.hess`).
+- `check-equivalence --ir-in` no longer attaches the sander-tleap leg (the original prmtop is not the
+  Hamiltonian of a modified IR; the leg would always fail).
+- Coordinates sidecar `ffcoords/0.2`: `atom_order` carries atom names so same-element permutations are
+  rejected; `--ir-in` with `--prmtop` but without the full prmtop/inpcrd/sdf set now says on stderr that
+  the topology cross-check was not done.
+- MLP MM-subtraction snapshot includes impropers (other bonds' propers intentionally excluded — B2).
+- `LearnedBCCCharges` requires an explicit `base_provider` (defaulting to the IR's current charges
+  stacked corrections on repeated assignment).
+- `global-fit` lower-bound failures write `ir_failed_lower_bound.json` / `coords_failed_lower_bound.json`
+  instead of the standard names; the fallback DFT tier checks the file's atomic numbers.
+
+### Added (2026-10-17)
+- **ORCA .hess reader** (`ffcompiler.hessian.orca`, roadmap D3): see Fixed above (rewritten against a
+  real ORCA 6.1.1 file).
+- **Coordinates sidecar** (`ffcompiler.ir.coords`, 2026-10-15 plan C1): `ffcoords/0.2` JSON travelling
+  with the IR — explicit atom-order pairing (rejects permutations, never pairs by filename), source
+  provenance, nm units. CLI gains `--ir-in`/`--coords-in` everywhere; `derive-bonded` emits
+  `ir.json`/`coords.json`/`bonded_report.json`; `convert`/`check-equivalence` accept the final IR.
+- **Dependency provenance & staleness** (C3/C4): `global_fit` records `h_fixed_dependency`
+  (charges/torsions/LJ/scales snapshot + Hessian identity); MLP torsion records `mm_dependency`.
+  CLI `check-staleness` exits 1 on stale fits; CLI `global-fit` exposes the QMDFF-style fit with an
+  explicit `failed_lower_bound` artifact state (no engine export, exit 1) per decision 0014.
+- **Hessian fallback framework** (`ffcompiler.hessian.fallback`, MVP-5 design §8.1/§16/§23):
+  injectable tiers, `check_hessian` quality gate, `gfnff → gfn2 → dft(file)` ladder; warnings do not
+  escalate; no CLI auto mode.
+- **learned BCC skeleton** (`ffcompiler.charge.learned_bcc`, MVP-4 design §13–15): charge-conserving
+  bond-correction provider plumbing with locked sign convention; missing artifacts raise; research
+  proposal `2026-10-17-mvp4-learned-bcc-proposal.md` leaves S1–S6 open, training forbidden until
+  approval.
+- 49 new/rewritten unit/combination tests (coords, staleness, fallback, learned BCC, ORCA, pipeline chain
+  driven by a synthetic harmonic fchk — no xtb needed).
+
+## [Unreleased] — MVP-3: charge providers; MVP-2: MLP torsions (sander legs report-only, decision 0017). Gates G0–G3 re-run on one source tree 2026-10-13, all passed (`jobs/gate_mvp{0,1,2,3}_20261013/`, `docs/history/ACCEPTANCE_20261013_A3.md`)
+
+### Fixed (2026-10-13; decision 0020)
+- `refit_torsions`: only bonds that were `mlp` are refitted; original fallback bonds keep their row and
+  GAFF2 terms even if a matching scan later appears in the cache (`MLPTorsionProvider(fit_bonds=...)`).
+- Gate G2 `--resume DIR`: exits with an argument error if `DIR/scans/` does not exist (no silent full
+  rescan); warns if it holds no scans for the selected molecules.
+- Gate G3 `--scan-cache` is now required and must be a directory (no default pointing at an old G2 run).
+
+### Fixed (2026-10-11, A1/A2 close-out; decision 0019)
+- Gates G1/G2/G3: runs over a subset (`--providers` / `--molecules`) record `scope: "subset"` and
+  never `passed: true`; full runs record `scope: "full"`.
+- Gate G2 `--resume`: copies the old run's `scans/` into the new run directory and never writes to the
+  old one (`scan_cache_seeded_from` in the manifest).
+- `assign_charges`: rejects provider output with the wrong shape or non-finite values (`ChargeError`)
+  instead of truncating; `provenance["charge"]["previous"]` keeps the earlier charge source.
+- `refit_torsions`: bonds that were fallbacks keep their original reason (e.g. `mlp_error`) instead of
+  being relabelled `no_cached_scan`; the scan cache is only read.
+- `derive-torsions --reference mm`: the scan-cache key and torsion provenance record the reference
+  potential identity (charges at scan time, literal values); MACE cache keys are unchanged.
+
+### Added
+- **Torsion subsystem** (`ffcompiler.torsion`): rotatable-bond perception, two-pass ASE constrained
+  relaxed scans (10°, FixInternals + LBFGS), MM subtraction, Fourier fit to AMBER periodic terms
+  (n = 1..6, arbitrary phase), `MLPTorsionProvider` with GAFF2 fallback reasons and a resumable scan
+  cache; reference potential MACE-POLAR-1-M via mace's ASE calculator (total charge passed; not via
+  openmm-ml, decision 0016).
+- **CLI**: `ffcompiler derive-torsions` (`--reference mace|mm`).
+- **Gate G2** (`scripts/gate_mvp2.py`).
+- **Charge subsystem** (`ffcompiler.charge`, decision 0018): `ChargeProvider` with three providers —
+  `LoadedCharges` (keep IR charges or read mol2/text), `AM1BCCCharges` (antechamber/sqm, same
+  settings as the fixtures), `NAGLCharges` (openff-gnn-am1bcc-1.0.0); residual equalized so the total
+  charge is exact; topology checked by atomic numbers and bond set before computing. RESP deferred.
+- **Torsion refit on charge change**: MLP torsion provenance records the replaced GAFF2 terms (with
+  their original index); `assign_charges` refits MLP torsions from the scan cache (`refit_torsions`),
+  never falling back silently (`TorsionRefitError`).
+- **CLI**: `ffcompiler assign-charges --method loaded|am1bcc|nagl`; `derive-torsions --scan-cache`
+  (default `<outdir>/scans`) and `--ir-in` (checked against `--prmtop`/`--sdf`).
+- **Gate G3** (`scripts/gate_mvp3.py`).
+
+### Changed
+- `bonded.symmetry.term_classes` accepts dihedrals.
+- `ForceFieldIR.replace_terms` accepts `atoms=`.
+- Gate G2: criterion G2.3 is judged with OpenMM as the reference; sander legs still run but are
+  report-only (fitted phases near 0/π may be snapped by sander; known limitation, decision 0017).
+  Each molecule's cross-engine report is saved as `compare/<molecule>/report.json`.
+
 ## [0.2.0] — 2026-10-05 — MVP-1: Hessian-derived bond/angle parameters
 
 Gate G0 and Gate G1 both pass (`jobs/gate_mvp0_20261005_3/`, `jobs/gate_mvp1_20261005_4/`).
