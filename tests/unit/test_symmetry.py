@@ -320,6 +320,8 @@ def _brute_force_classes(ir: ForceFieldIR, terms) -> tuple[int, ...]:
             return t
         if len(t) == 2:
             return tuple(sorted(t))
+        if len(t) == 4:
+            return min(t, t[::-1])
         return t if t[0] <= t[2] else (t[2], t[1], t[0])
 
     orbit_id: dict[tuple, int] = {}
@@ -374,3 +376,31 @@ def test_angle_endpoints_unordered_vertex_fixed() -> None:
     assert cls[0] == cls[1]
     assert cls[2] == cls[3]
     assert cls[0] != cls[2]
+
+
+def _all_quartets(ir: ForceFieldIR) -> list[tuple[int, int, int, int]]:
+    graph = bond_graph(ir)
+    out = []
+    for b in ir.bonds:
+        j, k = b.i, b.j
+        for i in sorted(graph[j] - {k}):
+            for l in sorted(graph[k] - {j}):
+                if i != l:
+                    out.append((i, j, k, l))
+    return out
+
+
+@pytest.mark.parametrize("smiles", ["CCO", "CS(=O)C", "CC(=O)NC", "COC(=O)c1ccccc1"])
+def test_quartet_classes_match_brute_force(smiles: str) -> None:
+    ir = _ir_from_smiles(smiles)
+    quartets = _all_quartets(ir)
+    assert _partition(quartets, term_classes(ir, quartets)) == _partition(
+        quartets, _brute_force_classes(ir, quartets)
+    )
+
+
+def test_quartet_reversal_same_class() -> None:
+    ir = _ir_from_smiles("CCO")
+    q = _all_quartets(ir)[0]
+    cls = term_classes(ir, [q, q[::-1]])
+    assert cls[0] == cls[1]

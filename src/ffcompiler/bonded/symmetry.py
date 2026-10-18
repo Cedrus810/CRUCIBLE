@@ -209,20 +209,23 @@ def atom_classes(ir: ForceFieldIR) -> tuple[int, ...]:
 
 
 def _normalize_term(term: tuple[int, ...]) -> tuple[int, ...]:
-    """bond 无序端点；angle 保持顶点在中间、两端升序。"""
+    """bond 无序端点；angle 保持顶点在中间、两端升序；
+    dihedral (i,j,k,l) 与 (l,k,j,i) 取字典序小者（MVP-2 计划 T25）。"""
     if len(term) == 2:
         i, j = term
         return (min(i, j), max(i, j))
     if len(term) == 3:
         i, j, k = term
         return (i, j, k) if i <= k else (k, j, i)
-    raise ValueError(f"term 只支持 bond/angle，得到 {term!r}")
+    if len(term) == 4:
+        return min(term, term[::-1])
+    raise ValueError(f"term 只支持 bond/angle/dihedral，得到 {term!r}")
 
 
 def term_classes(
     ir: ForceFieldIR, terms: Sequence[tuple[int, ...]]
 ) -> tuple[int, ...]:
-    """bond (i,j) 或 angle (i,j,k)（j 为顶点）的类号。
+    """bond (i,j)、angle (i,j,k)（j 为顶点）或 dihedral (i,j,k,l) 的类号。
 
     两个项同类 ⟺ 存在颜色保持的图自同构把一个映到另一个
     （bond 端点无序；angle 顶点固定、两端无序）。
