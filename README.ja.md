@@ -39,11 +39,11 @@ IR + 座標のパイプライン（`--ir-in` / `--coords-in`）、`global-fit` �
 - Python ≥ 3.12（`numpy`、`scipy`、`openmm`、`rdkit`）。MLP 二面角と NAGL 電荷の機能には
   さらに ASE + MACE、OpenFF NAGL（モデル `openff-gnn-am1bcc-1.0.0`）
 - 外部プログラム（該当する機能・テストでのみ必要）：
-  - `xtb` 6.7.1：既定は `/home/user/software/xtb-dist/bin/xtb`、`FFC_XTB` で変更可能
-  - GROMACS：`FFC_GMX`、`PATH`、`/home/user/gmx26.3/bin/gmx` の順に探索。mixed 精度で問題なし
+  - `xtb` 6.7.1：既定は `~/software/xtb-dist/bin/xtb`、`FFC_XTB` で変更可能
+  - GROMACS：`FFC_GMX`、`PATH`、`~/gmx26.3/bin/gmx` の順に探索。mixed 精度で問題なし
   - AmberTools の `sander` / `tleap`：エンジン間比較とフィクスチャ生成。AM1-BCC 電荷は
     さらに `antechamber` を使用（`FFC_ANTECHAMBER` または `PATH`）
-  - 二面角スキャン用 MACE-POLAR-1-M モデル：既定は `/home/user/MLP/mace/MACE-POLAR-1-M.model`、`FFC_MACE_MODEL` で変更可能
+  - 二面角スキャン用 MACE-POLAR-1-M モデル：既定は `~/MLP/mace/MACE-POLAR-1-M.model`、`FFC_MACE_MODEL` で変更可能
   - Sobtop 2026.1.16：参照データの再生成時のみ（`scripts/make_sobtop_refs.py`）
 
 ```bash

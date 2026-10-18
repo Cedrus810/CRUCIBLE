@@ -36,11 +36,11 @@
 - Python ≥ 3.12，需要 `numpy`、`scipy`、`openmm`、`rdkit`；MLP 二面角与 NAGL 电荷功能另需
   ASE + MACE 和 OpenFF NAGL（模型 `openff-gnn-am1bcc-1.0.0`）
 - 外部程序（只在用到对应功能或测试时需要）：
-  - `xtb` 6.7.1：默认 `/home/user/software/xtb-dist/bin/xtb`，可用 `FFC_XTB` 替换
-  - GROMACS：按 `FFC_GMX`、`PATH`、`/home/user/gmx26.3/bin/gmx` 的顺序查找；mixed 精度即可
+  - `xtb` 6.7.1：默认 `~/software/xtb-dist/bin/xtb`，可用 `FFC_XTB` 替换
+  - GROMACS：按 `FFC_GMX`、`PATH`、`~/gmx26.3/bin/gmx` 的顺序查找；mixed 精度即可
   - AmberTools `sander` / `tleap`：跨引擎检查与固件生成；AM1-BCC 电荷另用 `antechamber`
     （`FFC_ANTECHAMBER` 或 `PATH`）
-  - 二面角扫描用的 MACE-POLAR-1-M 模型：默认 `/home/user/MLP/mace/MACE-POLAR-1-M.model`，可用 `FFC_MACE_MODEL` 替换
+  - 二面角扫描用的 MACE-POLAR-1-M 模型：默认 `~/MLP/mace/MACE-POLAR-1-M.model`，可用 `FFC_MACE_MODEL` 替换
   - Sobtop 2026.1.16：只在重新生成参考数据时使用（`scripts/make_sobtop_refs.py`）
 
 ```bash

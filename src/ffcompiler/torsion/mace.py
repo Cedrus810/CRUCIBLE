@@ -12,7 +12,7 @@ from pathlib import Path
 
 from ..ir.schema import ForceFieldIR
 
-DEFAULT_MODEL = Path("/home/user/MLP/mace/MACE-POLAR-1-M.model")
+DEFAULT_MODEL = Path("~/MLP/mace/MACE-POLAR-1-M.model").expanduser()
 MODEL_NAME = "MACE-POLAR-1-M"
 
 

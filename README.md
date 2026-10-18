@@ -39,11 +39,11 @@ Use the existing scientific environment; nothing is installed by this project.
 - Python ≥ 3.12 with `numpy`, `scipy`, `openmm`, `rdkit`; for the MLP torsion and NAGL charge
   features also ASE + MACE and OpenFF NAGL (model `openff-gnn-am1bcc-1.0.0`)
 - External programs (only for the corresponding features/tests):
-  - `xtb` 6.7.1 — default `/home/user/software/xtb-dist/bin/xtb`, override with `FFC_XTB`
-  - GROMACS — found via `FFC_GMX`, `PATH`, or `/home/user/gmx26.3/bin/gmx`; mixed precision is fine
+  - `xtb` 6.7.1 — default `~/software/xtb-dist/bin/xtb`, override with `FFC_XTB`
+  - GROMACS — found via `FFC_GMX`, `PATH`, or `~/gmx26.3/bin/gmx`; mixed precision is fine
   - AmberTools `sander` / `tleap` — cross-engine checks and fixture generation; AM1-BCC charges
     additionally use `antechamber` (`FFC_ANTECHAMBER` or `PATH`)
-  - MACE-POLAR-1-M model for torsion scans — default `/home/user/MLP/mace/MACE-POLAR-1-M.model`, override with `FFC_MACE_MODEL`
+  - MACE-POLAR-1-M model for torsion scans — default `~/MLP/mace/MACE-POLAR-1-M.model`, override with `FFC_MACE_MODEL`
   - Sobtop 2026.1.16 — only to regenerate reference data (`scripts/make_sobtop_refs.py`)
 
 ```bash

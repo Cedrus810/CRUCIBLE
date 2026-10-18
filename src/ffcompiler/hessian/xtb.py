@@ -20,7 +20,7 @@ from rdkit import Chem
 from ffcompiler.hessian.base import CartesianHessian
 from ffcompiler.units import HARTREE_KJ_MOL_PER_BOHR2_TO_KJ_MOL_PER_NM2
 
-XTB_BINARY = Path("/home/user/software/xtb-dist/bin/xtb")
+XTB_BINARY = Path("~/software/xtb-dist/bin/xtb").expanduser()
 
 
 class XtbError(RuntimeError):

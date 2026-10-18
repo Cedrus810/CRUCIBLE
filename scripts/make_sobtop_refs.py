@@ -32,7 +32,7 @@ from ffcompiler.hessian.xtb import run_xtb_hessian  # noqa: E402
 from ffcompiler.importers import from_amber  # noqa: E402
 from ffcompiler.ir.topology import bond_graph  # noqa: E402
 
-SOBTOP_SOURCE = Path("/home/user/software/sobtop_2026.1.16")
+SOBTOP_SOURCE = Path("~/software/sobtop_2026.1.16").expanduser()
 SOBTOP_DIR = REPO / "tools" / "sobtop"
 SOBTOP_BINARY = SOBTOP_DIR / "sobtop"
 SUPPORT_FILES = (

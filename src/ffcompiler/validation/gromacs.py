@@ -32,14 +32,14 @@ def find_gromacs() -> str | None:
     if found := shutil.which("gmx"):
         return found
     # User-provided installation; the ordinary AVX2 variant is the safe fallback.
-    known = Path("/home/user/gmx26.3/bin/gmx")
+    known = Path("~/gmx26.3/bin/gmx").expanduser()
     return str(known) if known.is_file() and os.access(known, os.X_OK) else None
 
 
 def _environment(executable: str) -> dict[str, str]:
     env = dict(os.environ)
     base = Path(executable).resolve().parents[1]
-    roots = [base / "lib64", base / "lib", Path("/home/user/library/HDF5/lib")]
+    roots = [base / "lib64", base / "lib", Path("~/library/HDF5/lib").expanduser()]
     libraries = [str(p) for p in roots if p.is_dir()]
     if env.get("LD_LIBRARY_PATH"):
         libraries.append(env["LD_LIBRARY_PATH"])
