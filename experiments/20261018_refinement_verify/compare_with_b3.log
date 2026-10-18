@@ -1,0 +1,7 @@
+acetate          same_layout=True max|dk|=0.00e+00 max|dphase|=0.00e+00 rounds=3
+dmso             same_layout=True max|dk|=0.00e+00 max|dphase|=0.00e+00 rounds=3
+ethanol          same_layout=True max|dk|=0.00e+00 max|dphase|=0.00e+00 rounds=3
+methyl_benzoate  same_layout=True max|dk|=0.00e+00 max|dphase|=0.00e+00 rounds=3
+methylammonium   same_layout=True max|dk|=0.00e+00 max|dphase|=0.00e+00 rounds=3
+nma              same_layout=True max|dk|=0.00e+00 max|dphase|=0.00e+00 rounds=3
+worst: {'dk': '0.00e+00', 'dphase': '0.00e+00', 'dbest': '0.00e+00', 'dmin': '0.00e+00', 'dfit': '0.00e+00'}

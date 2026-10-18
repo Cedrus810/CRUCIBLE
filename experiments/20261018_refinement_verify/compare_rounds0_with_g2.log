@@ -1,0 +1,6 @@
+acetate          torsions_identical=True refinement=None protocol={'name': 'single_pass', 'refinement_rounds': 0, 'order': [[0, 1]]}
+dmso             torsions_identical=True refinement=None protocol={'name': 'single_pass', 'refinement_rounds': 0, 'order': [[0, 1], [1, 2]]}
+ethanol          torsions_identical=True refinement=None protocol={'name': 'single_pass', 'refinement_rounds': 0, 'order': [[0, 1], [1, 2]]}
+methyl_benzoate  torsions_identical=True refinement=None protocol={'name': 'single_pass', 'refinement_rounds': 0, 'order': [[0, 1], [1, 2], [2, 4]]}
+methylammonium   torsions_identical=True refinement=None protocol={'name': 'single_pass', 'refinement_rounds': 0, 'order': [[0, 1]]}
+nma              torsions_identical=True refinement=None protocol={'name': 'single_pass', 'refinement_rounds': 0, 'order': [[0, 1], [1, 3], [3, 4]]}
