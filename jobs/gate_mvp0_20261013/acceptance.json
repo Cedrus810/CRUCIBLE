@@ -1,0 +1,698 @@
+{
+  "gate": "G0",
+  "passed": true,
+  "n_fixtures": 11,
+  "n_geometries": 4,
+  "legs": {
+    "numpy-ir": {
+      "passed": 396,
+      "failed": 0
+    },
+    "openmm-ir": {
+      "passed": 396,
+      "failed": 0
+    },
+    "openmm-xml": {
+      "passed": 264,
+      "failed": 0
+    },
+    "openmm-prmtop": {
+      "passed": 264,
+      "failed": 0
+    },
+    "openmm-top": {
+      "passed": 264,
+      "failed": 0
+    },
+    "sander-ours": {
+      "passed": 308,
+      "failed": 0
+    },
+    "sander-tleap": {
+      "passed": 308,
+      "failed": 0
+    },
+    "gmx": {
+      "passed": 396,
+      "failed": 0
+    }
+  },
+  "max_rel_error_by_category": {
+    "bond": 3.588747595817399e-05,
+    "angle": 4.822394749264165e-05,
+    "proper": 4.3022504494576074e-06,
+    "improper": 4.839829209442439e-06,
+    "lj": 5.158773189517518e-06,
+    "coulomb": 2.092603208840254e-06,
+    "lj14": 3.209024445693947e-06,
+    "coulomb14": 5.63908791295642e-06,
+    "total": 4.0116015925018625e-06,
+    "torsion_all": 4.684007414597155e-10,
+    "nonbonded_all": 1.9062183860525055e-08,
+    "dihed": 4.680104054567702e-05,
+    "vdw": 4.928608228679798e-05,
+    "eel": 4.8361039034435426e-05,
+    "vdw14": 4.868550805063772e-05,
+    "eel14": 5.197306628983156e-05
+  },
+  "skipped_legs": {},
+  "pytest_summary": {
+    "not external": {
+      "passed": 453,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    },
+    "external": {
+      "passed": 59,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    }
+  },
+  "engine_errors": [],
+  "gromacs_builds": [
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/ethanol_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.1736,
+        0.16010000000000002,
+        0.1393
+      ],
+      "max_pair_distance_nm": 0.35605165355605356,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/ethanol_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.17405025623112036,
+        0.16520443848617256,
+        0.14944293266455874
+      ],
+      "max_pair_distance_nm": 0.35492281808669224,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/ethanol_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.17006143930052872,
+        0.15873331079340447,
+        0.13359352212809467
+      ],
+      "max_pair_distance_nm": 0.3638348281493491,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/ethanol_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.17331371170106816,
+        0.15755946860091471,
+        0.13786551577295234
+      ],
+      "max_pair_distance_nm": 0.3505423726012695,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/benzene_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.2918,
+        0.28730000000000006,
+        0.0534
+      ],
+      "max_pair_distance_nm": 0.4963944802271677,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/benzene_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.2796778650707491,
+        0.2795546060431974,
+        0.05599192524096635
+      ],
+      "max_pair_distance_nm": 0.49566993867213155,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/benzene_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.28929505914871295,
+        0.2868525925549882,
+        0.055256155763255446
+      ],
+      "max_pair_distance_nm": 0.5002924248775991,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/benzene_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.28185740275940446,
+        0.2866832047931524,
+        0.054642351681807096
+      ],
+      "max_pair_distance_nm": 0.497512144772801,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/nma_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.2944,
+        0.18819999999999998,
+        0.18480000000000002
+      ],
+      "max_pair_distance_nm": 0.5211624218993538,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/nma_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.2937442873207088,
+        0.19168507784169875,
+        0.17758840953026916
+      ],
+      "max_pair_distance_nm": 0.5297100268195939,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/nma_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.30309468141387785,
+        0.18735027908232288,
+        0.19334695520215084
+      ],
+      "max_pair_distance_nm": 0.5299900634314838,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/nma_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.289636980408868,
+        0.19717090233550183,
+        0.19098607591926375
+      ],
+      "max_pair_distance_nm": 0.5186849615198317,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/cyclopropane_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.1305,
+        0.18430000000000002,
+        0.1464
+      ],
+      "max_pair_distance_nm": 0.31097154210634775,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/cyclopropane_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.1272747263790847,
+        0.17965192681233383,
+        0.14350404926425087
+      ],
+      "max_pair_distance_nm": 0.31399082014025126,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/cyclopropane_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.13294905811245258,
+        0.1772238192596941,
+        0.14919564186238754
+      ],
+      "max_pair_distance_nm": 0.3158652699219509,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/cyclopropane_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.13463287739281002,
+        0.19239822032693127,
+        0.14875479606539763
+      ],
+      "max_pair_distance_nm": 0.3338877839184944,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/cyclobutane_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.23660000000000003,
+        0.23410000000000003,
+        0.17770000000000002
+      ],
+      "max_pair_distance_nm": 0.3915467788144861,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/cyclobutane_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.22869787605820424,
+        0.23223701791330154,
+        0.17782326683932204
+      ],
+      "max_pair_distance_nm": 0.3953945089246602,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/cyclobutane_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.24121248946592339,
+        0.2409469383058906,
+        0.1817022814280796
+      ],
+      "max_pair_distance_nm": 0.39730886195759574,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/cyclobutane_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.23258399738734886,
+        0.2297974347888715,
+        0.17998498872056273
+      ],
+      "max_pair_distance_nm": 0.39861907524060036,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/norbornane_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.2475,
+        0.2374,
+        0.2667
+      ],
+      "max_pair_distance_nm": 0.48833591921954705,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/norbornane_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.2474717599997966,
+        0.24263258666068932,
+        0.2726856674605254
+      ],
+      "max_pair_distance_nm": 0.4904773667049532,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/norbornane_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.25437844405826066,
+        0.24003968090519484,
+        0.2679168542791003
+      ],
+      "max_pair_distance_nm": 0.4920059905244712,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/norbornane_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.24577032123573522,
+        0.2333527252592255,
+        0.2717834431330664
+      ],
+      "max_pair_distance_nm": 0.48648699653014194,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/acetate_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.16110000000000002,
+        0.15360000000000001,
+        0.1211
+      ],
+      "max_pair_distance_nm": 0.3267358872239168,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/acetate_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.16335174701495517,
+        0.15227052904916255,
+        0.11834460531114326
+      ],
+      "max_pair_distance_nm": 0.3330789993845133,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/acetate_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.16502749980430198,
+        0.15862752335048444,
+        0.12403518581441293
+      ],
+      "max_pair_distance_nm": 0.32689102297969813,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/acetate_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.16080215206903414,
+        0.15748141859164883,
+        0.12469194651634392
+      ],
+      "max_pair_distance_nm": 0.3287655851667115,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/methylammonium_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.1649,
+        0.1432,
+        0.1395
+      ],
+      "max_pair_distance_nm": 0.2960358424245281,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/methylammonium_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.1695601102449038,
+        0.14417867961720027,
+        0.14761305214037412
+      ],
+      "max_pair_distance_nm": 0.29775734576318186,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/methylammonium_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.16289846317457685,
+        0.1469771020372092,
+        0.13825288408200082
+      ],
+      "max_pair_distance_nm": 0.29819226619597555,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/methylammonium_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.16702598518597317,
+        0.14477199253017842,
+        0.14542711719927637
+      ],
+      "max_pair_distance_nm": 0.3012180621670547,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/chlorobenzene_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.3007,
+        0.2801,
+        0.051800000000000006
+      ],
+      "max_pair_distance_nm": 0.559263095510512,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/chlorobenzene_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.2994752706141402,
+        0.27702946400127415,
+        0.06023723836775424
+      ],
+      "max_pair_distance_nm": 0.5491373801528981,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/chlorobenzene_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.29534777436019993,
+        0.2816897163974997,
+        0.06031154890773263
+      ],
+      "max_pair_distance_nm": 0.5578212156682928,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/chlorobenzene_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.2949104505545029,
+        0.2889706100196877,
+        0.05921259349896707
+      ],
+      "max_pair_distance_nm": 0.5538149455266395,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/methyl_benzoate_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.451,
+        0.16399999999999998,
+        0.2546
+      ],
+      "max_pair_distance_nm": 0.7980698403022132,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/methyl_benzoate_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.4384041637823523,
+        0.17079876707092176,
+        0.2592865850618929
+      ],
+      "max_pair_distance_nm": 0.7910701546049498,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/methyl_benzoate_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.4498953899245393,
+        0.1674293178785885,
+        0.2524050973208558
+      ],
+      "max_pair_distance_nm": 0.800210583189066,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/methyl_benzoate_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.44522575219742366,
+        0.17301099040376033,
+        0.25393562254631125
+      ],
+      "max_pair_distance_nm": 0.7964493158527375,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/dmso_cfg0/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.27490000000000003,
+        0.1585,
+        0.2006
+      ],
+      "max_pair_distance_nm": 0.4588754188230178,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/dmso_cfg1/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.28197196801286556,
+        0.15440793623387472,
+        0.2087183736453227
+      ],
+      "max_pair_distance_nm": 0.4611483156965402,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/dmso_cfg2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.28475588624332565,
+        0.1569219206694843,
+        0.19541823651235768
+      ],
+      "max_pair_distance_nm": 0.4636381236162428,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    },
+    {
+      "executable": "/home/user/gmx26.3/bin/gmx",
+      "precision": "mixed",
+      "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/jobs/gate_mvp0_20261013/work/dmso_cfg3/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+      "rigid_translation_nm": [
+        0.27810997097977247,
+        0.14531314635739395,
+        0.20525800603274652
+      ],
+      "max_pair_distance_nm": 0.45924774748395786,
+      "cutoff_nm": 2.0,
+      "box_nm": 6.0,
+      "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "gate": "G1",
+  "scope": "full",
+  "passed": true,
+  "criteria": {
+    "G1.1": true,
+    "G1.2": true,
+    "G1.3": true,
+    "G1.4": true,
+    "G1.5": true,
+    "G1.6": true,
+    "G1.7": true
+  },
+  "sobtop_match": {
+    "mseminario": "12/12",
+    "m2seminario": "12/12",
+    "drih": "12/12"
+  },
+  "m2_naming": "m2seminario",
+  "global_fit_self_consistency": 6.034851671252063e-09,
+  "cross_engine_all_passed": true,
+  "failures": [],
+  "method_limitations": [
+    {
+      "molecule": "cyclopropane",
+      "provider": "gfnff",
+      "method": "m2seminario",
+      "reason": "m2seminario 在该 Hessian 上给出 3 个非正力常数（(0, 1, 2): k=-33.59, (0, 2, 1): k=-33.65, (1, 0, 2): k=-33.62）。这是方法局限而非输入错误；可改用 mseminario 或 drih。",
+      "category": "method_limitation",
+      "evidence": {
+        "sobtop_confirmed": true,
+        "sobtop_dir": "/home/user/CRUCIBLE/jobs/gate_mvp1_20261013/sobtop_confirm/cyclopropane_gfnff_m2seminario",
+        "terms": [
+          {
+            "atoms": [
+              0,
+              1,
+              2
+            ],
+            "ours": -33.59109055599146,
+            "sobtop": -33.591
+          },
+          {
+            "atoms": [
+              0,
+              2,
+              1
+            ],
+            "ours": -33.64850842042771,
+            "sobtop": -33.648
+          },
+          {
+            "atoms": [
+              1,
+              0,
+              2
+            ],
+            "ours": -33.61727624295927,
+            "sobtop": -33.617
+          }
+        ]
+      }
+    }
+  ],
+  "pytest_summary": {
+    "not external": {
+      "passed": 453,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    },
+    "external": {
+      "passed": 59,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    }
+  }
+}
