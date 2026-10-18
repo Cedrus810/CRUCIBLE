@@ -1,0 +1,353 @@
+{
+  "gate": "G3",
+  "passed": true,
+  "criteria": {
+    "G3.1": true,
+    "G3.2": true,
+    "G3.3": true,
+    "G3.4": true,
+    "G3.5": true
+  },
+  "g31": {
+    "ethanol": 1.1111125908236374e-11,
+    "dmso": 5.551115123125783e-17,
+    "nma": 3.33333360913457e-11,
+    "methyl_benzoate": 0.0,
+    "acetate": 4.285727328579014e-11,
+    "methylammonium": 0.0,
+    "benzene": 0.0,
+    "chlorobenzene": 3.33333360913457e-11,
+    "cyclopropane": 3.33333360913457e-11,
+    "cyclobutane": 3.33333360913457e-11,
+    "norbornane": 2.6315810641719395e-11,
+    "acetonitrile": 0.0
+  },
+  "g32": {
+    "loaded/ethanol": 0.0,
+    "am1bcc/ethanol": 0.0,
+    "nagl/ethanol": 0.0,
+    "loaded/dmso": 0.0,
+    "am1bcc/dmso": 0.0,
+    "nagl/dmso": 0.0,
+    "loaded/nma": 0.0,
+    "am1bcc/nma": 0.0,
+    "nagl/nma": 0.0,
+    "loaded/methyl_benzoate": 0.0,
+    "am1bcc/methyl_benzoate": 8.326672684688674e-17,
+    "nagl/methyl_benzoate": 0.0,
+    "loaded/acetate": 0.0,
+    "am1bcc/acetate": 0.0,
+    "nagl/acetate": 0.0,
+    "loaded/methylammonium": 0.0,
+    "am1bcc/methylammonium": 0.0,
+    "nagl/methylammonium": 0.0,
+    "loaded/benzene": 5.551115123125783e-17,
+    "am1bcc/benzene": 0.0,
+    "nagl/benzene": 0.0,
+    "loaded/chlorobenzene": 0.0,
+    "am1bcc/chlorobenzene": 0.0,
+    "nagl/chlorobenzene": 0.0,
+    "loaded/cyclopropane": 1.3877787807814457e-17,
+    "am1bcc/cyclopropane": 0.0,
+    "nagl/cyclopropane": 0.0,
+    "loaded/cyclobutane": 0.0,
+    "am1bcc/cyclobutane": 0.0,
+    "nagl/cyclobutane": 0.0,
+    "loaded/norbornane": 1.3877787807814457e-17,
+    "am1bcc/norbornane": 0.0,
+    "nagl/norbornane": 0.0
+  },
+  "compare": {
+    "loaded/ethanol": true,
+    "am1bcc/ethanol": true,
+    "nagl/ethanol": true,
+    "loaded/dmso": true,
+    "am1bcc/dmso": true,
+    "nagl/dmso": true,
+    "loaded/nma": true,
+    "am1bcc/nma": true,
+    "nagl/nma": true,
+    "loaded/methyl_benzoate": true,
+    "am1bcc/methyl_benzoate": true,
+    "nagl/methyl_benzoate": true,
+    "loaded/acetate": true,
+    "am1bcc/acetate": true,
+    "nagl/acetate": true,
+    "loaded/methylammonium": true,
+    "am1bcc/methylammonium": true,
+    "nagl/methylammonium": true,
+    "loaded/benzene": true,
+    "am1bcc/benzene": true,
+    "nagl/benzene": true,
+    "loaded/chlorobenzene": true,
+    "am1bcc/chlorobenzene": true,
+    "nagl/chlorobenzene": true,
+    "loaded/cyclopropane": true,
+    "am1bcc/cyclopropane": true,
+    "nagl/cyclopropane": true,
+    "loaded/cyclobutane": true,
+    "am1bcc/cyclobutane": true,
+    "nagl/cyclobutane": true,
+    "loaded/norbornane": true,
+    "am1bcc/norbornane": true,
+    "nagl/norbornane": true
+  },
+  "sander_known_limitation": {},
+  "g34": {
+    "ethanol": {
+      "identical": true,
+      "nagl_statuses": [
+        "mlp",
+        "mlp"
+      ]
+    },
+    "dmso": {
+      "identical": true,
+      "nagl_statuses": [
+        "mlp",
+        "mlp"
+      ]
+    },
+    "nma": {
+      "identical": true,
+      "nagl_statuses": [
+        "mlp",
+        "mlp",
+        "mlp"
+      ]
+    },
+    "methyl_benzoate": {
+      "identical": true,
+      "nagl_statuses": [
+        "mlp",
+        "mlp",
+        "mlp"
+      ]
+    },
+    "acetate": {
+      "identical": true,
+      "nagl_statuses": [
+        "mlp"
+      ]
+    },
+    "methylammonium": {
+      "identical": true,
+      "nagl_statuses": [
+        "mlp"
+      ]
+    }
+  },
+  "nagl_vs_am1bcc": {
+    "ethanol": {
+      "max_abs": 0.03981011256983545,
+      "rms": 0.018244244434586512
+    },
+    "dmso": {
+      "max_abs": 0.00804256853122709,
+      "rms": 0.00556659738074679
+    },
+    "nma": {
+      "max_abs": 0.007064037305196114,
+      "rms": 0.0028287029757948865
+    },
+    "methyl_benzoate": {
+      "max_abs": 0.028922165020638047,
+      "rms": 0.0115621532486211
+    },
+    "acetate": {
+      "max_abs": 0.020835775266085266,
+      "rms": 0.012724524824031998
+    },
+    "methylammonium": {
+      "max_abs": 0.017379040354490283,
+      "rms": 0.007074733301619404
+    },
+    "benzene": {
+      "max_abs": 0.00313210010528564,
+      "rms": 0.0031321001052856405
+    },
+    "chlorobenzene": {
+      "max_abs": 0.0055253565885126504,
+      "rms": 0.003302481273896877
+    },
+    "cyclopropane": {
+      "max_abs": 4.332767327624998e-05,
+      "rms": 2.494113030736435e-05
+    },
+    "cyclobutane": {
+      "max_abs": 0.0021167042414347303,
+      "rms": 0.0014967359228848249
+    },
+    "norbornane": {
+      "max_abs": 0.015526867812558215,
+      "rms": 0.006389390860046749
+    }
+  },
+  "profiles": [
+    {
+      "molecule": "ethanol",
+      "bond": "0-1",
+      "charges": "am1bcc",
+      "profile_rmse": 0.053863291188347304
+    },
+    {
+      "molecule": "ethanol",
+      "bond": "0-1",
+      "charges": "nagl",
+      "profile_rmse": 0.06872292519289117
+    },
+    {
+      "molecule": "ethanol",
+      "bond": "1-2",
+      "charges": "am1bcc",
+      "profile_rmse": 0.10361161313192264
+    },
+    {
+      "molecule": "ethanol",
+      "bond": "1-2",
+      "charges": "nagl",
+      "profile_rmse": 0.09242699872480183
+    },
+    {
+      "molecule": "dmso",
+      "bond": "0-1",
+      "charges": "am1bcc",
+      "profile_rmse": 0.1006909240777163
+    },
+    {
+      "molecule": "dmso",
+      "bond": "0-1",
+      "charges": "nagl",
+      "profile_rmse": 0.101619189800505
+    },
+    {
+      "molecule": "dmso",
+      "bond": "1-2",
+      "charges": "am1bcc",
+      "profile_rmse": 0.08393600746249065
+    },
+    {
+      "molecule": "dmso",
+      "bond": "1-2",
+      "charges": "nagl",
+      "profile_rmse": 0.08347579775484251
+    },
+    {
+      "molecule": "nma",
+      "bond": "0-1",
+      "charges": "am1bcc",
+      "profile_rmse": 0.042381984261537935
+    },
+    {
+      "molecule": "nma",
+      "bond": "0-1",
+      "charges": "nagl",
+      "profile_rmse": 0.04297409048596924
+    },
+    {
+      "molecule": "nma",
+      "bond": "1-3",
+      "charges": "am1bcc",
+      "profile_rmse": 2.241851271496975
+    },
+    {
+      "molecule": "nma",
+      "bond": "1-3",
+      "charges": "nagl",
+      "profile_rmse": 2.2404200022731215
+    },
+    {
+      "molecule": "nma",
+      "bond": "3-4",
+      "charges": "am1bcc",
+      "profile_rmse": 0.07848427482817105
+    },
+    {
+      "molecule": "nma",
+      "bond": "3-4",
+      "charges": "nagl",
+      "profile_rmse": 0.07849189623537212
+    },
+    {
+      "molecule": "methyl_benzoate",
+      "bond": "0-1",
+      "charges": "am1bcc",
+      "profile_rmse": 0.08679264178980325
+    },
+    {
+      "molecule": "methyl_benzoate",
+      "bond": "0-1",
+      "charges": "nagl",
+      "profile_rmse": 0.0888167036315156
+    },
+    {
+      "molecule": "methyl_benzoate",
+      "bond": "1-2",
+      "charges": "am1bcc",
+      "profile_rmse": 3.3551111239681726
+    },
+    {
+      "molecule": "methyl_benzoate",
+      "bond": "1-2",
+      "charges": "nagl",
+      "profile_rmse": 3.0975970743523638
+    },
+    {
+      "molecule": "methyl_benzoate",
+      "bond": "2-4",
+      "charges": "am1bcc",
+      "profile_rmse": 0.08325284848032086
+    },
+    {
+      "molecule": "methyl_benzoate",
+      "bond": "2-4",
+      "charges": "nagl",
+      "profile_rmse": 0.08636572790235429
+    },
+    {
+      "molecule": "acetate",
+      "bond": "0-1",
+      "charges": "am1bcc",
+      "profile_rmse": 0.008018890665358271
+    },
+    {
+      "molecule": "acetate",
+      "bond": "0-1",
+      "charges": "nagl",
+      "profile_rmse": 0.007907397560701685
+    },
+    {
+      "molecule": "methylammonium",
+      "bond": "0-1",
+      "charges": "am1bcc",
+      "profile_rmse": 0.007252615695616669
+    },
+    {
+      "molecule": "methylammonium",
+      "bond": "0-1",
+      "charges": "nagl",
+      "profile_rmse": 0.007134323547818134
+    }
+  ],
+  "failures": [],
+  "pytest_summary": {
+    "not external": {
+      "passed": 436,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    },
+    "external": {
+      "passed": 59,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    }
+  }
+}

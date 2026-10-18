@@ -100,6 +100,7 @@ class ForceFieldIR:
     def replace_terms(
         self,
         *,
+        atoms: tuple[Atom, ...] | None = None,
         bonds: tuple[Bond, ...] | None = None,
         angles: tuple[Angle, ...] | None = None,
         proper_torsions: tuple[ProperTorsion, ...] | None = None,
@@ -112,7 +113,7 @@ class ForceFieldIR:
             provenance.update(provenance_update)
         return ForceFieldIR(
             name=self.name,
-            atoms=self.atoms,
+            atoms=self.atoms if atoms is None else tuple(atoms),
             bonds=self.bonds if bonds is None else tuple(bonds),
             angles=self.angles if angles is None else tuple(angles),
             proper_torsions=(
