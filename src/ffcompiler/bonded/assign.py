@@ -71,6 +71,26 @@ class BondedReport:
     class_spread: dict[str, float]
     max_bond_ratio: float
 
+    def to_dict(self) -> dict:
+        """JSON 可序列化形式（C1：derive-bonded 输出报告文件用）。"""
+        return {
+            "method": self.method,
+            "hessian_provider": self.hessian_provider,
+            "hessian_method": self.hessian_method,
+            "hessian_sha256": self.hessian_sha256,
+            "diagnostics": {
+                "asymmetry_rel": self.diagnostics.asymmetry_rel,
+                "translation_residual_rel": self.diagnostics.translation_residual_rel,
+                "max_gradient": self.diagnostics.max_gradient,
+                "frequencies_cm": [float(v) for v in self.diagnostics.frequencies_cm],
+                "n_imaginary": self.diagnostics.n_imaginary,
+                "warnings": list(self.diagnostics.warnings),
+            },
+            "linear_angles_kept": [list(a) for a in self.linear_angles_kept],
+            "class_spread": dict(self.class_spread),
+            "max_bond_ratio": self.max_bond_ratio,
+        }
+
 
 def _check_topology(
     ir: ForceFieldIR,

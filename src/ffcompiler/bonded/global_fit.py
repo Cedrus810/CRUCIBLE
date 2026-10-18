@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass
 
 import numpy as np
@@ -20,6 +21,7 @@ from ffcompiler.bonded.internal import (
     linear_angles,
     wilson_b,
 )
+from ffcompiler.bonded.staleness import h_fixed_snapshot
 from ffcompiler.bonded.symmetry import term_classes
 from ffcompiler.hessian.base import CartesianHessian, check_hessian
 from ffcompiler.ir import Angle, Bond, ForceFieldIR
@@ -226,7 +228,35 @@ def global_fit(
                       theta0=angle.theta0, force_constant=angle.force_constant,
                       source=angle.source, meta=dict(angle.meta, linear_angle=True))
             )
-    new_ir = ir.replace_terms(bonds=tuple(new_bonds), angles=tuple(new_angles))
+    new_ir = ir.replace_terms(
+        bonds=tuple(new_bonds), angles=tuple(new_angles),
+        provenance_update={
+            "bonded": {
+                "method": "global_fit",
+                "prior": "prior_ir" if prior_ir is not None else prior_method,
+                "alpha": alpha,
+                "symmetrized": symmetrize,
+                "subtract_fixed": subtract_fixed,
+                "linear_angle_policy": linear_angle_policy,
+                "n_at_bound": n_at_bound,
+                "rel_residual_fit": rel_fit,
+                # C3（2026-10-15 计划 §5）：H_fixed 的实际依赖，供 staleness 检查；
+                # inputs 是**拟合输入 IR** 的快照（H_fixed 就是在它上求值的）
+                "h_fixed_dependency": {
+                    "inputs": h_fixed_snapshot(ir),
+                    "hessian": {
+                        "provider": h.provider,
+                        "method": h.method,
+                        "sha256": h.source_sha256,
+                        "positions_sha256": hashlib.sha256(
+                            np.ascontiguousarray(h.positions_nm).tobytes()
+                        ).hexdigest(),
+                    },
+                    "fd_step_nm": fd_step_nm if subtract_fixed else None,
+                },
+            }
+        },
+    )
 
     # 拟合后 FF 在 x₀ 的最大力（"平衡位置不一致"的量化）
     max_force = float(np.abs(_forces_at(_reference_context(new_ir), pos)).max())

@@ -10,6 +10,7 @@ from .base import (
     symmetrized,
 )
 from .gaussian import read_fchk
+from .orca import read_orca_hess
 from .xtb import XTB_BINARY, XtbError, read_xtb_hessian, read_xtb_vibspectrum, run_xtb_hessian
 
 __all__ = [
@@ -21,6 +22,7 @@ __all__ = [
     "harmonic_frequencies",
     "symmetrized",
     "read_fchk",
+    "read_orca_hess",
     "XTB_BINARY",
     "XtbError",
     "read_xtb_hessian",
