@@ -6,6 +6,37 @@
 
 源码身份：最新一轮 Gate `jobs/gate_mvp{0,1,2,3}_20261018_2/` 的四份 manifest 共用同一组 `source_sha256`，共 119 个文件，与验收时的工作区 0/119 不同。`git_commit` 为 null（决策 0021：NFS 上不探测 git）。提交还在 `.commit_drafts/` 里等用户在实际机器上执行，执行后把哈希补记到本报告。
 
+补记（2026-10-18）：草稿已全部执行完毕（用户委托 代理 代执行；草稿中的共同作者尾注按仓库规矩剥除，`仓库代理规程` 与 `.superpowers/` 等本地工具文件按用户指示不入库，另有一笔 gitignore 把它们挡在库外）。六份作废草稿（`20261017_1240/_1500/_1540/_1620/_1650/_1720`）未执行；`docs/decisions/0011` 的一处工作区改动（Allen 2018 公式对照补记）无草稿认领，留在本地未提交。本补记提交之前的全部提交：
+
+- ed5fc25 chore: keep local agent tooling and commit drafts out of the repository
+- 3bc58ff docs(handover): workspace renamed to CRUCIBLE; update local git notes
+- 885aa27 feat(torsion): Fourier fit and AMBER periodic-term conversion (MVP-2 T24)
+- 3230a95 feat(torsion): rotatable-bond perception and dihedral symmetry classes (MVP-2 T25)
+- 4cf80ab feat(torsion): ASE constrained relaxed dihedral scan and MM helpers (MVP-2 T26)
+- 36d24c3 feat(torsion): MACE-POLAR-1-M reference calculator via ASE (MVP-2 T27)
+- c3cc1a0 feat(torsion): MLPTorsionProvider with MM subtraction, fit and GAFF2 fallback (MVP-2 T28)
+- f6616e2 feat(cli): derive-torsions subcommand (MVP-2 T29)
+- 25981b6 feat(gate): Gate G2 script for MLP torsions (MVP-2 T30)
+- e8000b3 fix(torsion): model provenance, cache identity, cache-only gate fitting (MVP-2 review)
+- 5c19450 docs(mvp2): record first Gate G2 run (failed on G2.3) and nma diagnosis
+- 2f31d34 docs: sync MVP-2 status, annotate roadmap, retire design v0
+- b28e2ca gate_mvp2: judge G2.3 with OpenMM as reference, sander legs report-only
+- b1f4ca3 docs: MVP-3 charge-provider plan and decision 0018
+- 67d06f1 feat(charge): MVP-3 charge providers with torsion refit (Gate G3)
+- ba63436 fix(gates,charge,torsion): A1/A2 gate scope and provenance close-out
+- 22ae02e Refit keeps original fallback bonds; strict resume/scan-cache paths (decision 0020)
+- c40d8ee A3 acceptance: G0-G3 re-run on one source tree, all passed
+- 0648979 Close G1.8 review: four wording fixes in hessian_methods.md
+- 4a805f8 Add ORCA reader, C1-C5 pipeline contract, MVP-5 fallback, MVP-4 skeleton; fix on acceptance
+- 987f086 Docs: sync status to 2026-10-17; slim HANDOVER, move daily logs to history
+- 113e7a5 fix(runtime): remove automatic Git probes from run recording
+- ba762a3 B1-B3: diagnose MLP torsion profile defect; sequential refit mechanism experiment
+- 2d0bd7f Re-run full pytest and Gates G0-G3 on the current source: all pass
+- 11b188b B3 order-dependence check; C2 chain test now includes the torsion step
+- 36f0f40 feat(torsion): add optional bounded sequential refinement and replay protocol
+- 2db460b Re-run Gates G0-G3 after adding optional sequential refinement: all pass
+- 62837fc Closure acceptance of the current version against the design document
+
 验收方式：设计要点逐条对照代码（只读），最后才看测试和 Gate。本报告不含新的计算；引用的运行结果见第 3 节。
 
 ## 1. 设计要点逐条对照
