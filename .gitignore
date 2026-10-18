@@ -12,3 +12,9 @@ jobs/**
 !jobs/**/manifest.json
 !jobs/**/acceptance.json
 !jobs/**/report.md
+CLAUDE.md
+.codex/
+.agents/
+.aws/
+.superpowers/
+.commit_drafts/
