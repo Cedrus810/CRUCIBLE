@@ -1,0 +1,98 @@
+[
+  {
+    "name": "ethanol",
+    "n": 9,
+    "wall_s": 1.9,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 1.1110000003311526e-07,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "benzene",
+    "n": 12,
+    "wall_s": 0.51,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.0,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "nma",
+    "n": 12,
+    "wall_s": 2.42,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 8.330000000889015e-08,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "cyclopropane",
+    "n": 9,
+    "wall_s": 0.48,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.00033333330000001604,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "cyclobutane",
+    "n": 12,
+    "wall_s": 0.67,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.00033333330000000216,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "norbornane",
+    "n": 19,
+    "wall_s": 0.74,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.00031578950000000355,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "acetate",
+    "n": 7,
+    "wall_s": 0.46,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 1.4290000005523495e-07,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "methylammonium",
+    "n": 8,
+    "wall_s": 0.5,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.0,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "chlorobenzene",
+    "n": 12,
+    "wall_s": 0.62,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.00016666670000001216,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "methyl_benzoate",
+    "n": 18,
+    "wall_s": 1.08,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.0,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "dmso",
+    "n": 10,
+    "wall_s": 1.19,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.00010019999999999474,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  },
+  {
+    "name": "acetonitrile",
+    "n": 6,
+    "wall_s": 0.54,
+    "max_abs_diff_equalized": 0.0,
+    "max_abs_diff_raw4dp": 0.0,
+    "nagl_error": "ImportError(\"cannot import name 'load_nagl_model_path' from 'openff.nagl_models' (/home/user/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/openff/nagl_models/__init__.py)\")"
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "name": "ethanol",
+    "wall_s": 0.113,
+    "max_abs_diff_vs_fixture": 0.03981011131696091,
+    "rms_diff_vs_fixture": 0.01824424443458656,
+    "sum_minus_Q": -1.1175870895385742e-08
+  },
+  {
+    "name": "benzene",
+    "wall_s": 0.74,
+    "max_abs_diff_vs_fixture": 0.00313210010528564,
+    "rms_diff_vs_fixture": 0.0031321001052856405,
+    "sum_minus_Q": 0.0
+  },
+  {
+    "name": "nma",
+    "wall_s": 0.053,
+    "max_abs_diff_vs_fixture": 0.0070640372718627775,
+    "rms_diff_vs_fixture": 0.0028287029757948826,
+    "sum_minus_Q": 0.0
+  },
+  {
+    "name": "cyclopropane",
+    "wall_s": 0.004,
+    "max_abs_diff_vs_fixture": 4.332763994294164e-05,
+    "rms_diff_vs_fixture": 2.4941130307396926e-05,
+    "sum_minus_Q": 0.0
+  },
+  {
+    "name": "cyclobutane",
+    "wall_s": 0.024,
+    "max_abs_diff_vs_fixture": 0.0021167042747680664,
+    "rms_diff_vs_fixture": 0.0014967359228848286,
+    "sum_minus_Q": 0.0
+  },
+  {
+    "name": "norbornane",
+    "wall_s": 0.026,
+    "max_abs_diff_vs_fixture": 0.01552686229634094,
+    "rms_diff_vs_fixture": 0.00638939086004913,
+    "sum_minus_Q": 1.043081283569336e-07
+  },
+  {
+    "name": "acetate",
+    "wall_s": 0.02,
+    "max_abs_diff_vs_fixture": 0.020835777703771985,
+    "rms_diff_vs_fixture": 0.012724524824032265,
+    "sum_minus_Q": -1.6763806343078613e-08
+  },
+  {
+    "name": "methylammonium",
+    "wall_s": 0.018,
+    "max_abs_diff_vs_fixture": 0.017379058980941775,
+    "rms_diff_vs_fixture": 0.007074733301643923,
+    "sum_minus_Q": 1.4901161193847656e-07
+  },
+  {
+    "name": "chlorobenzene",
+    "wall_s": 0.021,
+    "max_abs_diff_vs_fixture": 0.005525353051776122,
+    "rms_diff_vs_fixture": 0.0033024812738987777,
+    "sum_minus_Q": -4.284083843231201e-08
+  },
+  {
+    "name": "methyl_benzoate",
+    "wall_s": 0.03,
+    "max_abs_diff_vs_fixture": 0.028922154879570006,
+    "rms_diff_vs_fixture": 0.011562153248625555,
+    "sum_minus_Q": -1.825392246246338e-07
+  },
+  {
+    "name": "dmso",
+    "wall_s": 0.021,
+    "max_abs_diff_vs_fixture": 0.008042565550994862,
+    "rms_diff_vs_fixture": 0.005566597380747598,
+    "sum_minus_Q": -2.9802322387695312e-08
+  },
+  {
+    "name": "acetonitrile",
+    "wall_s": 0.003,
+    "max_abs_diff_vs_fixture": 0.0005100059032440152,
+    "rms_diff_vs_fixture": 0.0002608344123731239,
+    "sum_minus_Q": -3.725290298461914e-09
+  }
+]
