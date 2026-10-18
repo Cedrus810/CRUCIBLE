@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest
@@ -89,34 +89,47 @@ def test_inputs_sha256(tmp_path: Path) -> None:
     assert sha256_file(payload) == expected
 
 
-def test_run_logged_script_exit_code_and_end_line() -> None:
+def test_run_logged_script_exit_code_and_end_line(tmp_path: Path) -> None:
+    # Trap Git before invoking the wrapper, so even a regression never probes
+    # the real NFS repository.
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    marker = tmp_path / "git_called"
+    git_stub = bin_dir / "git"
+    git_stub.write_text('#!/bin/sh\n: > "$FFC_TEST_GIT_MARKER"\nexit 97\n')
+    git_stub.chmod(0o755)
+    env = {**os.environ, "PATH": f"{bin_dir}:{os.environ['PATH']}",
+           "FFC_TEST_GIT_MARKER": str(marker)}
     script = REPO_ROOT / "scripts" / "run_logged.sh"
     proc = subprocess.run(
         ["bash", str(script), "false"],
-        capture_output=True, text=True, cwd=REPO_ROOT, timeout=60,
+        capture_output=True, text=True, cwd=REPO_ROOT, timeout=60, env=env,
     )
+    assert not marker.exists(), "run_logged.sh must not probe Git"
     assert proc.returncode == 1
+    assert "commit=null" in proc.stdout
     last = proc.stdout.strip().splitlines()[-1]
     assert "END exit=1" in last
     assert LOG_LINE_RE.match(last), f"END line not timestamped: {last!r}"
 
 
-def test_git_state_never_takes_the_index_lock(monkeypatch) -> None:
-    """只读探测不得拿 index.lock：git status 可能因超时被杀，残留锁会挡住之后的提交。"""
-    import subprocess as sp
-
-    from ffcompiler import runtime
-
+def test_run_context_never_spawns_git_probe(monkeypatch, tmp_path: Path) -> None:
+    """The manifest must retain source evidence without running Git at all."""
     calls = []
 
-    def fake_run(args, **kwargs):
-        calls.append(list(args))
-        out = "true\n" if "--is-inside-work-tree" in args else ""
-        return sp.CompletedProcess(args, 0, stdout=out, stderr="")
+    def forbidden_popen(*args, **kwargs):
+        calls.append(args)
+        raise AssertionError("RunContext must not start a subprocess")
 
-    monkeypatch.setattr(runtime.subprocess, "run", fake_run)
-    runtime._git_state()
-    assert calls and all("--no-optional-locks" in args for args in calls)
+    monkeypatch.setattr(subprocess, "Popen", forbidden_popen)
+    with RunContext("no_git", root=tmp_path) as ctx:
+        run_dir = ctx.dir
+    assert calls == []
+    manifest = _read_manifest(run_dir)
+    assert manifest["git_commit"] is None
+    assert manifest["git_dirty"] is None
+    assert manifest["source_sha256"]["src/ffcompiler/runtime.py"] == sha256_file(
+        REPO_ROOT / "src/ffcompiler/runtime.py")
 
 
 def test_version_is_consistent_and_marks_mvp1() -> None:

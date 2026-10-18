@@ -17,8 +17,8 @@ stamp() {
     done
 }
 
-commit=$(git -c safe.directory="$PWD" rev-parse --short HEAD 2>/dev/null || echo unknown)
-echo "START host=$(hostname) commit=${commit} argv=$*" | stamp
+# Git commands are forbidden in this NFS workspace, including read-only probes.
+echo "START host=$(hostname) commit=null argv=$*" | stamp
 "$@" 2>&1 | stamp
 status=${PIPESTATUS[0]}
 echo "END exit=${status} wall=$(( $(date +%s) - t0 ))s" | stamp

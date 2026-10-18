@@ -3,6 +3,8 @@
 每个正式运行（Gate、benchmark）在 ``jobs/<name>_<YYYYMMDD>/`` 下进行：
 ``run.log`` 每行带 ``[YYYY-mm-dd HH:MM:SS +elapsed]`` 前缀，开头 START 行、
 结尾 END 行（atexit 兜底）；退出时写 ``manifest.json``。
+不探测 Git：本 NFS 工作区禁止运行 Git，提交与 dirty 状态记 null；
+源码和输入身份仍由清单记录。
 """
 
 from __future__ import annotations
@@ -13,7 +15,6 @@ import json
 import logging
 import os
 import platform
-import subprocess
 import sys
 import time
 from datetime import datetime
@@ -36,31 +37,6 @@ def _package_versions() -> dict[str, str]:
         except Exception:
             versions[name] = "n/a"
     return versions
-
-
-def _git_state() -> tuple[str | None, bool | None]:
-    """返回 (commit, dirty)；不在 git 仓库里时为 (None, None)（决策 0001）。"""
-    try:
-        # --no-optional-locks：status 不刷新索引、不拿 index.lock；超时被杀时不会
-        # 残留锁文件挡住之后的提交（2026-10-05 实测残留过一次）
-        git = ["git", "--no-optional-locks", "-c", f"safe.directory={Path.cwd()}"]
-        inside = subprocess.run(
-            [*git, "rev-parse", "--is-inside-work-tree"],
-            capture_output=True, text=True, timeout=10, check=False,
-        )
-        if inside.returncode != 0 or inside.stdout.strip() != "true":
-            return None, None
-        commit = subprocess.run(
-            [*git, "rev-parse", "HEAD"],
-            capture_output=True, text=True, timeout=10, check=False,
-        ).stdout.strip() or None
-        dirty = subprocess.run(
-            [*git, "status", "--porcelain"],
-            capture_output=True, text=True, timeout=10, check=False,
-        ).stdout.strip() != ""
-        return commit, dirty
-    except Exception:
-        return None, None
 
 
 def sha256_file(path: Path) -> str:
@@ -138,10 +114,9 @@ class RunContext:
         self._handler = handler
         self.log = logger
 
-        commit, dirty = _git_state()
         self.manifest = {
-            "git_commit": commit,
-            "git_dirty": dirty,
+            "git_commit": None,
+            "git_dirty": None,
             "argv": list(sys.argv),
             "host": platform.node(),
             "env_name": os.environ.get("CONDA_DEFAULT_ENV", ""),
@@ -160,8 +135,8 @@ class RunContext:
             },
         }
         self.log.info(
-            "START host=%s commit=%s argv=%s",
-            platform.node(), commit or "unknown", " ".join(sys.argv),
+            "START host=%s commit=null argv=%s",
+            platform.node(), " ".join(sys.argv),
         )
         if not self._atexit_registered:
             atexit.register(self._atexit_end)
