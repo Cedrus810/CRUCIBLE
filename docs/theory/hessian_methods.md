@@ -1,9 +1,13 @@
 # Hessian → bond/angle 参数推导方法理论文档（MVP-1 计划 T15）
 
-> **状态：全文写完，待审阅（G1.8）。** §2 的 mSeminario 公式按 Allen et al.
+> **状态：已审阅（G1.8，2026-10-13 A3 验收报告 §2 实质通过；四处措辞修正已于
+> 2026-10-17 收口：§4.3 冗余对角元补平方、§6 首段角单位 rad⁻²、§5.3 平衡值
+> 由参考几何给定的措辞与凸性说明、§2 单位向量方向记号与投影符号不变性）。**
+> §2 的 mSeminario 公式按 Allen et al.
 > 2018 的公式结构写出，并以 Sobtop mSeminario 输出逐项核对（12 个 oracle case
-> 全部在 §7 容差内，决策 0011）；**原文公式编号尚未对照原文填写**。§4 的
-> Wilson B 长度单位（Bohr）是对计划 §2.5 的补全，待用户确认（决策 0012）。
+> 全部在 §7 容差内，决策 0011）；2026-10-08 已对照原文（accepted version，
+> `docs/theory/refs/allen2018_jctc_accepted.pdf`）补上公式编号。§4 的
+> Wilson B 长度单位（Bohr）是对计划 §2.5 的补全，用户已确认（决策 0012）。
 
 本文档锁定四种方法用到的全部数学定义。计划 §2 的定义如与本文冲突，以发现
 矛盾的方式停报，不得自行改。
@@ -25,21 +29,32 @@
 
 ## 2. mSeminario（Allen et al. 2018；Sobtop 核对，决策 0011）
 
+原文：A. E. A. Allen, M. C. Payne, D. J. Cole, *J. Chem. Theory Comput.* 2018, 14, 274–281,
+doi:10.1021/acs.jctc.7b00785（accepted version：`docs/theory/refs/allen2018_jctc_accepted.pdf`）。
+下文"原文 Eq. n"指该文公式编号。
+
 记号：\(\mathbf K_{AB}=-\mathbf H_{AB}\)（3×3 原子间块，**不对称化**），
 \(\lambda_i^{AB},\mathbf v_i^{AB}\) 为其本征值与本征向量。\(\mathbf K_{AB}\) 一般非对称，
-本征对可为复数，取实部。定义沿单位向量 \(\mathbf u\) 的投影力常数
+本征对可为复数，取实部（原文 Eq. 3 定义 \([\mathbf k_{AB}]\)，未讨论非对称与复本征值，
+取实部是本项目的补全）。定义沿单位向量 \(\mathbf u\) 的投影力常数（原文 Eq. 4–6 的共同形式）
 
 \[
 k_{AB}(\mathbf u)=\sum_{i=1}^{3}\lambda_i^{AB}\,\big|\mathbf u\cdot\mathbf v_i^{AB}\big| .
 \]
 
-**bond**（原文公式编号：待补）：\(k_{\text{bond}}=k_{AB}(\mathbf u_{AB})\)，
-\(\mathbf u_{AB}\) 从 A 指向 B。Sobtop **不对 \(k_{AB}\)、\(k_{BA}\) 取平均**，取键在
+投影对方向符号不变：\(k_{AB}(-\mathbf u)=k_{AB}(\mathbf u)\)（各项取绝对值）。
+本文档的单位向量记号有两种约定，均在首次出现处显式说明：**bond** 的
+\(\mathbf u_{AB}\) 从 A 指向 B；**angle** A–B–C 的 \(\mathbf u_{AB}\) 从顶点 B
+指向端点 A、\(\mathbf u_{CB}\) 从顶点 B 指向端点 C（两者都从顶点出发）。
+由符号不变性，这些投影值本身不依赖方向约定的选取。
+
+**bond**（原文 Eq. 4）：\(k_{\text{bond}}=k_{AB}(\mathbf u_{AB})\)，
+\(\mathbf u_{AB}\) 从 A 指向 B。原文没有说是否对 \(k_{AB}\)、\(k_{BA}\) 取平均。Sobtop **不对 \(k_{AB}\)、\(k_{BA}\) 取平均**，取键在
 mol2 / IR 里的书写方向 (A, B)；取平均或取反方向都与 Sobtop 不一致（决策 0011）。
 因此 mSeminario 的键 k 依赖键的书写方向，对称等价键可以得到不同值（例：DMSO
 的两条 S–C 键 1087.8 / 1289.8 kJ/mol/Å²），由 §2.7 的对称化消除。
 
-**angle** A–B–C（原文公式编号：待补）：
+**angle** A–B–C（原文 Eq. 5–7 为原始 Seminario，Eq. 12 为修正式）：
 \(\mathbf u_N=\widehat{\mathbf u_{CB}\times\mathbf u_{AB}}\)，
 \(\mathbf u_{PA}=\mathbf u_N\times\mathbf u_{AB}\)，\(\mathbf u_{PC}=\mathbf u_{CB}\times\mathbf u_N\)
 （\(\mathbf u_{AB}\) 从 B 指向 A，\(\mathbf u_{CB}\) 从 B 指向 C），
@@ -48,14 +63,19 @@ mol2 / IR 里的书写方向 (A, B)；取平均或取反方向都与 Sobtop 不�
 \frac{1}{k_\theta}=\frac{f_A}{R_{AB}^2\,k_{AB}(\mathbf u_{PA})}+\frac{f_C}{R_{CB}^2\,k_{CB}(\mathbf u_{PC})},
 \]
 
-再对 (A,B,C) 与 (C,B,A) 两种写法取平均。**相邻键角缩放因子**：以 B 为顶点、
-含键 A–B 的其余键角 A–B–D（D ≠ C）共 \(n-1\) 个，
+再对 (A,B,C) 与 (C,B,A) 两种写法取平均（原文未写这一步，按 Sobtop 核对确定）。
+**相邻键角缩放因子**（原文 Eq. 8–12）：以 B 为顶点、含键 A–B 的其余键角
+A–B–D（D ≠ C）共 \(n-1\) 个，
 
 \[
 f_A=1+\frac{1}{n-1}\sum_{D}\big|\mathbf u_{PA}(A,B,C)\cdot\mathbf u_{PA}(A,B,D)\big|^2,
 \]
 
-没有其余键角时 \(f_A=1\)。\(f\) 依赖传入的 angle 列表（线性角在 library 策略下
+没有其余键角时 \(f_A=1\)。原文 Eq. 12 写作
+\(1+\big(\sum_{i=1}^{N}|\hat{\mathbf u}^{PA}\cdot\hat{\mathbf u}^{PA_i}|^2-1\big)/(N-1)\)，
+求和含该角自身（贡献 1，故减 1），\(N=n\)，与上式等价；\(N=1\) 时退回原始
+Seminario（原文 Eq. 7），即 \(f_A=1\)。原文 §2.3 的频率缩放（k 乘缩放因子的平方）
+本项目不做，相当于原文允许的缩放因子取 1。\(f\) 依赖传入的 angle 列表（线性角在 library 策略下
 先剔除，再算 \(f\)）。
 
 核对：上式在 12 个 oracle case 上 k、键长、键角全部在 §7 容差内（最大相对 k
@@ -193,7 +213,7 @@ $$\frac{\partial^2E}{\partial q_i\,\partial q_j}
 $$\mathbf H_q=\sum_t k_t\,\mathbf e_t\mathbf e_t^{\mathsf T},\qquad (\mathbf H_q)_{tt}=k_t\ \text{精确}.$$
 
 有冗余时 \(\mathbf P=\mathbf G^{-}\mathbf G\) 是非单位投影阵，
-\((\mathbf H_q)_{tt}=\sum_u k_u\,\big(\sum_i A_{ti}B_{ui}\big)\) 混入其他坐标的
+\((\mathbf H_q)_{tt}=\sum_u k_u\,\big(\sum_i A_{ti}B_{ui}\big)^2\) 混入其他坐标的
 贡献。典型如 sp³ 中心：6 个键角只有 5 个独立自由度。**这是 DRIH 的固有
 性质，不是 bug**（T19 用例 4 记录而不断言）。
 
@@ -265,9 +285,11 @@ $$\min_{\mathbf s\ge0}\ \|\mathbf y-\mathbf D\mathbf s\|^2+\lambda\|\mathbf s-\m
 \(\begin{pmatrix}\mathbf y\\\sqrt\lambda\,\mathbf 1\end{pmatrix}\)），下界 0，
 用 `scipy.optimize.lsq_linear`。
 
-**为什么是线性最小二乘、不需要 LM**：未知量只有各等价类的尺度
-\(s_c\ge0\)（几何上是平衡值 \(q^0\)，已由几何直接给定，不是拟合变量），
-残差 \(\mathbf y-\mathbf D\mathbf s\) 对 \(\mathbf s\) 线性。LM/Gauss–Newton
+**为什么是线性最小二乘、不需要 LM**：平衡值 \(q^0\) 不是拟合变量，由
+参考几何直接给定（\(q^0=q(\mathbf x_0)\)，对称化时类内平均，见 §5.2）；
+未知量只有各等价类的尺度 \(s_c\ge0\)，残差 \(\mathbf y-\mathbf D\mathbf s\) 对
+\(\mathbf s\) 线性。带非负下界的该目标仍是凸问题（线性最小二乘加二次
+正则、可行域为闭凸锥），`lsq_linear` 解到全局最优，算法不变。LM/Gauss–Newton
 针对的是残差对参数非线性（例如同时拟合平衡几何、指数）的情形；这里
 没有非线性参数，线性最小二乘即全局解。
 
@@ -285,7 +307,7 @@ $$\min_{\mathbf s\ge0}\ \|\mathbf y-\mathbf D\mathbf s\|^2+\lambda\|\mathbf s-\m
 ## 6. 单位约定与各格式换算
 
 所有方法输出的 \(k\) 都是二阶导（½k 约定）。IR 内部单位：键
-kJ mol⁻¹ nm⁻²，角 kJ mol⁻¹ rad²，平衡值 nm / rad。
+kJ mol⁻¹ nm⁻²，角 kJ mol⁻¹ rad⁻²，平衡值 nm / rad。
 
 | 格式 | 键 \(k\) | 角 \(k\) | 换算到 IR |
 |---|---|---|---|
