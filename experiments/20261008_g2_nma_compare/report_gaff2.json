@@ -1,0 +1,536 @@
+{
+ "rows": [
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "bond",
+   "E_leg": 0.9501068381467463,
+   "E_ref": 0.9501068381467463,
+   "delta": 0.0,
+   "tol": 1.0095010683814675e-06,
+   "passed": true
+  },
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "angle",
+   "E_leg": 1.634761665039002,
+   "E_ref": 1.634761665039002,
+   "delta": 0.0,
+   "tol": 1.01634761665039e-06,
+   "passed": true
+  },
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "proper",
+   "E_leg": 104.2050736212795,
+   "E_ref": 104.2050736212795,
+   "delta": 0.0,
+   "tol": 2.042050736212795e-06,
+   "passed": true
+  },
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "improper",
+   "E_leg": 0.8172111871297384,
+   "E_ref": 0.8172111871297384,
+   "delta": 0.0,
+   "tol": 1.0081721118712974e-06,
+   "passed": true
+  },
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "lj",
+   "E_leg": -0.5094049870317121,
+   "E_ref": -0.5094049870317121,
+   "delta": 0.0,
+   "tol": 1.005094049870317e-06,
+   "passed": true
+  },
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "coulomb",
+   "E_leg": -1.24030637939359,
+   "E_ref": -1.24030637939359,
+   "delta": 0.0,
+   "tol": 1.0124030637939359e-06,
+   "passed": true
+  },
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "lj14",
+   "E_leg": 4.869462934454808,
+   "E_ref": 4.869462934454808,
+   "delta": 0.0,
+   "tol": 1.0486946293445481e-06,
+   "passed": true
+  },
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "coulomb14",
+   "E_leg": -158.70062538755766,
+   "E_ref": -158.70062538755766,
+   "delta": 0.0,
+   "tol": 2.5870062538755768e-06,
+   "passed": true
+  },
+  {
+   "leg": "numpy-ir",
+   "reference": "reference-itself",
+   "category": "total",
+   "E_leg": -47.97372050793317,
+   "E_ref": -47.97372050793317,
+   "delta": 0.0,
+   "tol": 1.4797372050793316e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "bond",
+   "E_leg": 0.9501068381467437,
+   "E_ref": 0.9501068381467463,
+   "delta": 2.6645352591003757e-15,
+   "tol": 1.0095010683814675e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "angle",
+   "E_leg": 1.6347616650390078,
+   "E_ref": 1.634761665039002,
+   "delta": 5.773159728050814e-15,
+   "tol": 1.01634761665039e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "proper",
+   "E_leg": 104.2050736212795,
+   "E_ref": 104.2050736212795,
+   "delta": 0.0,
+   "tol": 2.042050736212795e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "improper",
+   "E_leg": 0.8172111871297384,
+   "E_ref": 0.8172111871297384,
+   "delta": 0.0,
+   "tol": 1.0081721118712974e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "lj",
+   "E_leg": -0.5094049870317118,
+   "E_ref": -0.5094049870317121,
+   "delta": 3.3306690738754696e-16,
+   "tol": 1.005094049870317e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "coulomb",
+   "E_leg": -1.24030637939359,
+   "E_ref": -1.24030637939359,
+   "delta": 0.0,
+   "tol": 1.0124030637939359e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "lj14",
+   "E_leg": 4.869462934454808,
+   "E_ref": 4.869462934454808,
+   "delta": 0.0,
+   "tol": 1.0486946293445481e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "coulomb14",
+   "E_leg": -158.7006253875577,
+   "E_ref": -158.70062538755766,
+   "delta": 2.842170943040401e-14,
+   "tol": 2.5870062538755768e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-ir",
+   "reference": "numpy-ir",
+   "category": "total",
+   "E_leg": -47.9737205079332,
+   "E_ref": -47.97372050793317,
+   "delta": 2.842170943040401e-14,
+   "tol": 2.5870062538755768e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-xml",
+   "reference": "numpy-ir",
+   "category": "bond",
+   "E_leg": 0.9501068381467437,
+   "E_ref": 0.9501068381467463,
+   "delta": 2.6645352591003757e-15,
+   "tol": 1.0095010683814675e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-xml",
+   "reference": "numpy-ir",
+   "category": "angle",
+   "E_leg": 1.6347616650390078,
+   "E_ref": 1.634761665039002,
+   "delta": 5.773159728050814e-15,
+   "tol": 1.01634761665039e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-xml",
+   "reference": "numpy-ir",
+   "category": "torsion_all",
+   "E_leg": 105.02228480840924,
+   "E_ref": 105.02228480840924,
+   "delta": 0.0,
+   "tol": 2.0502228480840923e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-xml",
+   "reference": "numpy-ir",
+   "category": "nonbonded_all",
+   "E_leg": -155.58087571252224,
+   "E_ref": -155.58087381952816,
+   "delta": 1.8929940779344179e-06,
+   "tol": 2.5558087381952816e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-xml",
+   "reference": "numpy-ir",
+   "category": "total",
+   "E_leg": -47.97372240092725,
+   "E_ref": -47.97372050793317,
+   "delta": 1.8929940779344179e-06,
+   "tol": 2.5870062538755768e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-prmtop",
+   "reference": "numpy-ir",
+   "category": "bond",
+   "E_leg": 0.9501068381467439,
+   "E_ref": 0.9501068381467463,
+   "delta": 2.4424906541753444e-15,
+   "tol": 0.00010009501068381468,
+   "passed": true
+  },
+  {
+   "leg": "openmm-prmtop",
+   "reference": "numpy-ir",
+   "category": "angle",
+   "E_leg": 1.6347616650390078,
+   "E_ref": 1.634761665039002,
+   "delta": 5.773159728050814e-15,
+   "tol": 0.0001001634761665039,
+   "passed": true
+  },
+  {
+   "leg": "openmm-prmtop",
+   "reference": "numpy-ir",
+   "category": "torsion_all",
+   "E_leg": 105.02228480840922,
+   "E_ref": 105.02228480840924,
+   "delta": 1.4210854715202004e-14,
+   "tol": 0.00011050222848084093,
+   "passed": true
+  },
+  {
+   "leg": "openmm-prmtop",
+   "reference": "numpy-ir",
+   "category": "nonbonded_all",
+   "E_leg": -155.5808757227422,
+   "E_ref": -155.58087381952816,
+   "delta": 1.9032140414765308e-06,
+   "tol": 0.00011555808738195282,
+   "passed": true
+  },
+  {
+   "leg": "openmm-prmtop",
+   "reference": "numpy-ir",
+   "category": "total",
+   "E_leg": -47.97372241114723,
+   "E_ref": -47.97372050793317,
+   "delta": 1.9032140556873856e-06,
+   "tol": 0.00011587006253875576,
+   "passed": true
+  },
+  {
+   "leg": "openmm-top",
+   "reference": "numpy-ir",
+   "category": "bond",
+   "E_leg": 0.9501068381467389,
+   "E_ref": 0.9501068381467463,
+   "delta": 7.438494264988549e-15,
+   "tol": 0.00010009501068381468,
+   "passed": true
+  },
+  {
+   "leg": "openmm-top",
+   "reference": "numpy-ir",
+   "category": "angle",
+   "E_leg": 1.6347616691462428,
+   "E_ref": 1.634761665039002,
+   "delta": 4.1072407697129165e-09,
+   "tol": 0.0001001634761665039,
+   "passed": true
+  },
+  {
+   "leg": "openmm-top",
+   "reference": "numpy-ir",
+   "category": "torsion_all",
+   "E_leg": 105.02228481329516,
+   "E_ref": 105.02228480840924,
+   "delta": 4.885919224761892e-09,
+   "tol": 0.00011050222848084093,
+   "passed": true
+  },
+  {
+   "leg": "openmm-top",
+   "reference": "numpy-ir",
+   "category": "nonbonded_all",
+   "E_leg": -155.58087573229213,
+   "E_ref": -155.58087381952816,
+   "delta": 1.912763963218822e-06,
+   "tol": 0.00011555808738195282,
+   "passed": true
+  },
+  {
+   "leg": "openmm-top",
+   "reference": "numpy-ir",
+   "category": "total",
+   "E_leg": -47.97372241170399,
+   "E_ref": -47.97372050793317,
+   "delta": 1.903770815658845e-06,
+   "tol": 0.00011587006253875576,
+   "passed": true
+  },
+  {
+   "leg": "sander-ours",
+   "reference": "numpy-ir",
+   "category": "bond",
+   "E_leg": 0.2271,
+   "E_ref": 0.22708098426069462,
+   "delta": 1.9015739305378032e-05,
+   "tol": 0.0002000227080984261,
+   "passed": true
+  },
+  {
+   "leg": "sander-ours",
+   "reference": "numpy-ir",
+   "category": "angle",
+   "E_leg": 0.3907,
+   "E_ref": 0.39071741516228536,
+   "delta": 1.7415162285372432e-05,
+   "tol": 0.00020003907174151624,
+   "passed": true
+  },
+  {
+   "leg": "sander-ours",
+   "reference": "numpy-ir",
+   "category": "dihed",
+   "E_leg": 25.1009,
+   "E_ref": 25.100928491493605,
+   "delta": 2.8491493605287133e-05,
+   "tol": 0.00020251009284914936,
+   "passed": true
+  },
+  {
+   "leg": "sander-ours",
+   "reference": "numpy-ir",
+   "category": "vdw",
+   "E_leg": -0.1218,
+   "E_ref": -0.12175071391771321,
+   "delta": 4.928608228679798e-05,
+   "tol": 0.00020001217507139177,
+   "passed": true
+  },
+  {
+   "leg": "sander-ours",
+   "reference": "numpy-ir",
+   "category": "eel",
+   "E_leg": -0.2964,
+   "E_ref": -0.29644033924320984,
+   "delta": 4.03392432098415e-05,
+   "tol": 0.0002148220169621605,
+   "passed": true
+  },
+  {
+   "leg": "sander-ours",
+   "reference": "numpy-ir",
+   "category": "vdw14",
+   "E_leg": 1.1638,
+   "E_ref": 1.163829573244457,
+   "delta": 2.9573244457070658e-05,
+   "tol": 0.00020011638295732445,
+   "passed": true
+  },
+  {
+   "leg": "sander-ours",
+   "reference": "numpy-ir",
+   "category": "eel14",
+   "E_leg": -37.929,
+   "E_ref": -37.93035979626139,
+   "delta": 0.001359796261390045,
+   "tol": 0.0020965179898130696,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "bond",
+   "E_leg": 0.950100541115,
+   "E_ref": 0.9501068381467463,
+   "delta": 6.297031746371751e-06,
+   "tol": 0.00010950106838146747,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "angle",
+   "E_leg": 1.634764194489,
+   "E_ref": 1.634761665039002,
+   "delta": 2.5294499979011675e-06,
+   "tol": 0.00011634761665039003,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "proper",
+   "E_leg": 104.205085754395,
+   "E_ref": 104.2050736212795,
+   "delta": 1.2133115504298075e-05,
+   "tol": 0.001142050736212795,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "improper",
+   "E_leg": 0.817211747169,
+   "E_ref": 0.8172111871297384,
+   "delta": 5.600392616322836e-07,
+   "tol": 0.00010817211187129739,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "lj",
+   "E_leg": -0.509405016899,
+   "E_ref": -0.5094049870317121,
+   "delta": 2.986728786513737e-08,
+   "tol": 0.00010509404987031713,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "coulomb",
+   "E_leg": -1.240307807922,
+   "E_ref": -1.24030637939359,
+   "delta": 1.4285284100079565e-06,
+   "tol": 0.0001124030637939359,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "lj14",
+   "E_leg": 4.86946439743,
+   "E_ref": 4.869462934454808,
+   "delta": 1.4629751916572786e-06,
+   "tol": 0.0001486946293445481,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "coulomb14",
+   "E_leg": -158.700637817383,
+   "E_ref": -158.70062538755766,
+   "delta": 1.2429825346771395e-05,
+   "tol": 0.0016870062538755768,
+   "passed": true
+  },
+  {
+   "leg": "gmx",
+   "reference": "numpy-ir",
+   "category": "total",
+   "E_leg": -47.973724365234,
+   "E_ref": -47.97372050793317,
+   "delta": 3.857300825416132e-06,
+   "tol": 0.0016870062538755768,
+   "passed": true
+  }
+ ],
+ "force_rows": [
+  {
+   "leg": "openmm-xml",
+   "reference": "openmm-ir",
+   "max_df": 0.0,
+   "tol": 1e-06,
+   "passed": true
+  },
+  {
+   "leg": "openmm-prmtop",
+   "reference": "openmm-ir",
+   "max_df": 1.8959246972372057e-07,
+   "tol": 0.001,
+   "passed": true
+  },
+  {
+   "leg": "openmm-top",
+   "reference": "openmm-ir",
+   "max_df": 7.760289193470271e-06,
+   "tol": 0.001,
+   "passed": true
+  }
+ ],
+ "skipped": {},
+ "passed": true,
+ "errors": {},
+ "metadata": {
+  "gmx": {
+   "executable": "/home/user/gmx26.3/bin/gmx",
+   "precision": "mixed",
+   "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/experiments/20261008_g2_nma_compare/work_gaff2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+   "rigid_translation_nm": [
+    0.2944,
+    0.18819999999999998,
+    0.18480000000000002
+   ],
+   "max_pair_distance_nm": 0.5211624218993538,
+   "cutoff_nm": 2.0,
+   "box_nm": 6.0,
+   "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+  }
+ }
+}

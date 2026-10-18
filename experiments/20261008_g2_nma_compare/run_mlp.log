@@ -1,0 +1,59 @@
+mlp passed False
+| leg | reference | category | E_leg | E_ref | delta | tol | passed |
+|---|---|---|---|---|---|---|---|
+| numpy-ir | reference-itself | bond | 0.9501068381 | 0.9501068381 | 0 | 1.01e-06 | True |
+| numpy-ir | reference-itself | angle | 1.634761665 | 1.634761665 | 0 | 1.02e-06 | True |
+| numpy-ir | reference-itself | proper | 6.9799645 | 6.9799645 | 0 | 1.07e-06 | True |
+| numpy-ir | reference-itself | improper | 0.8172111871 | 0.8172111871 | 0 | 1.01e-06 | True |
+| numpy-ir | reference-itself | lj | -0.509404987 | -0.509404987 | 0 | 1.01e-06 | True |
+| numpy-ir | reference-itself | coulomb | -1.240306379 | -1.240306379 | 0 | 1.01e-06 | True |
+| numpy-ir | reference-itself | lj14 | 4.869462934 | 4.869462934 | 0 | 1.05e-06 | True |
+| numpy-ir | reference-itself | coulomb14 | -158.7006254 | -158.7006254 | 0 | 2.59e-06 | True |
+| numpy-ir | reference-itself | total | -145.1988296 | -145.1988296 | 0 | 2.45e-06 | True |
+| openmm-ir | numpy-ir | bond | 0.9501068381 | 0.9501068381 | 2.66e-15 | 1.01e-06 | True |
+| openmm-ir | numpy-ir | angle | 1.634761665 | 1.634761665 | 5.77e-15 | 1.02e-06 | True |
+| openmm-ir | numpy-ir | proper | 6.9799645 | 6.9799645 | 0 | 1.07e-06 | True |
+| openmm-ir | numpy-ir | improper | 0.8172111871 | 0.8172111871 | 0 | 1.01e-06 | True |
+| openmm-ir | numpy-ir | lj | -0.509404987 | -0.509404987 | 3.33e-16 | 1.01e-06 | True |
+| openmm-ir | numpy-ir | coulomb | -1.240306379 | -1.240306379 | 0 | 1.01e-06 | True |
+| openmm-ir | numpy-ir | lj14 | 4.869462934 | 4.869462934 | 0 | 1.05e-06 | True |
+| openmm-ir | numpy-ir | coulomb14 | -158.7006254 | -158.7006254 | 2.84e-14 | 2.59e-06 | True |
+| openmm-ir | numpy-ir | total | -145.1988296 | -145.1988296 | 2.84e-14 | 2.59e-06 | True |
+| openmm-xml | numpy-ir | bond | 0.9501068381 | 0.9501068381 | 2.66e-15 | 1.01e-06 | True |
+| openmm-xml | numpy-ir | angle | 1.634761665 | 1.634761665 | 5.77e-15 | 1.02e-06 | True |
+| openmm-xml | numpy-ir | torsion_all | 7.797175687 | 7.797175687 | 0 | 1.08e-06 | True |
+| openmm-xml | numpy-ir | nonbonded_all | -155.5808757 | -155.5808738 | 1.89e-06 | 2.56e-06 | True |
+| openmm-xml | numpy-ir | total | -145.1988315 | -145.1988296 | 1.89e-06 | 2.59e-06 | True |
+| openmm-prmtop | numpy-ir | bond | 0.9501068381 | 0.9501068381 | 2.44e-15 | 0.0001 | True |
+| openmm-prmtop | numpy-ir | angle | 1.634761665 | 1.634761665 | 5.77e-15 | 0.0001 | True |
+| openmm-prmtop | numpy-ir | torsion_all | 7.797175689 | 7.797175687 | 1.88e-09 | 0.000101 | True |
+| openmm-prmtop | numpy-ir | nonbonded_all | -155.5808757 | -155.5808738 | 1.9e-06 | 0.000116 | True |
+| openmm-prmtop | numpy-ir | total | -145.1988315 | -145.1988296 | 1.9e-06 | 0.000116 | True |
+| openmm-top | numpy-ir | bond | 0.9501068381 | 0.9501068381 | 7.44e-15 | 0.0001 | True |
+| openmm-top | numpy-ir | angle | 1.634761669 | 1.634761665 | 4.11e-09 | 0.0001 | True |
+| openmm-top | numpy-ir | torsion_all | 7.797175685 | 7.797175687 | 1.91e-09 | 0.000101 | True |
+| openmm-top | numpy-ir | nonbonded_all | -155.5808757 | -155.5808738 | 1.91e-06 | 0.000116 | True |
+| openmm-top | numpy-ir | total | -145.1988315 | -145.1988296 | 1.91e-06 | 0.000116 | True |
+| sander-ours | numpy-ir | bond | 0.2271 | 0.2270809843 | 1.9e-05 | 0.0002 | True |
+| sander-ours | numpy-ir | angle | 0.3907 | 0.3907174152 | 1.74e-05 | 0.0002 | True |
+| sander-ours | numpy-ir | dihed | 1.8638 | 1.863569715 | 0.00023 | 0.0002 | False |
+| sander-ours | numpy-ir | vdw | -0.1218 | -0.1217507139 | 4.93e-05 | 0.0002 | True |
+| sander-ours | numpy-ir | eel | -0.2964 | -0.2964403392 | 4.03e-05 | 0.000215 | True |
+| sander-ours | numpy-ir | vdw14 | 1.1638 | 1.163829573 | 2.96e-05 | 0.0002 | True |
+| sander-ours | numpy-ir | eel14 | -37.929 | -37.9303598 | 0.00136 | 0.0021 | True |
+| gmx | numpy-ir | bond | 0.9501005411 | 0.9501068381 | 6.3e-06 | 0.00011 | True |
+| gmx | numpy-ir | angle | 1.634764194 | 1.634761665 | 2.53e-06 | 0.000116 | True |
+| gmx | numpy-ir | proper | 6.979964733 | 6.9799645 | 2.34e-07 | 0.00017 | True |
+| gmx | numpy-ir | improper | 0.8172117472 | 0.8172111871 | 5.6e-07 | 0.000108 | True |
+| gmx | numpy-ir | lj | -0.5094050169 | -0.509404987 | 2.99e-08 | 0.000105 | True |
+| gmx | numpy-ir | coulomb | -1.240307808 | -1.240306379 | 1.43e-06 | 0.000112 | True |
+| gmx | numpy-ir | lj14 | 4.869464397 | 4.869462934 | 1.46e-06 | 0.000149 | True |
+| gmx | numpy-ir | coulomb14 | -158.7006378 | -158.7006254 | 1.24e-05 | 0.00169 | True |
+| gmx | numpy-ir | total | -145.1988373 | -145.1988296 | 7.65e-06 | 0.00169 | True |
+
+| leg | reference | max|dF| | tol | passed |
+|---|---|---|---|---|
+| openmm-xml | openmm-ir | 0 | 1e-06 | True |
+| openmm-prmtop | openmm-ir | 3.82e-07 | 0.001 | True |
+| openmm-top | openmm-ir | 7.78e-06 | 0.001 | True |
+GROMACS precision=mixed; strict file tolerance

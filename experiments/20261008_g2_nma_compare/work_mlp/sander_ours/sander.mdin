@@ -1,0 +1,4 @@
+single point energy at input coordinates
+ &cntrl
+  imin=1, maxcyc=1, ntb=0, igb=0, cut=999.0, ntpr=1,
+ /

@@ -1,0 +1,6 @@
+snapped: (0, 1, 3, 4) n 2 phase 3.141058831034765 k kJ 13.092047608500463
+snapped: (0, 3, 1, 2) n 2 phase 3.141594 k kJ 43.932
+snapped: (1, 4, 3, 8) n 2 phase 3.141594 k kJ 4.6024
+numpy exact  1.863570 kcal/mol
+numpy snap   1.863826 kcal/mol
+sander-ours  1.8638 (4 位小数)

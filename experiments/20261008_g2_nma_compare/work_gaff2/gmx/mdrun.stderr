@@ -1,0 +1,32 @@
+                      :-) GROMACS - gmx mdrun, 2026.3 (-:
+
+Executable:   /home/user/gmx26.3/bin/gmx
+Data prefix:  /home/user/gmx26.3
+Working dir:  /home/user/CRUCIBLE/experiments/20261008_g2_nma_compare/work_gaff2/gmx
+Command line:
+  gmx mdrun -s run.tpr -rerun frame.gro -deffnm rerun -ntmpi 1 -ntomp 1 -nb cpu -bonded cpu
+
+Compiled SIMD is AVX2_256, but CPU also supports AVX_512 (see log).
+Reading file run.tpr, VERSION 2026.3 (single precision)
+Using 1 MPI thread
+Using 1 OpenMP thread 
+
+
+You are using the following feature(s) which are partially, but not fully validated. Please check your results. If you find issues, report them on the GROMACS forum or at https://gitlab.com/gromacs/gromacs/-/issues
+  an external FMM library
+
+NOTE: Thread affinity was not set.
+starting md rerun 'nma', reading coordinates from input trajectory 'frame.gro'
+
+Reading frames from gro file 'ffcompiler nma t= 0', 12 atoms.
+
+Reading frame       0 time    0.000   
+Last frame          0 time    0.000   
+
+               Core t (s)   Wall t (s)        (%)
+       Time:        0.000        0.011        4.2
+                 (ns/day)    (hour/ns)    (ms/step)  (Matom*steps/s) 
+Performance:        8.020        2.992       10.772            0.001 
+
+GROMACS reminds you: "As an adolescent I aspired to lasting fame, I craved factual certainty, and I thirsted for a meaningful vision of human life -- so I became a scientist. This is like becoming an archbishop so you can meet girls." (Matt Cartmill)
+

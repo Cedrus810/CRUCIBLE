@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "/home/user/gmx26.3/bin/gmx",
+    "mdrun",
+    "-s",
+    "run.tpr",
+    "-rerun",
+    "frame.gro",
+    "-deffnm",
+    "rerun",
+    "-ntmpi",
+    "1",
+    "-ntomp",
+    "1",
+    "-nb",
+    "cpu",
+    "-bonded",
+    "cpu"
+  ],
+  "stdin": null,
+  "returncode": 0
+}

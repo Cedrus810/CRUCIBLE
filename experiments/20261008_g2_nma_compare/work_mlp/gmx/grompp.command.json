@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/home/user/gmx26.3/bin/gmx",
+    "grompp",
+    "-f",
+    "singlepoint.mdp",
+    "-c",
+    "frame.gro",
+    "-p",
+    "/home/user/CRUCIBLE/experiments/20261008_g2_nma_compare/work_mlp/gromacs/topol.top",
+    "-o",
+    "run.tpr",
+    "-po",
+    "processed.mdp"
+  ],
+  "stdin": null,
+  "returncode": 0
+}

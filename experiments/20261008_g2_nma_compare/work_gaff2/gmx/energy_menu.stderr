@@ -1,0 +1,29 @@
+                      :-) GROMACS - gmx energy, 2026.3 (-:
+
+Executable:   /home/user/gmx26.3/bin/gmx
+Data prefix:  /home/user/gmx26.3
+Working dir:  /home/user/CRUCIBLE/experiments/20261008_g2_nma_compare/work_gaff2/gmx
+Command line:
+  gmx energy -f rerun.edr -o menu.xvg -dp
+
+Opened rerun.edr as single precision energy file
+
+Select the terms you want from the following list by
+selecting either (part of) the name or the number or a combination.
+End your selection with an empty line or a zero.
+-------------------------------------------------------------------
+  1  Bond             2  Angle            3  Proper-Dih.      4  Per.-Imp.-Dih.
+  5  LJ-14            6  Coulomb-14       7  LJ-(SR)          8  Coulomb-(SR)  
+  9  Potential     
+
+
+-------------------------------------------------------
+Program:     gmx energy, version 2026.3
+Source file: src/gromacs/gmxana/gmx_energy.cpp (line 314)
+
+Fatal error:
+No energy terms selected
+
+For more information and tips for troubleshooting, please check the GROMACS
+website at https://manual.gromacs.org/current/user-guide/run-time-errors.html
+-------------------------------------------------------

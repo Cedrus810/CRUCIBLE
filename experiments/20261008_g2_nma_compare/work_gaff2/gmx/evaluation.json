@@ -1,0 +1,25 @@
+{
+  "energies": {
+    "bond": 0.950100541115,
+    "angle": 1.634764194489,
+    "proper": 104.205085754395,
+    "improper": 0.817211747169,
+    "lj14": 4.86946439743,
+    "coulomb14": -158.700637817383,
+    "lj": -0.509405016899,
+    "coulomb": -1.240307807922,
+    "total": -47.973724365234
+  },
+  "executable": "/home/user/gmx26.3/bin/gmx",
+  "precision": "mixed",
+  "version": "                         :-) GROMACS - gmx, 2026.3 (-:\n\nExecutable:   /home/user/gmx26.3/bin/gmx\nData prefix:  /home/user/gmx26.3\nWorking dir:  /home/user/CRUCIBLE/experiments/20261008_g2_nma_compare/work_gaff2/gmx\nCommand line:\n  gmx --version\n\nGROMACS version:     2026.3\nPrecision:           mixed\nMemory model:        64 bit\nMPI library:         thread_mpi\nMPI version:         built in\nOpenMP support:      enabled (GMX_OPENMP_MAX_THREADS = 128)\nGPU support:         CUDA\nNBNxM GPU setup:     super-cluster 2x2x2 / cluster 8 (cluster-pair splitting on)\nSIMD instructions:   AVX2_256\nCPU FFT library:     fftw-3.3.11-sse2-avx-avx2-avx2_128\nGPU FFT library:     cuFFT\nMulti-GPU FFT:       none\nRDTSCP:              enabled\nTNG support:         enabled\nHwloc support:       hwloc-2.11.1\nTracing support:     disabled\nColvars support:     enabled (version 2025-10-13)\nCP2K support:        disabled\nTorch support:       disabled\nPlumed support:      enabled\nC compiler:          /usr/bin/cc GNU 14.3.1\nC compiler flags:    -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -O3 -DNDEBUG\nC++ compiler:        /usr/bin/c++ GNU 14.3.1\nC++ compiler flags:  -fexcess-precision=fast -funroll-all-loops -mavx2 -mfma -Wno-missing-field-initializers -Wno-stringop-truncation -Wno-cast-function-type-strict SHELL:-fopenmp -O3 -DNDEBUG\nBLAS library:        External - detected on the system\nLAPACK library:      External - detected on the system\nCUDA compiler:       /home/user/compiler/cuda-13.3/bin/nvcc (NVIDIA 13.3.73)\nCUDA compiler flags:  -O3 -DNDEBUG -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -use_fast_math -static-global-template-stub=false -Xptxas=-warn-double-usage -Xptxas=-Werror -diag-suppress=177 -O3 -DNDEBUG\nCUDA targets:        75;86;89;120\nCUDA driver:         13.0\nCUDA runtime:        13.30\nNVSHMEM:             disabled\n\n",
+  "rigid_translation_nm": [
+    0.2944,
+    0.18819999999999998,
+    0.18480000000000002
+  ],
+  "max_pair_distance_nm": 0.5211624218993538,
+  "cutoff_nm": 2.0,
+  "box_nm": 6.0,
+  "tolerance_policy": "mixed_fp32 (decision 0013): 1e-4 + 1e-5*abs(E_ref) kJ/mol"
+}

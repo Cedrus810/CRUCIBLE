@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "/home/user/gmx26.3/bin/gmx",
+    "--version"
+  ],
+  "stdin": null,
+  "returncode": 0
+}

@@ -1,0 +1,15 @@
+
+Statistics over 1 steps [ 0.0000 through 0.0000 ps ], 9 data sets
+All statistics are over 1 points
+
+Energy                      Average   Err.Est.       RMSD  Tot-Drift
+-------------------------------------------------------------------------------
+Bond                       0.950101         --          0          0  (kJ/mol)
+Angle                       1.63476         --          0          0  (kJ/mol)
+Proper Dih.                 6.97996         --          0          0  (kJ/mol)
+Per. Imp. Dih.             0.817212         --          0          0  (kJ/mol)
+LJ-14                       4.86946         --          0          0  (kJ/mol)
+Coulomb-14                 -158.701         --          0          0  (kJ/mol)
+LJ (SR)                   -0.509405         --          0          0  (kJ/mol)
+Coulomb (SR)               -1.24031         --          0          0  (kJ/mol)
+Potential                  -145.199         --          0          0  (kJ/mol)
