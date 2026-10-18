@@ -21,6 +21,12 @@ Superseded records are kept verbatim as history.
 | [0013](0013-mixed-precision-gmx-tolerance.md) | mixed 精度 GROMACS 用 fp32 容差；乙腈移出 Gate | 有效 |
 | [0014](0014-method-limitation-nonpositive-k.md) | 非正力常数经 Sobtop 复算确认 → 已知方法局限 | 有效 |
 | [0015](0015-native-amber-io.md) | AMBER prmtop / rst7 原生读写，去掉 ParmEd | 有效 |
+| [0016](0016-mvp2-torsion-decisions.md) | MVP-2 前置决定：代理接手施工；AMBER 周期二面角、GAFF2 兜底、暂用现有电荷；MACE-POLAR-1-M 直接经 ASE | 有效 |
+| [0017](0017-openmm-reference-sander-report-only.md) | MLP 二面角 IR 以 OpenMM 为准；G2 的 sander 腿只报告（相位吸附为已知局限） | 有效 |
+| [0018](0018-mvp3-charge-scope.md) | MVP-3 范围：RESP 往后放；载入 / AM1-BCC / NAGL；先电荷后二面角，换电荷用缓存重拟合 | 有效 |
+| [0019](0019-gate-subset-scope.md) | Gate 子集运行记 scope=subset，passed 不为 true | 有效 |
+| [0020](0020-refit-fallback-and-cache-paths.md) | 重拟合不升级原兜底键；G2 `--resume` / G3 `--scan-cache` 路径写错时报错，G3 无默认缓存 | 有效 |
+| [0021](0021-runtime-no-git-probes.md) | RunContext 与 run_logged.sh 不探测 Git；提交与 dirty 状态记 null | 有效 |
 
 新记录用下一个编号，文件名 `NNNN-short-topic.md`；取代旧记录时在旧记录标题下加一行说明。
 New records take the next number; when superseding, add a one-line note under the old title.
