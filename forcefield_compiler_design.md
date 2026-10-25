@@ -4,6 +4,8 @@
 > 核心新增部分：**GFN-FF / xTB / QM Hessian 后端 + 三种局部投影 + 一种全局拟合（QMDFF-inspired）的 Hessian 参数提取方法 + 已有 MLP 二面角模块 + 新型电荷模型 + GROMACS / AMBER / OpenMM 多后端输出**。
 >
 > 最直接的理论先例是 **QMDFF**（Grimme 2014，见 §6.0）；Sobtop 更像参数/拓扑工具箱。
+>
+> 修订（2026-10-25）：增补下一阶段设计——§3.1 分子入口、§6.4.4–§6.4.6 联合拟合与交替协议、§10.4–§10.5 扫描协议、§23 MVP-6～MVP-9、§26、§27。标注（下一阶段）的章节是尚未实现的设计增补，经用户确认后并入现行基准；既有章节文字未动（仅 §6.4.3 第 1 条加了一处指向 §6.4.4 的括注）。
 
 ---
 
@@ -129,6 +131,49 @@ E_\mathrm{Coulomb}
 ```
 
 任何算法都不允许直接写 `.itp`、`prmtop` 或 OpenMM XML。
+
+## 3.1 分子入口与初始参数化：SDF → 骨架 IR（下一阶段）
+
+现行实现的输入是“已经参数化好的 prmtop/inpcrd + SDF”。本节把入口前移到分子结构本身：SDF 进、骨架 IR 出，后续 bonded / charge / torsion 步骤照旧。§17 preset 与 §22 单命令 CLI 都以本节为前提。
+
+关键决策：**不自研 GAFF2 atom typing 引擎**。GAFF2 typing 的 ground truth 是 antechamber；本项目把 antechamber 当外部 typer 使用——与 §5 把 xTB / ORCA 当外部 Hessian provider 是同一模式。自研 typing 是重复造轮子，而且永远无法自证与 GAFF2 一致。
+
+入口流程内建固件生产的成熟配方，作为工具的一步：
+
+```text
+SDF（必须含 3D 坐标；formal charge 总和 = 净电荷）
+   ↓ antechamber      typing-only：GAFF2 原子类型，不承担电荷计算（电荷归 §11）
+   ↓ parmchk2         gaff2 参数检查 → frcmod
+   ↓ tleap            saveamberparm → prmtop / inpcrd
+   ↓ 现有 prmtop 导入器（importers/amber_prmtop）
+骨架 ForceFieldIR + 坐标 sidecar（C1 合同）
+```
+
+骨架 IR 的语义——GAFF2 库值不是最终参数，而是三种身份：fallback graph 的第 1 级（§16）、global fit 的先验（§6.4.1）、以及 `policy: library` 时的答案本身。逐项：
+
+| 项 | 入口给出 | 后续处理 |
+|---|---|---|
+| 拓扑 / 原子类型 | GAFF2 | 不变 |
+| LJ | GAFF2 库值 | 不变（§2 边界） |
+| exclusions / 1–4 | AMBER 约定 | 不变 |
+| bond / angle | GAFF2 库值 | derive 后被 Hessian 值替换；库值留作先验与兜底 |
+| proper / improper | GAFF2 库值 | derive-torsions 后被 MLP 值替换；库值留作兜底集合（重拟合不升级原兜底键的现行规则不变） |
+| partial charge | 占位值 | 必须由 charge provider（§11）显式覆盖，不允许静默沿用 |
+
+typing 调用的合同：antechamber 只做类型与拓扑，不跑 sqm；具体命令行在计划文档锁定并进 fixture 测试。若实现中发现 typing 必须附带某条电荷路径，退路是沿用 `-c bcc` 一次取得 typing + AM1-BCC——此时骨架电荷 provenance 记 am1bcc、charge provider 仍可覆盖；取哪条开工时定，不影响本节合同。
+
+几何合同：入口不优化、不生成几何，只做检查（3D 坐标存在、formal charge 与净电荷一致、无严重原子穿距）。x0 是全部参考数据的锚点，其质量不允许被静默的构象生成掩盖——缺 3D 的输入直接报错。构象生成是显式步骤（§10.4、§6.4.5），不是入口的隐含行为。
+
+provenance：antechamber / AmberTools 版本、GAFF2 版本（leaprc）、parmchk2、tleap、输入 SDF 的 hash；每次调用的命令行与日志按 Hessian provider 同等标准落盘。骨架各项 `source = entry_gaff2_library`。
+
+第一版范围：只做 SDF 入口；prmtop 路线保留作向后兼容；MOL2 / PDB / XYZ 待有需求再入。
+
+验收要点：
+1. 固件外的新分子从 SDF 走完入口 → 现有管线 → 三引擎输出，跨引擎等价判据复用 §19；
+2. 全部现有固件（12 个）由原始 SDF 重建骨架 IR，与既有 prmtop 导入结果在拓扑、LJ、exclusions 上逐项一致——证明内建入口与固件流程等价；
+3. 后续步骤覆盖后，provenance 链与过期检查（check-staleness）语义不变。
+
+模块归属（§21 已预留位置）：`molecule/io.py`（SDF 读入与检查）、`typing/gaff2.py`（antechamber 封装）、骨架组装复用 `importers/`。
 
 ---
 
@@ -513,7 +558,7 @@ H_fixed = H_LJ (GAFF2) + H_Coulomb (当前 charge provider)
 
 1. **平衡位置不一致**：\(\mathbf H^\mathrm{fixed}\) 对应的非键 + 二面角在 \(\mathbf x_0\) 一般有非零梯度，取 \(q^0 = q(\mathbf x_0)\) 时 FF 的极小点不在 \(\mathbf x_0\)。（四种方法都有这个问题，但只有全局法有条件处理。）
    - 第一版：接受，并报告 FF 优化后几何相对 \(\mathbf x_0\) 的偏差；
-   - 留接口：联合拟合 \(q^0\)，加梯度匹配项 \(\mathbf g^\mathrm{FF}(\mathbf x_0) = \mathbf 0\)（变成非线性问题）。
+   - 留接口：联合拟合 \(q^0\)，加梯度匹配项 \(\mathbf g^\mathrm{FF}(\mathbf x_0) = \mathbf 0\)（变成非线性问题；设计见 §6.4.4）。
 2. **病态**：sp3 中心的角冗余（6 个角只有 5 个独立）、平移/转动零空间。必须加正则：\(\mathbf k^\mathrm{prior}\) 取 mSeminario 结果（或 GAFF2 库值），并报告设计矩阵的条件数。
 3. **对称性**：对称等价项共享同一个 \(k\)（复用 `bonded/symmetry.py` 的等价类），否则拟合会打破对称性。
 4. **权重 \(\mathbf W\)**：Cartesian 原样，还是质量加权（与频率更直接对应）—— 待定；先选一种做默认，另一种做 benchmark。
@@ -530,6 +575,92 @@ bonded:
     - bond
     - angle
 ```
+
+### 6.4.4 平衡几何联合拟合：q⁰ 与梯度匹配（下一阶段）
+
+§6.4.3 第 1 条预留的接口。问题重述：\(\mathbf H^\mathrm{fixed}\) 对应的非键 + 二面角在 \(\mathbf x_0\) 有非零梯度，固定 \(q^0 = q(\mathbf x_0)\) 只拟合曲率后，FF 的极小点不在 \(\mathbf x_0\)。解法是把 \(q^0\) 也作为拟合变量，并要求 FF 在 \(\mathbf x_0\) 平稳：
+
+\[
+\min_{\mathbf k,\ \mathbf q^0}\ \
+\bigl\|\mathbf W \odot \bigl(\mathbf H^\mathrm{ref} - \mathbf H^\mathrm{fixed} - \sum_t k_t\, \mathbf G_t(\mathbf q^0)\bigr)\bigr\|_F^2
+\;+\;
+\mu\, \bigl\|\mathbf D\, \mathbf g^\mathrm{FF}(\mathbf x_0)\bigr\|^2
+\;+\;
+\lambda\, \bigl\|\mathbf k - \mathbf k^\mathrm{prior}\bigr\|^2
+\]
+
+两个结构事实决定求解策略：
+
+1. 谐振项的 Cartesian Hessian 是 \(k_t\bigl[\mathbf b_t \mathbf b_t^\mathsf T + (q_t(\mathbf x_0) - q_t^0)\, \nabla^2 q_t\bigr]\)。\(q^0 = q(\mathbf x_0)\) 时第二项消失（即 §6.4.1 的 \(\mathbf G_t = \mathbf b_t \mathbf b_t^\mathsf T\)）；\(q^0\) 成为变量后 \(\mathbf G_t\) 依赖 \(q^0\)。
+2. 给定 \(q^0\)，梯度项对 \(\mathbf k\) 同样是线性的：\(\mathbf g^\mathrm{FF}(\mathbf x_0) = \mathbf g^\mathrm{fixed}(\mathbf x_0) + \sum_t k_t\, (q_t(\mathbf x_0) - q_t^0)\, \mathbf b_t\)。
+
+因此**给定 \(q^0\)，曲率项 + 梯度项 + 先验对 \(\mathbf k\) 仍是线性最小二乘**；非线性只集中在 \(q^0\)：
+
+```text
+q0 ← q(x0)                        初值（退化为 §6.4.1）
+循环：
+  ① 固定 q0：曲率行 + 梯度行 + 先验行堆叠成一个大设计矩阵 → 线性 LS 解 k
+  ② 固定 k：仅对 q0 的小规模非线性最小二乘
+  ③ ‖Δk‖、‖Δq0‖ 均小于容差 → 停
+```
+
+必须锁定的细节：
+
+- **\(q^0\) 的边界**：\(|q_t^0 - q_t(\mathbf x_0)|\) 设上限（量级：bond ±0.01 nm、angle ±3°，最终数值开工时定）。否则不可表示的耦合（§6.4.3 第 5 条）会全部被 \(q^0\) 吸收，漂到没有物理意义的位置。对称等价类内 \(q^0\) 与 \(k\) 一样共享。
+- **量纲**：梯度（kJ/mol/nm）与 Hessian（kJ/mol/nm²）不同量纲，\(\mu\) 不是无量纲数；\(\mathbf D\) 的取法（逐坐标均匀 / 质量加权）开工时定一种做默认、另一种留作 benchmark，与 §6.4.3 第 4 条 \(\mathbf W\) 的处理一致，并写进 provenance。
+- **退化即现状**：\(\mu = 0\) 且 \(q^0 = q(\mathbf x_0)\) 时与 §6.4.1 完全相同。这是回归判据：联合模式关闭时逐位复现现行 global fit。
+- **默认不换**：联合拟合先作 opt-in；单构象 \(q^0 = q(\mathbf x_0)\) 仍是默认。是否转默认由验收数据决定，不先验拍板。
+- **报告**：\(\mathbf x_0\) 处最大力（拟合前 / 后）、FF 优化后几何相对 \(\mathbf x_0\) 的逐项与 RMSD 偏差、频率误差变化、条件数变化。§6.4.3 第 1 条的“报告偏差”由此从“只能接受”升级为“可修复、可验证”。
+
+验收要点：全部固件上 \(\mathbf x_0\) 处最大力显著下降（预期若干个数量级）；频率误差相对纯曲率拟合不得劣化超过约定容差；\(q^0\) 偏移全部在界内；退化模式逐位复现现行结果。
+
+### 6.4.5 多构象联合全局拟合（下一阶段）
+
+单构象 Hessian 只约束一个点上的曲率；同一套参数能否覆盖构象变化，要让多个参考构象同时进目标。与 §6.4.4 是同一个目标函数，\(C = 1\) 即退化——两节一起设计、分两步交付：
+
+\[
+\min_{\mathbf k,\ \mathbf q^0}\ \sum_{c=1}^{C}
+\Bigl[
+\bigl\|\mathbf W_c \odot \bigl(\mathbf H_c^\mathrm{ref} - \mathbf H_c^\mathrm{fixed} - \sum_t k_t\, \mathbf G_{t,c}(\mathbf q^0)\bigr)\bigr\|_F^2
+\;+\;
+\mu\, \bigl\|\mathbf D_c\, \mathbf g_c^\mathrm{FF}\bigr\|^2
+\Bigr]
+\;+\;
+\lambda\, \bigl\|\mathbf k - \mathbf k^\mathrm{prior}\bigr\|^2
+\]
+
+\(q^0\) 共享——一套 FF 只有一组平衡值；\(\mathbf H_c^\mathrm{fixed}\)、\(\mathbf g_c^\mathrm{fixed}\) 在各 \(\mathbf x_c\) 处分别求值。多构象带来的物理增益值得写明：共享 \(q^0\) 后各构象的 \(q_t(\mathbf x_c) \neq q_t^0\)，\((q_t(\mathbf x_c) - q_t^0)\, \nabla^2 q_t\) 项非零且各构象不同——同一个谐振子在不同伸缩量下给出不同的曲率信息，单构象下不可分辨的病态方向（§6.4.3 第 2 条）会被部分解除。反向同样成立：参考构象间几何差异太小则目标近乎重复，去重时应剔除。
+
+参考构象集合同：
+
+- 生成：ETKDG 多构象 → 用与 Hessian 相同的参考 provider 优化到极小（\(\|\mathbf g^\mathrm{ref}\|\) 小于阈值）；
+- 去重：几何 RMSD（计入分子对称性）与能量双重去重；
+- 筛选：全局极小必进，能量窗口内最多再取 \(C - 1\) 个（窗口与 \(C\) 的默认值开工时定，量级 \(C \le 4\)）；生成参数与筛选结果全部进 provenance；
+- 一致性：所有构象的 \(\mathbf H^\mathrm{ref}\) 与 \(\mathbf H^\mathrm{fixed}\) 必须来自同一 provider、同一 IR 电荷 / 二面角版本，禁止混源。
+
+成本是 \(C\) 倍 Hessian：GFN-FF 路径（§8）下仍是分钟级，DFT 路径按需。preset 层面各档默认几构象、哪个 provider，在 §17 增补时定。
+
+泛化验证（留出验证）：拟合在构象子集上做，留出构象上评估——留出构象的频率 RMSE 与相对能量排序不得比训练构象显著劣化（容差开工时定）。这同时把“单构象参数能否推广到其他构象”的留出检验制度化：若答案肯定，多构象拟合就只留给对精度要求更高的场景；若否定，它就是必要的默认步骤。这正是本节立项要回答的科学问题。
+
+边界：只联合拟合 bond/angle 的 \((\mathbf k, \mathbf q^0)\)；charge、LJ 不进多构象目标（§15 与 MVP-4 的边界不动）；flexible torsion 仍归 §10（其多构象联合即 §10.4 的包络拟合，不需要额外机制）。
+
+### 6.4.6 与 torsion 的交替协议和“组合完成”判据（下一阶段）
+
+§6.4.2 的遗留：global fit 改 bond/angle 会让 torsion 拟合的 MM 扣除快照过期，torsion 改了 \(\mathbf H^\mathrm{fixed}\) 也过期；交替更新一直没有停止判据。协议：
+
+```text
+一轮 = charge → derive-torsions → global-fit
+重复 ≤ N 轮（默认 N = 3），直到逐项参数轮间变化 ≤ ε
+```
+
+可行性已有证据：单键级的顺序重拟合实验表明各更新顺序收敛到同一不动点（第 3 轮顺序差 ≤ 1e-4 kJ/mol）；本节把同一模式升到管线级。
+
+**组合完成** = 同时满足：
+
+1. 轮间 bond / angle / torsion 逐项变化 ≤ ε（默认与单键级实验的收敛量级一致，开工时定）；
+2. 收敛后 check-staleness 全绿——交替语境下的快照比较带 ε 容差：逐项差 ≤ ε 视为一致，不算过期。
+
+到达 N 仍不收敛：报告逐项残差、停在 N，不静默继续（与 §6.0“不静默留空”的原则一致）。轮数与 ε 进 provenance，保证整条链可重放。
 
 ---
 
@@ -833,6 +964,42 @@ OpenMM CustomTorsionForce / custom force layer
 ```
 
 同时可以再生成一个经典 Fourier approximation 供 GROMACS/AMBER 使用。
+
+## 10.4 扫描协议：多起点与分支诊断（下一阶段）
+
+现行协议（单起点 x0、正反两遍、逐点取较低者）把扫描路径问题隐藏而不是解决。本项目诊断实验实测：同一批 12 根键、每键 36 帧的网格里，滞后中位数 0.001、90% 分位 0.01 kJ/mol，10 根键 ≤ 0.01；methyl benzoate 1–2 为 0.41；nma 1–3（酰胺 C–N）最大 57.4，14/36 帧超过 1 kJ/mol，集中在 ±60–120° 能垒区。滞后大 = 存在多条亚稳构象分支，单起点顺序扫描只能跟着其中一条走；正反取 min 只是把分支问题压进结果里。
+
+多起点协议在现有 relaxed scan 上扩展，不换引擎：
+
+```text
+起点集合 = {x0（现状）}
+         ∪ {ETKDG 构象经参考势优化后的极小}
+         ∪ （可选）同分子其他键扫描帧中的构象分支
+每个起点：正反两遍顺序扫描（现有机制不动）
+每个网格点：记录全部 起点 × 方向 的收敛结果，标注分支
+```
+
+- **分支标注**：同一网格点的不同收敛几何按几何描述符聚类（对齐后重原子 RMSD，或除扫描二面角外的辅助二面角向量；聚类阈值开工时定），每点得到分支数与逐分支能量；
+- **包络**：逐点取全部起点中的最小能量。Fourier 拟合默认消费包络——与现行“取两遍较低者”语义同构，只是候选变多；同一根键的多构象联合拟合即包络拟合，一套 Fourier 参数对包络做最小二乘，不需要额外机制；
+- **分支只进诊断、不进拟合目标**：逐分支拟合仅作诊断输出（第一版）。亚稳分支的平均或加权没有明确物理意义，不默认做；
+- **诊断报告**：现有 hysteresis 之外，增加逐点分支数、分支间最大能量差、包络相对现行单起点协议的能量变化。不设自动兜底阈值（维持现行裁定：先看分布，不自动判废）；
+- **应用方式与默认**：多起点是对被诊断标记的键做重扫的工具（nma 1–3 是第一个对象，是否跑按资源另报）；默认扫描协议暂不变，是否转默认由重扫证据决定；
+- **缓存与成本**：ScanResult 增加起点维度，缓存身份包含起点来源；起点集合为默认 {x0} 时缓存身份与现行一致，旧缓存不失效。单键扫描成本（222–2610 s，MACE 参考）乘以起点数，只按需用。
+
+## 10.5 二维耦合扫描与 TorsionDrive 的定位（下一阶段，opt-in）
+
+一维多起点不解决跨键耦合。诊断实验已确认 methyl benzoate 1–2 的剖面缺陷主因是单遍拟合的跨键耦合（相邻甲基键的 GAFF2 项被吸收）——这是“同一根键的能量全部放在一个四元组”这一近似的边界问题（MVP-2 的开放问题之一）。耦合键对 \((\varphi_1, \varphi_2)\) 的二维势面才是直接证据。
+
+定位：二维耦合扫描 opt-in，第一版只作诊断与数据来源，不改变单四元组拟合默认。
+
+实现优先接 **TorsionDrive**（§27 文献 6）：其 wavefront 传播——每个格点从多个最优前驱同时做约束优化、取最低——正是把“多起点、路径无关”做成默认行为的成熟实现，并原生支持任意维网格。一维场景我们已有原生实现（§10.4），二维不必重造轮子。
+
+两条前置约束：
+
+1. **环境**：torsiondrive 不在 openmm_dev（生产环境，任何安装都需先经用户批准）。采用 = 用户批准安装，或独立 venv；这是显式决策项，不是施工细节。
+2. **对分支的认识**：wavefront 同样只保留逐点最优、丢弃高能分支。“保留分支并比较”仍由我们自己的诊断层承担（§10.4），TorsionDrive 替代不了这一半。
+
+数据合同：二维结果按格点 \((\varphi_1, \varphi_2)\) 存能量与几何，缓存身份含引擎与起点信息；第一版消费方只有诊断报告。若未来立项“耦合项拟合”，那是新的函数形式问题，不在本节范围。
 
 ---
 
@@ -1533,6 +1700,36 @@ DFT
 
 ---
 
+## MVP-6：分子入口与单命令（§3.1）
+
+```text
+ligand.sdf → 骨架 IR → 现有管线 → 三引擎
+```
+
+交付：typing-only antechamber 封装、骨架 IR 组装、§22 单命令 CLI。验收见 §3.1（含与固件流程的逐项等价对照）。
+
+---
+
+## MVP-7：扫描质量（§10.4）
+
+多起点扫描 + 分支诊断。nma 1–3 重扫是第一个应用（资源另报）。验收要点：被重扫键的滞后显著下降、包络上的剖面拟合不劣化、默认单起点路径逐位不变。
+
+---
+
+## MVP-8：平衡几何联合拟合（§6.4.4）
+
+opt-in 交付。验收要点：\(\mathbf x_0\) 处力显著下降、频率不劣化、\(q^0\) 界内、退化模式逐位复现现行 global fit。
+
+---
+
+## MVP-9：多构象联合拟合与交替收口（§6.4.5、§6.4.6）
+
+验收要点：\(C = 1\) 退化复现 §6.4.4；留出构象泛化判据通过；交替协议收敛判据与带 ε 容差的 check-staleness 生效。
+
+顺序理由：MVP-6 独立，先解锁入口与单命令；MVP-7 修参考数据质量，先于一切消费扫描数据的拟合；MVP-8 / MVP-9 共享一次目标函数设计，8 是 9 的 \(C = 1\) 特例。MVP-4（立项）与 MVP-5（调度校准）的既有遗留不受影响，仍按各自节奏。
+
+---
+
 # 24. 最终科学故事
 
 这个项目可以有三层贡献，而不是把所有东西塞成一个无法解释的“大模型”。
@@ -1652,7 +1849,12 @@ ML predicts RESP
 - 把 GFN-FF native topology 直接当最终 FF；
 - 用 Hessian 拟合普通 flexible torsion，替代已有 MLP；
 - 为了“统一”而强迫所有 backend 使用同一种文件表示；
-- 第一版就解决 residue template / protein force-field generation。
+- 第一版就解决 residue template / protein force-field generation；
+- 自研 GAFF2 atom typing 引擎（antechamber 是 typer，我们只封装，§3.1）；
+- 静默为缺 3D 坐标的输入生成构象（构象生成是显式步骤，§3.1 / §10.4 / §6.4.5）；
+- 把 torsiondrive 变成一维扫描的前置依赖（一维用原生多起点，二维 opt-in 且装环境需用户批准，§10.5）；
+- 在多构象联合拟合里同时重拟合 charge 或 LJ（边界归 §15 与 MVP-4，§6.4.5）；
+- 把扫描分支或滞后做成自动兜底阈值（先看分布、维持人工裁定，§10.4）。
 
 范围控制很重要，否则项目会迅速膨胀成另一个完整 force-field ecosystem。
 
@@ -1665,3 +1867,5 @@ ML predicts RESP
 3. GFN-FF documentation：GFN-FF 是自动化 generic force field，包含 bond/angle/torsion 与非共价相互作用，并能生成 system-specific topology。
 4. Behera S., Gapsys V., de Groot B. L. *Evaluation of the ABCG2 Charge Model in Protein–Ligand Binding Free-Energy Calculations*. J. Chem. Inf. Model. 2025, 65, 11505–11509. DOI: 10.1021/acs.jcim.5c02161. 该工作说明针对 hydration free energy 优化的 charge model 并不自动提高 protein–ligand RBFE，支持我们采用多目标 charge-model validation 的设计。
 5. Grimme S. *A General Quantum Mechanically Derived Force Field (QMDFF) for Molecules and Condensed Phase Simulations*. J. Chem. Theory Comput. 2014, 10, 4497–4514. DOI: 10.1021/ct500573f. 从平衡结构 + QM Hessian + 部分电荷 + 共价键级自动生成 molecule-specific FF；bonded 力常数通过让 FF Hessian 拟合 QM Hessian 得到；可旋转键的 torsion 由自动构造的局部模型体系的完整 2π 转动曲线（extended Hückel 型最小价基 TB）拟合 Fourier 项，不可旋转 torsion 和 TB 失败的情况用 Hessian 拟合。§6.0 / §6.4 的直接先例。
+6. Qiu Y., Smith D. G. A., Stern C. D., Feng M., Jang H., Wang L.-P. *Driving torsion scans with wavefront propagation*. J. Chem. Phys. 2020, 152, 244116. DOI: 10.1063/5.0009232. wavefront 传播：每个格点从多个最优前驱同时做约束优化、取最低，天然多起点、路径无关，支持任意维网格。§10.5 的直接依据。
+7. Riniker S., Landrum G. A. *Better Informed Distance Geometry: Using What We Know To Improve Conformation Generation*. J. Chem. Inf. Model. 2015, 55, 2562–2567. DOI: 10.1021/acs.jcim.5b00654. ETKDG 构象生成：§3.1 之外构象的唯一默认来源（§10.4 多起点扫描、§6.4.5 多构象拟合），始终显式、进 provenance。
