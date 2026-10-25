@@ -45,6 +45,19 @@ def to_openmm_system(
     system = openmm.System()
     for atom in ir.atoms:
         system.addParticle(atom.mass)
+    if ir.box_nm is not None:
+        # OpenMM 要求下三角形式（a=(ax,0,0)、b=(bx,by,0)），即 GROMACS 盒约定
+        b = np.asarray(ir.box_nm, dtype=np.float64)
+        if abs(b[0, 1]) > 1e-12 or abs(b[0, 2]) > 1e-12 or abs(b[1, 2]) > 1e-12:
+            raise ValueError(
+                "OpenMM 周期盒需为下三角形式（a=(ax,0,0)、b=(bx,by,0)）；"
+                "请先把 IR.box_nm 规范化为 GROMACS 约定"
+            )
+        system.setDefaultPeriodicBoxVectors(
+            openmm.Vec3(b[0, 0], 0.0, 0.0),
+            openmm.Vec3(b[1, 0], b[1, 1], 0.0),
+            openmm.Vec3(b[2, 0], b[2, 1], b[2, 2]),
+        )
 
     bond_force = openmm.HarmonicBondForce()
     for b in ir.bonds:

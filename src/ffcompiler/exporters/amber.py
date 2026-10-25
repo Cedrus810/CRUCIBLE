@@ -156,6 +156,18 @@ def build_prmtop(ir: ForceFieldIR) -> PrmtopFile:
         excluded.extend([j + 1 for j in js] if js else [0])
 
     pointers = dict.fromkeys(POINTER_NAMES[:31], 0)
+    # 周期盒（决策 0023）：prmtop 只支持正交盒（IFBOX=1）；三斜 → 报错
+    box_diag: tuple[float, float, float] | None = None
+    if ir.box_nm is not None:
+        b = np.asarray(ir.box_nm, dtype=np.float64)
+        off = float(np.abs(b - np.diag(np.diag(b))).max())
+        if off > 1e-9:
+            raise ValueError(
+                f"AMBER prmtop 周期导出只支持正交盒（IFBOX=1）；IR 的三斜盒"
+                f"非对角元最大 {off:.3e} nm，请导出 GROMACS/OpenMM 或先正交化晶胞"
+            )
+        box_diag = (float(b[0, 0]), float(b[1, 1]), float(b[2, 2]))
+        pointers["IFBOX"] = 1
     pointers.update(
         NATOM=natom, NTYPES=ntypes, NBONH=len(bonds_h) // 3, MBONA=len(bonds_a) // 3,
         NTHETH=len(angles_h) // 4, MTHETA=len(angles_a) // 4,
@@ -209,6 +221,10 @@ def build_prmtop(ir: ForceFieldIR) -> PrmtopFile:
     prm.set("RADII", e, [0.0] * natom)
     prm.set("SCREEN", e, [0.0] * natom)
     prm.set("IPOL", "1I8", [0])
+    if box_diag is not None:
+        # 4 值：beta（盒间夹角，正交=90°）、box x/y/z（Å）；IFBOX=1 时 sander 读取
+        bx, by, bz = (v * 10.0 for v in box_diag)
+        prm.set("BOX_DIMENSIONS", "5E16.8", [90.0, bx, by, bz])
     return prm
 
 
@@ -222,5 +238,14 @@ def write_amber(
     prmtop = outdir / "molecule.prmtop"
     inpcrd = outdir / "molecule.inpcrd"
     write_prmtop(build_prmtop(ir), prmtop)
-    write_rst7(np.asarray(positions_nm, dtype=np.float64) * 10.0, inpcrd, title=ir.name)
+    box_angstrom = None
+    if ir.box_nm is not None:
+        b = np.asarray(ir.box_nm, dtype=np.float64) * 10.0
+        box_angstrom = (float(b[0, 0]), float(b[1, 1]), float(b[2, 2]))
+    write_rst7(
+        np.asarray(positions_nm, dtype=np.float64) * 10.0,
+        inpcrd,
+        title=ir.name,
+        box_angstrom=box_angstrom,
+    )
     return {"prmtop": prmtop, "inpcrd": inpcrd}

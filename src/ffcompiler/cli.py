@@ -99,6 +99,12 @@ def _do_derive_bonded(args: argparse.Namespace) -> int:
             return 2
         from ffcompiler.hessian.orca import read_orca_hess
         h = read_orca_hess(Path(args.hessian_file))
+    elif args.hessian_provider == "cp2k-out":
+        if not args.hessian_file:
+            print("error: cp2k-out provider 需要 --hessian-file", file=sys.stderr)
+            return 2
+        from ffcompiler.hessian.cp2k import read_cp2k_hess
+        h = read_cp2k_hess(Path(args.hessian_file), positions_nm=positions)
     else:
         # 计划 §1 固定 xtb 6.7.1；FFC_XTB 只用于显式替换（同 FFC_GMX），不查 PATH
         h = run_xtb_hessian(
@@ -356,6 +362,12 @@ def _do_global_fit(args: argparse.Namespace) -> int:
             return 2
         from ffcompiler.hessian.orca import read_orca_hess
         h = read_orca_hess(Path(args.hessian_file))
+    elif args.hessian_provider == "cp2k-out":
+        if not args.hessian_file:
+            print("error: cp2k-out provider 需要 --hessian-file", file=sys.stderr)
+            return 2
+        from ffcompiler.hessian.cp2k import read_cp2k_hess
+        h = read_cp2k_hess(Path(args.hessian_file), positions_nm=positions)
     else:
         import os
 
@@ -493,10 +505,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     _add_common_inputs(p_derive)
     p_derive.add_argument("--hessian-provider", required=True,
-                          choices=["gfnff", "gfn2", "fchk", "orca-hess"])
+                          choices=["gfnff", "gfn2", "fchk", "orca-hess", "cp2k-out"])
     p_derive.add_argument("--hessian-file", type=Path, default=None)
     p_derive.add_argument("--method", required=True,
-                          choices=["mseminario", "m2seminario", "drih"])
+                          choices=["mseminario", "m2seminario", "drih", "localhess"],  # localhess experimental（决策 0023）
+    )
     p_derive.add_argument("--no-symmetrize", action="store_true")
     p_derive.add_argument("--linear-angles", choices=["error", "library"],
                           default="error")
@@ -535,7 +548,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     _add_common_inputs(p_gfit)
     p_gfit.add_argument("--hessian-provider", required=True,
-                        choices=["gfnff", "gfn2", "fchk", "orca-hess"])
+                        choices=["gfnff", "gfn2", "fchk", "orca-hess", "cp2k-out"])
     p_gfit.add_argument("--hessian-file", type=Path, default=None)
     p_gfit.add_argument("--prior", choices=["mseminario", "m2seminario", "drih"],
                         default="mseminario")

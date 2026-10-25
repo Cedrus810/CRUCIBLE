@@ -138,7 +138,17 @@ def write_gromacs(
             f"{1:>5d}{resname:<5s}{atom.name[:5]:>5s}{n:5d}"
             f"{x:15.10f}{y:15.10f}{z:15.10f}"
         )
-    gro_lines.append("   10.00000   10.00000   10.00000")
+    if ir.box_nm is not None:
+        b = np.asarray(ir.box_nm, dtype=np.float64)
+        off = (b[0, 1], b[0, 2], b[1, 0], b[1, 2], b[2, 0], b[2, 1])
+        if max(abs(v) for v in off) < 1e-12:
+            gro_lines.append(f"{b[0, 0]:10.5f}{b[1, 1]:10.5f}{b[2, 2]:10.5f}")
+        else:
+            # 三斜：对角在前，随后 v1(y) v1(z) v2(x) v2(z) v3(x) v3(y)（决策 0023）
+            vals = (b[0, 0], b[1, 1], b[2, 2], *off)
+            gro_lines.append("".join(f"{v:10.5f}" for v in vals))
+    else:
+        gro_lines.append("   10.00000   10.00000   10.00000")
     gro_path = outdir / "conf.gro"
     gro_path.write_text("\n".join(gro_lines) + "\n", encoding="utf-8")
 

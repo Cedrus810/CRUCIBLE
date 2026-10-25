@@ -44,6 +44,7 @@ def ir_to_dict(ir: ForceFieldIR) -> dict[str, Any]:
         "combination_rule": ir.combination_rule,
         "coulomb_14_scale": ir.coulomb_14_scale,
         "vdw_14_scale": ir.vdw_14_scale,
+        "box_nm": [list(r) for r in ir.box_nm] if ir.box_nm is not None else None,
         "provenance": ir.provenance,
     }
 
@@ -79,6 +80,11 @@ def ir_from_dict(data: dict[str, Any]) -> ForceFieldIR:
         combination_rule=data["combination_rule"],
         coulomb_14_scale=data["coulomb_14_scale"],
         vdw_14_scale=data["vdw_14_scale"],
+        box_nm=(
+            tuple(tuple(float(x) for x in r) for r in data["box_nm"])
+            if data.get("box_nm")
+            else None
+        ),
         provenance=dict(data.get("provenance") or {}),
     )
 

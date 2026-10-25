@@ -173,6 +173,12 @@ $$\mathbf H_q=\mathbf A\,\mathbf H_x\,\mathbf A^{\mathsf T}.$$
 \(q_t(\mathbf x_0)\)。只取对角元（Sobtop 的 DRIH 另有 bond–bond 耦合项，
 AMBER 型函数表示不了，丢弃）。
 
+> **与 Sobtop 的阈值差异（决策 0022）**：Sobtop 对 \(\mathbf B\) 直接 SVD，
+> 奇异值绝对阈值 \(|\sigma|>10^{-10}\)（等价 \(\lambda>10^{-20}\)）。本项目用
+> 相对阈值 \(10^{-8}\lambda_{\max}\)。B 的谱双峰（O(0.1–1) 与数值零）时两种
+> 策略切在空处——这是 12/12 oracle 一致的原因；**近线性、近冗余 RIC 等病态
+> 几何下两者可能分叉**，比对这类体系的 Sobtop 输出时需注意。
+
 ### 4.1a 内部单位（决策 0012，用户已确认）
 
 All Cartesian Hessians are internally normalized to atomic units (\(E_h/a_0^2\)) and

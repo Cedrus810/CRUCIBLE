@@ -35,7 +35,7 @@ from ffcompiler.ir import Angle, Bond, ForceFieldIR
 from ffcompiler.ir.topology import bond_graph
 from ffcompiler.ir.validation import validate
 
-BondedMethod = Literal["mseminario", "m2seminario", "drih"]
+BondedMethod = Literal["mseminario", "m2seminario", "drih", "localhess"]
 # 命名按计划 §2.6：C2 与 Sobtop m2Seminario 全部一致（决策 0011）
 
 _BOND_RATIO_MIN = 0.8
@@ -156,6 +156,11 @@ def _derive_terms(
         return mseminario(h, bonds, angles)
     if method == "m2seminario":
         return m2seminario(h, bonds, angles)
+    if method == "localhess":
+        # Sobtop 隐藏 k_method=5 的复刻（决策 0023，experimental）
+        from ffcompiler.bonded.localhess import localhess
+
+        return localhess(h, bonds, angles)
     if method == "drih":
         return drih(
             h, bonds, angles, dihedrals=proper_quartets(bond_graph(ir)),

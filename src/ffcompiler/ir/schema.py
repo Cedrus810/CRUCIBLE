@@ -95,6 +95,9 @@ class ForceFieldIR:
     combination_rule: str                     # MVP-0 只有 "lorentz-berthelot"
     coulomb_14_scale: float
     vdw_14_scale: float
+    # 周期盒（决策 0023）：3×3，行 = 晶胞向量 a/b/c [nm]；None = 孤立体系。
+    # 导出器按引擎能力消费（GROMACS/OpenMM 全三斜；AMBER prmtop 仅正交）。
+    box_nm: tuple[tuple[float, float, float], ...] | None = None
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
     def replace_terms(

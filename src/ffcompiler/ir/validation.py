@@ -5,6 +5,8 @@ from __future__ import annotations
 import math
 from typing import Iterable
 
+import numpy as np
+
 from .schema import ForceFieldIR
 from .topology import expected_exclusions_and_pairs
 
@@ -216,6 +218,21 @@ def _check_family(ir: ForceFieldIR, issues: list[str]) -> None:
             issues.append(f"{name} = {value!r}, must be in (0, 1]")
 
 
+def _check_box(ir: ForceFieldIR, issues: list[str]) -> None:
+    if ir.box_nm is None:
+        return
+    b = np.asarray(ir.box_nm, dtype=np.float64)
+    if b.shape != (3, 3):
+        issues.append(f"box_nm 形状应为 (3,3)，得到 {b.shape}")
+        return
+    if not np.all(np.isfinite(b)):
+        issues.append("box_nm 含非有限值")
+        return
+    det = float(np.linalg.det(b))
+    if det <= 0.0:
+        issues.append(f"box_nm 行列式 {det:.6g} ≤ 0（左手系或退化盒）")
+
+
 def validate(ir: ForceFieldIR) -> None:
     issues: list[str] = []
     _check_indices(ir, issues)
@@ -226,5 +243,6 @@ def validate(ir: ForceFieldIR) -> None:
     _check_charge(ir, issues)
     _check_atom_type_consistency(ir, issues)
     _check_family(ir, issues)
+    _check_box(ir, issues)
     if issues:
         raise IRValidationError(issues)

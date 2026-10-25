@@ -27,6 +27,9 @@ Superseded records are kept verbatim as history.
 | [0019](0019-gate-subset-scope.md) | Gate 子集运行记 scope=subset，passed 不为 true | 有效 |
 | [0020](0020-refit-fallback-and-cache-paths.md) | 重拟合不升级原兜底键；G2 `--resume` / G3 `--scan-cache` 路径写错时报错，G3 无默认缓存 | 有效 |
 | [0021](0021-runtime-no-git-probes.md) | RunContext 与 run_logged.sh 不探测 Git；提交与 dirty 状态记 null | 有效 |
+| [0022](0022-sobtop-absorption.md) | 吸收 Sobtop 逆向：perception/fflib 两包 + 复现边界条件修正 | 有效 |
+| [0023](0023-sobtop-round2.md) | Sobtop 吸收第二批：localhess（隐藏方法5复刻，experimental）、CP2K provider、IR 周期盒；mol2 结构入口不做 | 有效 |
+
 
 新记录用下一个编号，文件名 `NNNN-short-topic.md`；取代旧记录时在旧记录标题下加一行说明。
 New records take the next number; when superseding, add a one-line note under the old title.

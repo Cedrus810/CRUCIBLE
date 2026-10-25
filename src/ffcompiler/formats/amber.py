@@ -225,7 +225,14 @@ def read_rst7(path: Path) -> np.ndarray:
     return np.array(values[:3 * natom], dtype=np.float64).reshape(natom, 3)
 
 
-def write_rst7(coords_angstrom: np.ndarray, path: Path, *, title: str = "ffcompiler") -> None:
+def write_rst7(
+    coords_angstrom: np.ndarray,
+    path: Path,
+    *,
+    title: str = "ffcompiler",
+    box_angstrom: tuple[float, float, float] | None = None,
+) -> None:
+    """ASCII rst7 / inpcrd；``box_angstrom`` 非 None 时末行写正交盒（决策 0023）。"""
     coords = np.asarray(coords_angstrom, dtype=np.float64).reshape(-1, 3)
     if not np.all(np.isfinite(coords)) or np.abs(coords).max(initial=0.0) >= 1e4:
         raise PrmtopError("rst7 坐标必须有限且 |x| < 10000 Å（12.7f 定宽）")
@@ -233,4 +240,8 @@ def write_rst7(coords_angstrom: np.ndarray, path: Path, *, title: str = "ffcompi
     out = [title[:80], f"{len(coords):6d}"]
     for k in range(0, len(flat), 6):
         out.append("".join(f"{v:12.7f}" for v in flat[k:k + 6]))
+    if box_angstrom is not None:
+        if any(v <= 0.0 or v >= 1e4 for v in box_angstrom):
+            raise PrmtopError(f"rst7 盒长非法：{box_angstrom}（Å，需 0 < v < 10000）")
+        out.append("".join(f"{v:12.7f}" for v in box_angstrom))
     Path(path).write_text("\n".join(out) + "\n")

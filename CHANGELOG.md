@@ -3,6 +3,64 @@
 All notable changes to ffcompiler. Dates are Asia/Tokyo. Decision records live in
 [`docs/decisions/`](docs/decisions/README.md).
 
+## [Unreleased] — README overhaul (2026-10-25; docs only)
+
+- All three READMEs (EN / zh-CN / ja) fully rewritten from the MVP-progress style into a
+  "what the tool is" structure: pipeline diagram up front, capabilities by section, real
+  quickstart, verification and known-limitations sections kept, roadmap rewritten with
+  explicit status tiers (done & gated / framework only / designed not implemented /
+  pending validation / open decisions). Implemented features only; the MVP-6–9 design
+  amendment appears solely in the roadmap as "designed, not implemented".
+- The authoritative fine-grained project state remains HANDOVER.md.
+
+## [Unreleased] — Next-phase design amendment (2026-10-25; decision 0024; design only, no code)
+
+- Design doc amended with the four next-phase directions, all as **new sections — existing
+  numbering untouched** (acceptance reports cite § numbers): §3.1 molecule entry,
+  §6.4.4–§6.4.6 joint fitting and alternation, §10.4–§10.5 scan protocol, §23 MVP-6–MVP-9,
+  §26 boundaries, §27 references; header carries a revision note.
+- §3.1 SDF → skeleton IR: antechamber as the external GAFF2 typer (typing-only, no sqm;
+  charges stay with the §11 provider layer), GAFF2 library values as prior / fallback /
+  `policy: library` answer, geometry contract with no silent conformer generation
+  (SDF-only first version; consistent with decision 0023's mol2 rejection).
+- §6.4.4 equilibrium-geometry joint fit (the interface reserved by §6.4.3-1): q⁰ becomes a
+  fit variable plus a gradient-matching term; linear in k given q⁰ (curvature + gradient +
+  prior rows stacked), opt-in with bit-exact degeneracy to §6.4.1. §6.4.5 multi-conformer
+  joint global fit shares the same objective (C = 1 degenerates; shared q⁰; ETKDG →
+  same-provider optimization → dedup → energy-window selection; hold-out conformer
+  validation institutionalized). §6.4.6 closes the §6.4.2 alternation gap:
+  charge → derive-torsions → global-fit rounds (≤ N = 3) with ε-tolerant completion
+  criteria and an ε-aware check-staleness.
+- §10.4 native multi-start relaxed scans with per-grid-point branch bookkeeping: branches
+  are diagnosis-only and never fit targets; Fourier fitting consumes the per-point minimum
+  envelope; default scan protocol unchanged and caches backward compatible; no automatic
+  hysteresis thresholds (user ruling of 2026-10-17 stands). §10.5 reserves TorsionDrive
+  for opt-in 2-D coupled scans — installing it into the production env is an explicit user
+  decision, not a construction detail.
+- No code, tests, or Gates touched this round.
+
+## [Unreleased] — Sobtop absorption round 2 (2026-10-24; decisions 0022/0023; unit suite green)
+
+- New `perception` and `fflib` packages (decision 0022): geometry bonding/angle/dihedral/improper
+  perception with Cordero 2008 radii ×1.15, bondcrit.dat distance windows, triclinic PBC nearest
+  image; readers/matchers for Sobtop's `LJ_param.dat` / `bonded_param.dat` / `bondcrit.dat`
+  (X-wildcard precedence specific-first/forward-first, IDIVF, negative periodicity, LJ conversion,
+  guess constants). 24 tests against sandbox ground truth.
+- `--method localhess` (experimental, decision 0023): local-compliance bond/angle derivation
+  reverse-engineered from Sobtop's hidden k_method=5 (`k = 1/(b^T pinv(H_loc) b)`); no reference
+  oracle exists (Sobtop has no menu entry), so validation is internal-consistency only.
+- `--hessian-provider cp2k-out` (decision 0023): CP2K `.out` VIB Hessian reader; bit-checked
+  against the official FeCl2 example. The printed matrix is a forward-difference raw Jacobian —
+  symmetrized on read with the raw asymmetry recorded in `meta`; Hessian quality checks still
+  gate it.
+- IR periodic box `box_nm` (decision 0023): JSON round-trip, validation (shape/finite/det>0),
+  NumPy reference energies use bond-graph unwrap + minimum image (wrap-invariant), GROMACS gro
+  box line (orthorhombic 3 / triclinic 9 values), OpenMM periodic box vectors (lower-triangular),
+  AMBER IFBOX=1 + BOX_DIMENSIONS + rst7 box line (orthorhombic only; triclinic raises).
+- Full reverse-engineering report in-tree: `docs/theory/sobtop_reverse_engineering.md`.
+- mol2 as a structure input is explicitly rejected (user decision): the `charge/loaded` provider
+  already consumes mol2 with a different semantics; structure input stays prmtop/inpcrd/sdf.
+
 ## [Unreleased] — Optional sequential refinement (2026-10-18; verified, Gates G0–G3 re-run and passed: `jobs/gate_mvp*_20261018_2/`)
 
 - `derive-torsions --refinement-rounds {0,1,2,3}` adds bounded sweeps after the original single pass;
