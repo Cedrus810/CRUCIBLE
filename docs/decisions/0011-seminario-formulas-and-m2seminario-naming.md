@@ -30,5 +30,7 @@
 - 命名：按 §2.6 规则，C2 全部一致 ⇒ 公开方法名 `m2seminario`。D2 结案。
   模块、CLI、Gate、测试中的 `symseminario` 全部改名。
 - oracle 测试（T17 用例 1、T18 用例 1）由 xfail 改为真实断言。
-- 未完成：Allen et al. 2018 原文公式编号尚未对照填写（理论文档 §2 标注"待补"）。
-  公式以 Sobtop 数值核对为准，不宣称已与原文逐式核对。
+- ~~未完成：Allen et al. 2018 原文公式编号尚未对照填写~~ 2026-10-08 已补：用户批准联网查阅，
+  对照 accepted version（`docs/theory/refs/allen2018_jctc_accepted.pdf`）写入理论文档 §2（bond Eq. 4，angle Eq. 5–7、12）。
+  bond（Eq. 4）与相邻键角缩放（Eq. 12，求和含自身再减 1，与本项目写法等价）已与原文逐式对照一致；
+  原文没写的细节（bond 不取 AB/BA 平均、angle 两种写法取平均、复本征值取实部）以 Sobtop 数值核对为准。
