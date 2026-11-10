@@ -21,3 +21,16 @@ CLAUDE.md
 
 # local reference PDFs (copyrighted, keep out of the public repo)
 docs/theory/refs/
+
+# 2026-11-11: experiment run artifacts stay local (records and job manifests stay)
+experiments/**/*.log
+experiments/**/*.out
+experiments/**/*.in
+experiments/**/*.pdb
+experiments/**/*.sdf
+experiments/**/*.mol2
+experiments/**/*.gbw
+experiments/**/*.densities
+experiments/**/*.densitiesinfo
+experiments/**/*.property.txt
+researchd.plan.toml
