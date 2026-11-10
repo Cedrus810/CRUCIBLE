@@ -147,7 +147,7 @@ def test_find_dihedrals_idivf_and_wildcard(bonded_file):
 
 def test_find_dihedrals_negative_pn(bonded_file):
     lib = parse_bonded_param(bonded_file)
-    # 'hc-c3-c3-oh 1 0.00 0.0 -3.'：cos 偶函数 → pn=3、phase 0（Sobtop itp 实证）
+    # 'hc-c3-c3-oh 1 0.00 0.0 -3.'：取 |pn| → pn=3、phase 0（Sobtop itp 实证）
     terms = find_dihedrals(lib, "oh", "c3", "c3", "hc")
     assert terms[0].pn == 3.0
     assert terms[0].phase_deg == 0.0
@@ -171,6 +171,25 @@ def test_find_improper(bonded_file):
     assert find_improper(lib, "ha", "ca", "ca", "ca") is not None
     # 中心不匹配 → None（调用方用 GUESS_IMPROPER_* 兜底）
     assert find_improper(lib, "ho", "oh", "c3", "c3") is None
+
+
+def test_find_improper_outer_order_free(bonded_file):
+    lib = parse_bonded_param(bonded_file)
+    # 羧基碳：中心 c，外围按原子编号是 (c3, o, o)。条目 X-o-c-o 的第四列 o 对上
+    # 一个外围 o，前两列 X、o 对上其余两个——外围顺序任意（Sobtop findffimp）
+    term = find_improper(lib, "c3", "o", "c", "o")
+    assert term is not None
+    assert term.kd_kj == pytest.approx(1.1 * 4.184)
+    # 第四列不接受 X 以外的错配：外围里没有 o 就不命中 X-o-c-o / X-X-c-o
+    assert find_improper(lib, "c3", "n", "c", "n") is None
+
+
+def test_negative_pn_keeps_phase(tmp_path):
+    # AMBER 负 pn 只是续行标记：取 |pn|，phase 原样保留（不做 phase→−phase）
+    p = tmp_path / "bonded_param.dat"
+    p.write_text("$DIHEDRAL\nca-ca-os-c   1   0.50   30.0   -2.\n$end\n")
+    terms = find_dihedrals(parse_bonded_param(p), "ca", "ca", "os", "c")
+    assert [(t.pn, t.phase_deg) for t in terms] == [(2.0, 30.0)]
 
 
 def test_find_lj(tmp_path):

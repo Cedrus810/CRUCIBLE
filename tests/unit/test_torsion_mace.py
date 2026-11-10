@@ -28,9 +28,14 @@ def test_default_model_path_env_override(monkeypatch, tmp_path) -> None:
         default_model_path()
 
 
-def test_default_model_path_is_polar_m(monkeypatch) -> None:
+def test_default_model_path_is_polar_m(monkeypatch, tmp_path) -> None:
+    # 不写配置、不设 FFC_MACE_MODEL 时，回落到旧的相对 HOME 默认位置（决策 0026）
+    model = tmp_path / "home" / "MLP" / "mace" / "MACE-POLAR-1-M.model"
+    model.parent.mkdir(parents=True)
+    model.write_bytes(b"x")
+    monkeypatch.setenv("HOME", str(tmp_path / "home"))
     monkeypatch.delenv("FFC_MACE_MODEL", raising=False)
-    assert default_model_path() == Path("/home/user/MLP/mace/MACE-POLAR-1-M.model")
+    assert default_model_path() == model
 
 
 def test_molecule_info_carries_total_charge() -> None:

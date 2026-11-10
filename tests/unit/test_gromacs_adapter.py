@@ -14,7 +14,7 @@ def test_precise_energy_parsing():
 
 def test_explicit_bad_executable_is_error(monkeypatch):
     monkeypatch.setenv("FFC_GMX", "/does/not/exist/gmx")
-    with pytest.raises(ValueError, match="not executable"):
+    with pytest.raises(ValueError, match="FFC_GMX"):
         find_gromacs()
 
 

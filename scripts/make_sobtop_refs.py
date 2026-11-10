@@ -32,7 +32,6 @@ from ffcompiler.hessian.xtb import run_xtb_hessian  # noqa: E402
 from ffcompiler.importers import from_amber  # noqa: E402
 from ffcompiler.ir.topology import bond_graph  # noqa: E402
 
-SOBTOP_SOURCE = Path("~/software/sobtop_2026.1.16").expanduser()
 SOBTOP_DIR = REPO / "tools" / "sobtop"
 SOBTOP_BINARY = SOBTOP_DIR / "sobtop"
 SUPPORT_FILES = (
@@ -69,13 +68,21 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _sobtop_source() -> Path:
+    """Sobtop 发行目录：FFC_SOBTOP_SOURCE → 配置 [tools].sobtop_source → 旧默认（决策 0026）。"""
+    from ffcompiler.toolconfig import resolve
+
+    return resolve("sobtop_source").path
+
+
 def prepare_sobtop() -> None:
-    """复制 Sobtop 到 tools/sobtop/（已存在则跳过），加执行位。"""
+    """复制 Sobtop 到 tools/sobtop/（已存在则跳过，此时不需要源目录），加执行位。"""
     if not SOBTOP_BINARY.is_file():
-        log(f"复制 {SOBTOP_SOURCE} -> {SOBTOP_DIR}")
-        shutil.copytree(SOBTOP_SOURCE, SOBTOP_DIR)
-    if not (SOBTOP_SOURCE / "sobtop").is_file():
-        raise SystemExit(f"原始目录里没有 sobtop 二进制：{SOBTOP_SOURCE}")
+        source = _sobtop_source()
+        if not (source / "sobtop").is_file():
+            raise SystemExit(f"原始目录里没有 sobtop 二进制：{source}")
+        log(f"复制 {source} -> {SOBTOP_DIR}")
+        shutil.copytree(source, SOBTOP_DIR)
     SOBTOP_BINARY.chmod(0o755)
 
 

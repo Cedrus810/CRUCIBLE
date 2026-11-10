@@ -217,7 +217,7 @@ $IMPROPER: type1-type2-type3-type4    barrier[kcal]  phase[°]  pn
 1. 先试**全具体类型**（正向 type_i-type_j-type_k-type_l；正反两个方向）；
 2. 失败再试 **X 通配**条目（X 在任意位）；
 3. $DIHEDRAL 的 `barrier/IDIVF` 后换算 kJ（×4.184）；同一类型多条 → **展开为多条 funct 9 行**（不同 pn）；
-4. **负 pn 处理**：直接取 |pn|；phase=0 时数学严格等价（cos 偶函数）；非零 phase 的等价改写为 phase→−phase。
+4. **负 pn 处理**：直接取 |pn|，phase 不变（AMBER 语义：负 pn 只是“后面还有项”的标记）。（2026-10-28 更正：原文“非零 phase 改写为 phase→−phase”是推断，不是观测结果，决策 0025。）
 
 ### 7.3 improper 检测（`outitprtp` 内联，数据驱动，无硬编码）
 
@@ -228,6 +228,8 @@ $IMPROPER: type1-type2-type3-type4    barrier[kcal]  phase[°]  pn
 
 中心类型集合（当前库）= GAFF {ca, c, c2, n, na, n2} ∪ AMBER {CA, C, N, N*, CM, CJ, CS, CB, CC, C4, NA, N2, CW, CV, CR, CQ, CP, CN, CK, C5}。
 UFF 类型不触发**只因库里没有 UF 条目**——往库里加一条带 UF 中心的 improper 即触发。
+库匹配（`findffimp`，2026-10-28 按反编译的比较结构补记，决策 0025）：条目第三列等于中心类型；第四列等于某个外围原子的类型（这一列不和 X 比较）；前两列匹配其余两个外围原子（可为 X）；外围顺序任意，按文件顺序取第一条命中。
+
 参数缺失时兜底 "guess (same as GAFF X-X-ca-ha)"：1.1 kcal → kd=4.6024 kJ、phase 180、pn 2。
 
 ### 7.4 缺参"乱猜"常量（`add*miss`，实证）

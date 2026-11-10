@@ -72,6 +72,35 @@ def _carrier_quartets(ir: ForceFieldIR) -> list[tuple[int, int, int, int]]:
     return quartets
 
 
+def _molecule_sizes(ir: ForceFieldIR) -> list[int]:
+    """键图连通分量的原子数（ATOMS_PER_MOLECULE）；要求每个分子的原子编号连续。"""
+    from ffcompiler.ir.topology import bond_graph
+
+    graph = bond_graph(ir)
+    sizes: list[int] = []
+    start = 0
+    seen: set[int] = set()
+    for a in range(len(ir.atoms)):
+        if a in seen:
+            continue
+        comp = {a}
+        stack = [a]
+        while stack:
+            for b in graph.get(stack.pop(), ()):
+                if b not in comp:
+                    comp.add(b)
+                    stack.append(b)
+        if min(comp) != start or max(comp) != start + len(comp) - 1:
+            raise ValueError(
+                "AMBER 周期 prmtop 要求每个分子的原子编号连续（ATOMS_PER_MOLECULE）；"
+                f"含原子 {a} 的分子占用 {sorted(comp)}"
+            )
+        seen |= comp
+        sizes.append(len(comp))
+        start += len(comp)
+    return sizes
+
+
 def build_prmtop(ir: ForceFieldIR) -> PrmtopFile:
     validate(ir)
     natom = len(ir.atoms)
@@ -222,7 +251,12 @@ def build_prmtop(ir: ForceFieldIR) -> PrmtopFile:
     prm.set("SCREEN", e, [0.0] * natom)
     prm.set("IPOL", "1I8", [0])
     if box_diag is not None:
-        # 4 值：beta（盒间夹角，正交=90°）、box x/y/z（Å）；IFBOX=1 时 sander 读取
+        # IFBOX>0 时 sander 必读这三段。SOLVENT_POINTERS = IPTRES（最后一个溶质残基）、
+        # NSPM（分子数）、NSPSOL（第一个溶剂分子；没有溶剂取 NSPM+1）
+        sizes = _molecule_sizes(ir)
+        prm.set("SOLVENT_POINTERS", "3I8", [1, len(sizes), len(sizes) + 1])
+        prm.set("ATOMS_PER_MOLECULE", i8, sizes)
+        # 4 值：beta（盒间夹角，正交=90°）、box x/y/z（Å）
         bx, by, bz = (v * 10.0 for v in box_diag)
         prm.set("BOX_DIMENSIONS", "5E16.8", [90.0, bx, by, bz])
     return prm

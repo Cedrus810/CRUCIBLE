@@ -40,6 +40,10 @@ _HESSIAN_HEADER = "VIB| Hessian in cartesian coordinates"
 _COORD_HEADER = re.compile(r"MODULE QUICKSTEP:\s+ATOMIC COORDINATES IN angstrom")
 
 
+class MissingCoordinatesError(ValueError):
+    """文件里没有可用的 QUICKSTEP 坐标表，且调用方没有显式传 positions_nm。"""
+
+
 def _to_float(token: str) -> float:
     return float(token.replace("D", "E").replace("d", "e"))
 
@@ -64,9 +68,6 @@ def _read_lines(path: Path) -> list[str]:
 
 def _parse_paged_matrix(path: Path, lines: list[str], start: int) -> tuple[np.ndarray, list[str]]:
     """从 Hessian 表头下一行起解析分页矩阵，返回 (3N×3N 矩阵, 元素符号列表)。"""
-    n_total: int | None = None
-    matrix: np.ndarray | None = None
-    elements: list[str] = []
     pos = start
     while pos < len(lines) and not lines[pos].strip():
         pos += 1  # 表头后的空行
@@ -100,20 +101,14 @@ def _parse_paged_matrix(path: Path, lines: list[str], start: int) -> tuple[np.nd
     if not pages:
         raise ValueError(f"{path}: VIB| Hessian 段之后没有矩阵页")
     n_total = pages[0][1][-1][0] + 1
-    if any(r[0] + 1 != n_total for _, rows in pages for r in rows):
-        pass  # 行号连续性在下面的覆盖检查中体现
     matrix = np.full((n_total, n_total), np.nan)
-    seen_rows: set[int] = set()
     for cols, rows in pages:
         if len(rows) != n_total:
             raise ValueError(
                 f"{path}: Hessian 列页 {cols[:2]}… 应有 {n_total} 行，实际 {len(rows)}"
             )
-        for r, elem, values in rows:
+        for r, _, values in rows:
             matrix[r, cols] = values
-            seen_rows.add(r)
-            if not elements:
-                pass
     # 元素符号：取第一页的行序（每页重复同样 3N 行）
     first_rows = pages[0][1]
     elements = [e for _, e, _ in first_rows]
@@ -169,7 +164,8 @@ def read_cp2k_hess(
     """读取 CP2K .out 的 VIB Hessian 为 CartesianHessian。
 
     缺 ``VIB| Hessian in cartesian coordinates`` 段、矩阵不完整、坐标原子数
-    与矩阵维度不一致 → ValueError。``positions_nm`` 可显式覆盖文件内坐标
+    与矩阵维度不一致 → ValueError；没有坐标表又没传 ``positions_nm`` →
+    MissingCoordinatesError（ValueError 子类）。``positions_nm`` 可显式覆盖文件内坐标
     （调用方的结构文件才是权威几何时使用）。
     """
     path = Path(path)
@@ -206,7 +202,7 @@ def read_cp2k_hess(
     else:
         coords_a = _parse_last_coordinates(path, lines)
         if coords_a is None:
-            raise ValueError(
+            raise MissingCoordinatesError(
                 f"{path}: 文件内没有可用的 QUICKSTEP 坐标表，且未显式传 "
                 "positions_nm——请传入结构文件的几何"
             )

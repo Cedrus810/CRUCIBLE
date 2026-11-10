@@ -25,6 +25,14 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 DEFAULT_OUT = REPO_ROOT / "tests" / "fixtures" / "gaff2"
+
+
+def _tool(key: str) -> str:
+    """AmberTools 程序位置：FFC_<KEY> → 配置 [tools] → PATH（决策 0026）。"""
+    from ffcompiler.toolconfig import resolve
+
+    return str(resolve(key).path)
+
 SEED = 20261004
 
 FIXTURES: list[tuple[str, str, int]] = [
@@ -155,7 +163,7 @@ def generate_one(name: str, smiles: str, charge: int, outdir: Path) -> dict:
     n_atoms = build_sdf(name, smiles, sdf)
 
     _run(
-        ["antechamber", "-i", sdf.name, "-fi", "sdf", "-o", mol2.name, "-fo", "mol2",
+        [_tool("antechamber"), "-i", sdf.name, "-fi", "sdf", "-o", mol2.name, "-fo", "mol2",
          "-c", "bcc", "-at", "gaff2", "-nc", str(charge), "-pf", "y"],
         mdir, name, "antechamber", "antechamber.log",
     )
@@ -164,7 +172,7 @@ def generate_one(name: str, smiles: str, charge: int, outdir: Path) -> dict:
     _equalize_mol2_charges(mol2, charge, name)
 
     _run(
-        ["parmchk2", "-i", mol2.name, "-f", "mol2", "-o", frcmod.name, "-s", "gaff2"],
+        [_tool("parmchk2"), "-i", mol2.name, "-f", "mol2", "-o", frcmod.name, "-s", "gaff2"],
         mdir, name, "parmchk2", "parmchk2.log",
     )
     if not frcmod.is_file():
@@ -179,7 +187,7 @@ def generate_one(name: str, smiles: str, charge: int, outdir: Path) -> dict:
         "quit\n",
         encoding="utf-8",
     )
-    _run(["tleap", "-f", "tleap.in"], mdir, name, "tleap", "tleap.log")
+    _run([_tool("tleap"), "-f", "tleap.in"], mdir, name, "tleap", "tleap.log")
     if not (prmtop.is_file() and inpcrd.is_file()):
         step_fail(name, "tleap", "prmtop/inpcrd not produced")
     (mdir / "leap.log").unlink(missing_ok=True)

@@ -3,8 +3,9 @@
 规则与 Sobtop 逐条对齐（动态实验 ground truth 见
 docs/theory/sobtop_reverse_engineering.md §4、§7.3 与附录 A）：
 
-- 键：``d < (r_i + r_j) × factor``（Cordero 2008 半径，factor 默认 1.15），
-  bondcrit.dat 的元素对**距离窗口**覆盖优先于半径判据；周期体系用最近镜像距离；
+- 键：``d < (r_i + r_j) × factor``（Cordero 2008 半径，factor 默认 1.15）；
+  bondcrit.dat 列出的元素对改用**距离窗口**判据、不再看半径判据（setbondcrit
+  把该元素对的下限/上限矩阵元整体替换）；周期体系用最近镜像距离；
 - 角：每个中心原子的邻居两两组合（含氢、不去重、不剔除线性角）；
 - 二面角：所有 i-j-k-l 路径；任一侧角满足 ``180° − θ < linear_deg``（默认 1°）
   即剔除；输出规范化为 i<l 方向（Sobtop 的 (i,j,k,l)/(l,k,j,i) 等价形式）；
@@ -83,7 +84,8 @@ def perceive_bonds(
     """按半径判据感知键（0 基索引，i<j，(i,j) 字典序输出）。
 
     ``pair_windows``：元素对 (Z_i, Z_j) 无序键 → (下限, 上限) [Å] 距离窗口
-    （bondcrit.dat）；落在窗口内（含边界）即成键，优先于半径判据。
+    （bondcrit.dat）。列出的元素对只按窗口判定：落在窗口内（含边界）成键，
+    窗口外不成键，即使满足半径判据（Sobtop setbondcrit 替换判据矩阵元）。
     """
     z = np.asarray(atomic_numbers, dtype=int)
     n = len(z)
@@ -98,7 +100,8 @@ def perceive_bonds(
         mask = ((z[:, None] == za) & (z[None, :] == zb)) | (
             (z[:, None] == zb) & (z[None, :] == za)
         )
-        bonded |= mask & (d_nm >= lo_a * 0.1) & (d_nm <= hi_a * 0.1)
+        in_window = (d_nm >= lo_a * 0.1) & (d_nm <= hi_a * 0.1)
+        bonded = np.where(mask, in_window, bonded)
     idx = np.argwhere(np.triu(bonded, 1))
     return [(int(i), int(j)) for i, j in idx]
 

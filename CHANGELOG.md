@@ -3,6 +3,97 @@
 All notable changes to ffcompiler. Dates are Asia/Tokyo. Decision records live in
 [`docs/decisions/`](docs/decisions/README.md).
 
+## [Unreleased] — Constrained relaxation check, phase 1 (2026-11-11)
+
+### Added
+- `scripts/torsion_relaxed_check.py`: pre-fit, reference-free test of whether the re-relaxed
+  torsion profile differs from the fixed-geometry one, and whether the torsion-independent
+  background relaxation predicts it before fitting (definitions and criteria locked in
+  `docs/superpowers/plans/2026-11-01-relaxed-check-plan.md`). Read-only on the 10-13 G2 cache,
+  MM only (no MACE, no xtb, no rescan); resume per bond via existing frames CSVs.
+- Custom `MultiDihedral` ASE constraint in the script: simultaneous Gauss–Newton position
+  projection plus Euclidean force projection. Needed because ASE FixInternals (sequential
+  mass-weighted corrections, epsilon 1e-7 deg) does not converge for dmso's four co-axial
+  dihedral constraints at any step size or tolerance that meets the 1e-6 rad drift gate.
+  Feasible set, fmax criterion and optimizer unchanged; applied uniformly to all 12 bonds.
+- `jobs/torsion_relaxed_check_20261111/report.md` and `manifest.json` (only these job files
+  are tracked): acceptance, per-bond X/Y/P0/P1, confusion tables, per-frame mechanism ratios,
+  stop-condition verdict.
+
+### Verified
+- Acceptance vs prior artifacts: P0 matches the B2 best-shift metrics to 2.7e-11 kJ/mol on all
+  12 bonds; methyl benzoate background relaxations match the 2026-11-01 report (FixInternals,
+  different machine) to 4.6e-6 kJ/mol; all 24 rows pass the self-checks (worst constraint drift
+  9.7e-13 rad).
+- Locked stop conditions (2026-11-01 plan §3): none triggered. Y > sigma = 0.41 kJ/mol on 5/11
+  bonds (only basis) — including ethanol 0-1/1-2 and methyl benzoate 2-4, whose fixed-geometry
+  metrics are near-perfect (0.02–0.04). X classifies with 0 false positives and more true
+  positives than P0/P1 in both bases; per frame it explains ≤5% of the re-relaxation change.
+  nma 1-3 reported separately (bad scan). Phase 2 (new molecules, new MACE scans) is a pending
+  user decision; nothing enters the pipeline or the Gates.
+
+## [Unreleased] — External tool configuration (2026-10-28; decision 0026)
+
+### Added
+- `ffcompiler/toolconfig.py`: one lookup for every external tool — `FFC_<TOOL>` → per-user
+  `~/.config/crucible/tools.toml` (or `FFC_CONFIG`; never committed) → `PATH` → legacy `~` default.
+  `xtb` is pinned and never taken from `PATH`. A written-but-unusable path is an error; a missing
+  tool only disables the features that need it.
+- `ffcompiler init-config` (fills in what it can detect, placeholders for the rest; no overwrite
+  without `--force`) and `ffcompiler check-env` (tool table with source/path/version plus a
+  feature-availability table; exit 1 only on configuration errors).
+- `crucible.example.toml` template with placeholder paths; `scripts/env.sh` layout overridable via
+  `FFC_MAMBA_ROOT` / `FFC_ENV_NAME` / `FFC_MODULEFILES` / `FFC_GMX_MODULE` (defaults unchanged).
+
+### Changed
+- xtb, gmx (incl. extra library dirs), antechamber, sander, MACE model, `make_fixtures.py`,
+  `make_sobtop_refs.py` resolve through toolconfig; `XTB_BINARY` and `mace.DEFAULT_MODEL` removed.
+- CLI `check-equivalence` skips the sander legs when sander is not found (`report.skipped`);
+  `compare()` keeps failing by default, so Gates still require it.
+- `make_sobtop_refs.prepare_sobtop` needs the Sobtop source directory only when `tools/sobtop/`
+  has not been copied yet.
+- Tests: `pytest -m "not external"` 603 passed; unit tests are isolated from the developer's own
+  config via an autouse fixture in `tests/conftest.py`.
+
+### Verified
+- Config-only run (second account, no HOME change, no `FFC_<TOOL>`): full `pytest -m external` 60 passed;
+  Gates G0–G3 run 3 (`jobs/gate_mvp{0,1,2,3}_20261028_3/`) all passed, every report.md byte-identical to
+  run 2; pytest 603 + 60, 0 failed.
+
+## [Unreleased] — Review fixes for the 2026-10-24 code (2026-10-28; decision 0025)
+
+### Fixed
+- Periodic box is simulation-cell metadata only: `ir/energy.evaluate` no longer unwraps or
+  applies minimum image (drops the `box_nm` argument). The previous NumPy semantics matched no
+  engine — OpenMM export uses NoCutoff (no PBC), sander checks use `ntb=0`, GROMACS checks use an
+  oversized box. Measured on ethanol in a 3 nm box with wrapped coordinates: NumPy −8.45 vs
+  OpenMM 8.8e6 kJ/mol before; identical after.
+- AMBER periodic prmtop (IFBOX=1) now writes `SOLVENT_POINTERS` and `ATOMS_PER_MOLECULE`;
+  sander previously aborted with `Flag "SOLVENT_POINTERS" not found`. rst7 box line now carries
+  6 values (a b c 90 90 90).
+- GROMACS export rejects non-lower-triangular boxes (same check as OpenMM).
+- CLI `cp2k-out` keeps the file's QUICKSTEP geometry so the topology check compares it against
+  the input geometry (it was overwritten by the input geometry, making the check vacuous); only a
+  file without a coordinate table falls back to the input geometry, with a stderr note.
+- `perceive_bonds`: bondcrit windows replace the radius criterion for listed element pairs
+  (was a union), per `setbondcrit` in the decompilation.
+- `fflib`: negative periodicity keeps its phase (AMBER continuation flag; was phase → −phase);
+  `find_improper` follows `findffimp` (fixed center, order-free outer atoms, 4th column exact).
+- `test_default_model_path_is_polar_m` no longer hard-codes `/home/user/...`.
+- Tests: `pytest -m "not external"` 579 passed; the touched external tests (sander periodic prmtop,
+  MACE, CLI; 34) pass; see `experiments/20261028_review_pytest/`.
+
+### Verified (2026-10-28)
+- Gates G0–G3 run 2 (`jobs/gate_mvp{0,1,2,3}_20261028_2/`), after the gfnff CLI test was changed to pass
+  HOME and FFC_XTB to its subprocess: **all four passed**; every report.md is byte-identical to 2026-10-18
+  run 2; pytest 579 + 60 passed, 0 failed in each.
+- Run 1 (`_20261028`, superseded) as a second (non-author) account: every gate-specific criterion
+  matches 2026-10-18 run 2 bit for bit (G0 report.md identical, G2 metrics.csv identical). All four
+  gates are marked not passed solely because `test_cli_derive_bonded_ethanol_gfnff` failed
+  (59 passed, 1 failed in each external pytest): the test strips HOME from the CLI subprocess, so
+  `~` resolved to the second account's home and xtb was not found. The same command exits 0 once
+  `HOME` points at the author's home is set.
+
 ## [Unreleased] — README overhaul (2026-10-25; docs only)
 
 - All three READMEs (EN / zh-CN / ja) fully rewritten from the MVP-progress style into a

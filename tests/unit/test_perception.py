@@ -150,8 +150,15 @@ def test_perceive_bonds_periodic_mirror():
 
 def test_perceive_bonds_pair_window_override():
     # 半径判据 (1.32+1.02)×1.15 = 2.691 Å：2.75 Å 的 Fe-Cl 不成键；
-    # bondcrit 窗口 [2.6, 2.8] 覆盖 → 成键（窗口优先于半径判据的并集语义）
+    # bondcrit 窗口 [2.6, 2.8] 替换该元素对的判据 → 成键
     pos = np.array([[0.0, 0.0, 0.0], [0.275, 0.0, 0.0]])
     assert perceive_bonds([26, 17], pos) == []
     windows = {(26, 17): (2.6, 2.8)}
     assert perceive_bonds([26, 17], pos, pair_windows=windows) == [(0, 1)]
+    # 2.50 Å 满足半径判据，但落在窗口外 → 不成键（替换语义，不是并集；
+    # Sobtop setbondcrit 把该元素对的下限/上限矩阵元整体改写）
+    close = np.array([[0.0, 0.0, 0.0], [0.250, 0.0, 0.0]])
+    assert perceive_bonds([26, 17], close) == [(0, 1)]
+    assert perceive_bonds([26, 17], close, pair_windows=windows) == []
+    # 未列出的元素对仍按半径判据
+    assert perceive_bonds([26, 26], close, pair_windows=windows) == [(0, 1)]

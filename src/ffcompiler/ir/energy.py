@@ -45,54 +45,19 @@ def _pair_lj(sigma_ij: float, epsilon_ij: float, r: float) -> float:
     return 4.0 * epsilon_ij * (sr6 * sr6 - sr6)
 
 
-def evaluate(
-    ir: ForceFieldIR,
-    positions_nm: np.ndarray,
-    box_nm: np.ndarray | tuple | None = None,
-) -> dict[str, float]:
+def evaluate(ir: ForceFieldIR, positions_nm: np.ndarray) -> dict[str, float]:
     """返回 ENERGY_KEYS 各项和 "total"，单位 kJ/mol。
 
-    ``box_nm``（3×3，行 = 晶胞向量）非 None 时非键与 1-4 距离用最近镜像
-    （决策 0023）；缺省自动取 ``ir.box_nm``。成键项不用镜像——IR 坐标约定
-    为分子内连续坐标。
+    求的是非周期哈密顿量（全部原子对、无截断、不取镜像），与三引擎导出后的
+    比对设置（OpenMM NoCutoff、sander ntb=0、GROMACS 大盒）同一个量。
+    ``ir.box_nm`` 只是写进输出文件的模拟盒，不进入这里（决策 0025）；
+    坐标必须是完整分子，被 wrap 打散的坐标在任何一端都得不到正确能量。
     """
     pos = np.asarray(positions_nm, dtype=np.float64)
     if pos.shape != (len(ir.atoms), 3):
         raise ValueError(f"positions shape {pos.shape} != ({len(ir.atoms)}, 3)")
     if not np.all(np.isfinite(pos)):
         raise ValueError("positions contain non-finite coordinates")
-    box = np.asarray(box_nm, dtype=np.float64) if box_nm is not None else (
-        np.asarray(ir.box_nm, dtype=np.float64) if ir.box_nm is not None else None
-    )
-
-    def mirror(delta: np.ndarray) -> np.ndarray:
-        frac = np.linalg.solve(box.T, delta)
-        frac -= np.round(frac)
-        return box.T @ frac
-
-    if box is not None:
-        # 周期体系：先沿键图把（可能被 wrap 打散的）坐标重整为连续分子坐标，
-        # 使键/角/二面恢复真实值；对已是连续的坐标此步为恒等操作
-        from .topology import bond_graph
-
-        graph = bond_graph(ir)
-        unwrapped = pos.copy()
-        visited = {0}
-        stack = [0]
-        while stack:
-            a = stack.pop()
-            for b in graph.get(a, ()):  # type: ignore[union-attr]
-                if b not in visited:
-                    unwrapped[b] = unwrapped[a] + mirror(unwrapped[b] - unwrapped[a])
-                    visited.add(b)
-                    stack.append(b)
-        pos = unwrapped
-
-    def pair_distance(i: int, j: int) -> float:
-        delta = pos[j] - pos[i]
-        if box is not None:
-            delta = mirror(delta)
-        return float(np.linalg.norm(delta))
 
     energy = {key: 0.0 for key in ENERGY_KEYS}
 
@@ -122,7 +87,7 @@ def evaluate(
             if pair in excluded:
                 continue
             atom_j = ir.atoms[j]
-            r = pair_distance(i, j)
+            r = float(np.linalg.norm(pos[j] - pos[i]))
             if r == 0.0:
                 raise ValueError(f"atoms {i} and {j} coincide; nonbonded energy diverges")
             sigma_ij = 0.5 * (atom_i.sigma + atom_j.sigma)

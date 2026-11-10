@@ -6,21 +6,22 @@ fermi_level / external_field，决策 0016 修订）。torch / mace 只在本模
 
 from __future__ import annotations
 
-import os
 from functools import lru_cache
 from pathlib import Path
 
 from ..ir.schema import ForceFieldIR
 
-DEFAULT_MODEL = Path("~/MLP/mace/MACE-POLAR-1-M.model").expanduser()
 MODEL_NAME = "MACE-POLAR-1-M"
 
 
 def default_model_path() -> Path:
-    path = Path(os.environ.get("FFC_MACE_MODEL", str(DEFAULT_MODEL)))
-    if not path.is_file():
-        raise FileNotFoundError(f"MACE 模型不存在：{path}（可用 FFC_MACE_MODEL 指定）")
-    return path
+    """FFC_MACE_MODEL → 配置 [tools].mace_model → 旧默认 ~/MLP/mace/…（决策 0026）。"""
+    from ffcompiler.toolconfig import ToolConfigError, resolve
+
+    try:
+        return resolve("mace_model").path
+    except ToolConfigError as exc:
+        raise FileNotFoundError(f"MACE 模型不可用：{exc}") from exc
 
 
 def molecule_info(ir: ForceFieldIR) -> dict:

@@ -11,7 +11,7 @@ from .base import (
 )
 from .gaussian import read_fchk
 from .orca import read_orca_hess
-from .xtb import XTB_BINARY, XtbError, read_xtb_hessian, read_xtb_vibspectrum, run_xtb_hessian
+from .xtb import XtbError, read_xtb_hessian, read_xtb_vibspectrum, run_xtb_hessian
 
 __all__ = [
     "CartesianHessian",
@@ -23,7 +23,6 @@ __all__ = [
     "symmetrized",
     "read_fchk",
     "read_orca_hess",
-    "XTB_BINARY",
     "XtbError",
     "read_xtb_hessian",
     "read_xtb_vibspectrum",

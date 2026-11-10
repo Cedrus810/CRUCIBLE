@@ -13,8 +13,7 @@
 
 - 先试全具体类型（正反两个方向），再试含 ``X`` 通配的条目，通配越少越优先；
 - ``$DIHEDRAL`` 的势垒先除以 IDIVF，同类型多条目全部保留（多项 Fourier）；
-- 负周期性按 cos 偶函数等价改写：pn → |pn|，phase → −phase（mod 360）；
-  phase 为 0 时数值不变（Sobtop 输出即此情形）；
+- 负周期性是 AMBER 的"后面还有项"标记：pn → |pn|，phase 不变（Sobtop 同样直接取 |pn|）；
 - improper 的第三列（中心）类型集合决定哪些原子可生成 improper（数据驱动，无硬编码）。
 """
 
@@ -315,11 +314,8 @@ def find_angle(lib: ForceFieldLibrary, t1: str, t2: str, t3: str) -> AngleEntry 
 def _expand_periodic(
     types: tuple[str, ...], barrier_kcal: float, phase_deg: float, pn: float
 ) -> PeriodicTerm:
-    """IDIVF 已除入；负 pn 按 cos 偶函数等价改写为正 pn。"""
-    if pn < 0:
-        pn = -pn
-        phase_deg = (-phase_deg) % 360.0
-    return PeriodicTerm(types, barrier_kcal * KCAL_KJ, phase_deg % 360.0, pn)
+    """IDIVF 已除入；负 pn 只是 AMBER 的续行标记，取 |pn|、phase 不变。"""
+    return PeriodicTerm(types, barrier_kcal * KCAL_KJ, phase_deg % 360.0, abs(pn))
 
 
 def find_dihedrals(
@@ -342,11 +338,21 @@ def find_dihedrals(
 def find_improper(
     lib: ForceFieldLibrary, t1: str, t2: str, t3: str, t4: str
 ) -> PeriodicTerm | None:
-    """improper 无 IDIVF；缺失时调用方用 GUESS_IMPROPER_* 常量兜底。"""
-    types = (t1, t2, t3, t4)
-    for direction in (types, tuple(reversed(types))):
-        for entry in lib.impropers:
-            if _matches(entry.types, direction):
+    """improper 匹配（Sobtop findffimp）：t3 是中心，t1/t2/t4 是三个外围原子。
+
+    条目第三列须与中心类型相同；第四列须与某个外围原子类型相同（不接受 X）；
+    前两列匹配其余两个外围原子（可为 X），外围原子顺序任意。按文件顺序取第一条。
+    improper 无 IDIVF；缺失时调用方用 GUESS_IMPROPER_* 常量兜底。
+    """
+    center = t3.strip()
+    outer = [t.strip() for t in (t1, t2, t4)]
+    perms = ((0, 1, 2), (1, 0, 2), (0, 2, 1), (2, 0, 1), (1, 2, 0), (2, 1, 0))
+    for entry in lib.impropers:
+        e = [t.strip() for t in entry.types]
+        if len(e) != 4 or e[2] != center:
+            continue
+        for a, b, d in perms:
+            if e[3] == outer[d] and e[0] in (_X, outer[a]) and e[1] in (_X, outer[b]):
                 return _expand_periodic(
                     entry.types, entry.barrier_kcal, entry.phase_deg, entry.pn
                 )

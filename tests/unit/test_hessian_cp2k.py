@@ -16,7 +16,7 @@ import numpy as np
 import pytest
 
 from ffcompiler.hessian.base import CartesianHessian, symmetrized
-from ffcompiler.hessian.cp2k import read_cp2k_hess
+from ffcompiler.hessian.cp2k import MissingCoordinatesError, read_cp2k_hess
 from ffcompiler.units import HARTREE_KJ_MOL_PER_BOHR2_TO_KJ_MOL_PER_NM2
 
 FIXTURE = Path(__file__).resolve().parents[1] / "fixtures" / "hessian" / "cp2k" / (
@@ -85,6 +85,17 @@ def test_missing_hessian_section(tmp_path: Path):
         read_cp2k_hess(bad)
 
 
+def test_missing_coordinates_raises_dedicated_error(tmp_path: Path):
+    # 去掉 QUICKSTEP 坐标表头 → 专用异常（CLI 据此退回输入几何并在 stderr 说明）
+    text = FIXTURE.read_text().replace("ATOMIC COORDINATES IN angstrom", "(coordinates removed)")
+    bad = tmp_path / "no_coords.out"
+    bad.write_text(text)
+    with pytest.raises(MissingCoordinatesError):
+        read_cp2k_hess(bad)
+    n = read_cp2k_hess(FIXTURE).positions_nm.shape[0]
+    assert read_cp2k_hess(bad, positions_nm=np.zeros((n, 3))).positions_nm.shape == (n, 3)
+
+
 def test_incomplete_matrix(tmp_path: Path):
     lines = FIXTURE.read_text().splitlines()
     # 截掉最后一页的一部分
@@ -97,3 +108,18 @@ def test_incomplete_matrix(tmp_path: Path):
 def test_symmetrized_helper_roundtrip(h: CartesianHessian):
     s = symmetrized(h)
     assert np.array_equal(s.hessian, h.hessian)  # 读入时已对称化
+
+
+def test_cli_keeps_file_geometry(tmp_path: Path, capsys):
+    # CLI 不再用输入几何覆盖：文件坐标留给拓扑检查与输入几何比对；
+    # 文件没有坐标表时才退回输入几何，并在 stderr 说明未核对
+    from ffcompiler.cli import _read_cp2k
+
+    ref = read_cp2k_hess(FIXTURE)
+    other = ref.positions_nm + 0.05
+    assert np.array_equal(_read_cp2k(FIXTURE, other).positions_nm, ref.positions_nm)
+    bad = tmp_path / "no_coords.out"
+    bad.write_text(FIXTURE.read_text().replace(
+        "ATOMIC COORDINATES IN angstrom", "(coordinates removed)"))
+    assert np.array_equal(_read_cp2k(bad, other).positions_nm, other)
+    assert "未核对" in capsys.readouterr().err

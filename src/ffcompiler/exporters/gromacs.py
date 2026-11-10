@@ -140,6 +140,12 @@ def write_gromacs(
         )
     if ir.box_nm is not None:
         b = np.asarray(ir.box_nm, dtype=np.float64)
+        if abs(b[0, 1]) > 1e-12 or abs(b[0, 2]) > 1e-12 or abs(b[1, 2]) > 1e-12:
+            # gro 盒行只能表达下三角盒（v1(y)=v1(z)=v2(z)=0），与 OpenMM 导出同一检查
+            raise ValueError(
+                "GROMACS 周期盒需为下三角形式（a=(ax,0,0)、b=(bx,by,0)）；"
+                "请先把 IR.box_nm 规范化"
+            )
         off = (b[0, 1], b[0, 2], b[1, 0], b[1, 2], b[2, 0], b[2, 1])
         if max(abs(v) for v in off) < 1e-12:
             gro_lines.append(f"{b[0, 0]:10.5f}{b[1, 1]:10.5f}{b[2, 2]:10.5f}")

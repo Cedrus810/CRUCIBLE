@@ -102,14 +102,26 @@ Hessian 識別情報）を項ごとのスナップショットとして記録し
 
 - Python ≥ 3.12（`numpy`、`scipy`、`openmm`、`rdkit`）。MLP 二面角と NAGL 電荷の機能には
   さらに ASE + MACE、OpenFF NAGL が必要
-- 外部プログラム（該当する機能・テストでのみ必要）：
-  - `xtb` 6.7.1：既定は `~/software/xtb-dist/bin/xtb`、`FFC_XTB` で変更可能
-  - GROMACS：`FFC_GMX`、`PATH`、`~/gmx26.3/bin/gmx` の順に探索。mixed 精度で問題なし
-  - AmberTools `sander` / `tleap`：エンジン間比較とフィクスチャ生成。AM1-BCC 電荷は
-    さらに `antechamber` を使用（`FFC_ANTECHAMBER` または `PATH`）
-  - MACE-POLAR-1-M モデル（二面角スキャン用）：既定は
-    `~/MLP/mace/MACE-POLAR-1-M.model`、`FFC_MACE_MODEL` で変更可能
-  - Sobtop 2026.1.16：参照データの再生成時のみ（`scripts/make_sobtop_refs.py`）
+- 外部プログラム（それぞれ、使う機能でのみ必要）：`xtb` 6.7.1（gfnff/gfn2 Hessian）、AmberTools の
+  `antechamber` / `sander` / `tleap` / `parmchk2`、GROMACS（任意のエンジン間比較。mixed 精度で可）、
+  MACE-POLAR-1-M モデル（二面角スキャン）、Sobtop 2026.1.16（参照データ再生成時のみ）
+
+### 外部ツールの設定
+
+ツールの場所は各ユーザーの設定ファイルに書き、リポジトリには入れません
+（`~/.config/crucible/tools.toml`、または `FFC_CONFIG` で指定したパス。決定 0026）。各ツールの
+探索順：環境変数 `FFC_<ツール>` → 設定ファイル → `PATH` → `~` 以下の旧既定位置（`xtb` は
+バージョン固定のため `PATH` から取りません）。ツールが無い場合はそれを使う機能だけが使えなく
+なります。パスを書いたのに使えない場合はエラーです。
+
+```bash
+PYTHONPATH=src python -m ffcompiler.cli init-config   # 見つかるものは自動で記入、残りは手で記入
+PYTHONPATH=src python -m ffcompiler.cli check-env     # 各ツールの解決先と使える機能を表示
+```
+
+`crucible.example.toml` に全項目（プレースホルダのパス）があります。`scripts/env.sh` は conda 環境を
+有効化します。ディレクトリ構成が違う場合は `FFC_MAMBA_ROOT`、`FFC_ENV_NAME`、`FFC_MODULEFILES`、
+`FFC_GMX_MODULE` で上書きできます。
 
 ```bash
 source scripts/env.sh
@@ -270,10 +282,11 @@ PYTHONPATH=src python -m pytest -m "not external" -q   # 単体テスト（外�
   `NonPositiveForceConstantError` を送出するので、その場合は mSeminario か DRIH を使ってください。
 - mSeminario の bond 力定数は結合の記述方向に依存します（Sobtop と同じ挙動）。既定で有効な
   対称化により、その非対称性は解消されます。
-- 書き出しは単一残基のみ。IR は任意の周期ボックスを保持できます（`box_nm`、決定 0023）：
-  NumPy エネルギーは最近接イメージ + 結合グラフのアンラップ、GROMACS/OpenMM は完全な
-  三斜ボックスを書き出し、AMBER prmtop は直交系のみ。周期系のエンジン間レッグはまだ
-  check-equivalence に入っていません。
+- 書き出しは単一残基のみ。IR は任意の周期ボックスを保持できます（`box_nm`、決定 0023/0025）。
+  これはシミュレーションセルのメタデータで、出力ファイルには書き込まれます（GROMACS/OpenMM は
+  下三角の三斜ボックス、AMBER prmtop は直交系のみ）が、参照エネルギーには入りません。参照
+  エネルギーは各エンジン間レッグが共通に計算する非周期ハミルトニアンのままです。座標は分子が
+  切れていないこと。
 
 ## リポジトリ構成
 
@@ -290,6 +303,7 @@ src/ffcompiler/
   torsion/     回転可能結合、MACE-POLAR 緩和スキャン、MM 差し引き、Fourier フィット、MLP プロバイダ
   charge/      電荷プロバイダ（読み込み、AM1-BCC、NAGL）、学習型 BCC の骨格、書き戻しと二面角の再フィット
   validation/  エンジン間比較、GROMACS アダプタ、振動解析、pytest 集計
+  toolconfig.py  外部ツールの場所：FFC_* 環境変数 → ユーザーの tools.toml → PATH → 旧既定位置
 scripts/       Gate、フィクスチャ生成、Sobtop 参照データ
 tests/         単体テストとエンジン間テスト、フィクスチャ
 docs/          計画、決定記録、理論文書
@@ -304,7 +318,7 @@ jobs/          正式実行（manifest/acceptance/report のみ追跡）
   現在のバージョンの結案検収（設計 34 項目との突合。§2 に既知の不具合・決定待ち項目・
   未実施の検証）
 - [docs/theory/hessian_methods.md](docs/theory/hessian_methods.md)——導出、単位、規約
-- [docs/decisions/](docs/decisions/README.md)——決定記録 0001–0024
+- [docs/decisions/](docs/decisions/README.md)——決定記録 0001–0026
 - [docs/superpowers/plans/](docs/superpowers/plans/)——ロードマップと MVP 計画
 - [HANDOVER.md](HANDOVER.md)——現在の検証済み状態と次の作業
 - [CHANGELOG.md](CHANGELOG.md)

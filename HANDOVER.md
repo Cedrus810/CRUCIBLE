@@ -1,4 +1,70 @@
-# CRUCIBLE（原 forcefield_compiler）交接状态 — 2026-10-25（Asia/Tokyo）
+# CRUCIBLE（原 forcefield_compiler）交接状态 — 2026-10-28（Asia/Tokyo）
+
+## 2026-11-11 受约束松弛检查 阶段 1（2026-11-01 计划获用户批准后执行）
+
+按 `docs/superpowers/plans/2026-11-01-relaxed-check-plan.md`（用户 11-11 批准阶段 1）与施工计划
+`docs/superpowers/plans/2026-11-11-relaxed-check-phase1-build.md` 执行完毕。新脚本
+`scripts/torsion_relaxed_check.py`，报告 `jobs/torsion_relaxed_check_20261111/report.md`。
+只读 10-13 G2 缓存、只算 MM（无 MACE/xtb/重扫）；12 键 × {only, all}，P0/X/Y/P1 按锁定判据计算。
+
+- **实施偏差**：dmso 的 bg 松弛要同时固定 4 个同轴二面角，ASE FixInternals 投影不收敛
+  （maxstep/epsilon 调参均不可救）。脚本内实现 `MultiDihedral`（对全部约束同时解 Gauss-Newton
+  投影），可行集合、fmax、LBFGS 不变，统一用于全部 12 键。验证：methyl_benzoate 三键 bg_relax
+  与 11-01（kasuga01、FixInternals）最大差 4.6e-6 kJ/mol（跨机复现）。首版投影符号错在写帧前
+  由插桩发现并修复；汇总层两处 bug（RMSE 双减参考能、numpy 列未减 E_ref）修正后从帧 CSV 重建。
+- **验收**（施工计划 §5）：P0 对 B2 十二键最大偏差 2.7e-11；自检 24 行全过（约束漂移最差
+  9.7e-13 rad）；机器 yayoi（8 核），并行相共约 75 s。
+- **结果**：三条停止条件均未触发。Y > σ=0.41 在 only 基 5/11（ethanol 0-1/1-2、mb 1-2、
+  mb 2-4、nma 3-4），其中 ethanol 两键与 mb 2-4 的固定几何指标近乎完美（0.02–0.04）——
+  笔记 §3.2 的横向自由度机制存在于无已知缺陷的分子上；X 分类 0 假阳、真阳多于 P0/P1（两基）；
+  但逐帧比值 0.95–1.00，X 只在量级层面分类、不逐帧预测；mb 1-2 的 all 基上 X 失明（跨扭转折补
+  住在被剥掉的拟合项里）。nma 1-3 单列不计入。
+- **下一步**：阶段 2（新增 5 分子、需算 MACE 扫描 1–2.5 h）**待用户批准**；本结果不进 pipeline、
+  不加门（2026-11-01 计划 §6）。提交草稿见 `.commit_drafts/20261111_relaxed-check-phase1.md`。
+
+## 2026-10-28 外部工具位置配置（决策 0026）
+
+按用户要求（"给别人交付的时候应该给人家一个 config""允许用户缺项，缺了就少对应的功能"）实现了以下内容：
+- `ffcompiler/toolconfig.py`：工具查找顺序为 `FFC_*` → 用户自己的 `~/.config/crucible/tools.toml`（不入库）→ PATH → 旧默认位置。
+- `init-config`、`check-env` 两个子命令。
+- `crucible.example.toml` 模板；`env.sh` 的路径可以覆盖。
+- 缺 sander 时，CLI 跳过 sander 比对；Gate 仍要求 sander 必须在。
+
+计划与 ledger：`docs/superpowers/plans/2026-10-28-tool-config.md`、`.superpowers/sdd/2026-10-28-tool-config/progress.md`。
+
+验证：
+- `pytest -m "not external"` 603 passed。
+- 用非原作者账号、不改 HOME、不设 `FFC_*`，只靠配置文件：`check-env` 8/8 ok；原来失败的两个 external 测试（gfnff CLI、sander 周期 prmtop）都通过。
+
+**只靠配置文件的全量验证（10-28 11:17–11:43，node-A，非原作者账号，不改 HOME、不设 `FFC_<工具>`）：全部通过。**
+- 全量 external：60 passed（`experiments/20261028_tool_config_verify/`）。
+- G0–G3 第 3 轮（`jobs/gate_mvp{0,1,2,3}_20261028_3/`）四个都 passed；pytest 每个都是 unit 603 + external 60，0 失败；四个 report.md 与第 2 轮逐字相同；G2 metrics.csv 相同。
+提交草稿：`.commit_drafts/20261028_tool-config.md`（排在 `20261028_review-fixes.md` 之后执行）。
+
+## 2026-10-28 审阅 10-24 代码并修复（决策 0025）
+
+用户要求审阅，随后指示“该修全修”。修了 8 处，详见决策 0025：
+- 周期盒只作模拟盒元数据，NumPy 参考能量不再取镜像。原来的语义和三引擎都不一致，实测 −8.45 vs 8.8e6 kJ/mol。
+- AMBER 周期 prmtop 补齐 SOLVENT_POINTERS / ATOMS_PER_MOLECULE。修之前 sander 一读就报错。
+- GROMACS 导出检查盒子是否为下三角形式。
+- CLI `cp2k-out` 改用文件里的几何。原来用输入几何覆盖，几何检查等于没做。
+- bondcrit 窗口改为替换语义，依据是反编译的 setbondcrit。
+- 负 pn 只取绝对值，phase 不变。
+- improper 匹配改为按 findffimp 的规则。
+- MACE 默认路径测试去掉写死的 `/home/user`。
+
+验证：`pytest -m "not external"` 579 passed，0 failed（104 s）。相关的 external 测试已跑：`test_ir_box.py`、`test_torsion_mace.py`、`test_cli.py` 共 34 passed，其中包括新增的 sander 读周期 prmtop。还复现了原来的问题：sander 在 `ntb=1` 下现在能正常运行。证据在 `experiments/20261028_review_pytest/`。
+**G0–G3 第 2 轮（10-28 07:57–08:21，node-A，非原作者账号）：四个 Gate 全部通过。** 四个 Gate 的 report.md 与 10-18 第 2 轮逐字相同，G2 metrics.csv 也相同；pytest 四次都是 unit 579 + external 60，0 失败。这一轮之前修了 `test_cli_derive_bonded_ethanol_gfnff`：CLI 子进程现在会继承 HOME 和 FFC_XTB。运行目录 `jobs/gate_mvp{0,1,2,3}_20261028_2/`。
+
+第 1 轮（03:03–03:29，已被第 2 轮取代，结果保留）：四个 Gate 都判为未通过，唯一失败项是环境问题。
+- 各 Gate 自己的判据与 10-18 第 2 轮逐位一致：G0 的 report.md 逐字相同；G2 的 metrics.csv 逐字相同；G1、G2、G3 的 report.md 只差 pytest 判据那一行（G1.7、G2.5、G3.5）。
+- pytest：unit 部分四次都是 579 passed；external 部分四次都是 59 passed、1 failed，失败的都是 `test_assign.py::test_cli_derive_bonded_ethanol_gfnff`。
+- 失败原因：这个测试启动 CLI 子进程时只传 `PYTHONPATH` 和 `PATH`，不传 HOME。在非原作者账号下，`~` 被解析成该账号自己的家目录，xtb 找不到。
+- 区分原因的检查（`experiments/20261028_review_pytest/gfnff_cli_home_check.log`）：同一条命令，不传 HOME 时 exit=1，补上 `HOME` points at the author's home 后 exit=0。0025 没有改动这条路径。
+- 用户同意后改了这个测试，然后跑了第 2 轮（见上）。
+- 运行目录 `jobs/gate_mvp{0,1,2,3}_20261028/`。
+提交草稿：`.commit_drafts/20261028_review-fixes.md`。
+
 
 ## 2026-10-25 README 重写（仅文档）
 
@@ -40,6 +106,7 @@ TorsionDrive 仅二维 opt-in，装环境属用户显式决策）、§23 MVP-6�
 - `docs/superpowers/plans/2026-10-17-unbuilt-modules.md`（**先读 §0**）：10-17 搭建的 ORCA 读取器 / C1–C5 / MVP-5 框架 / MVP-4 骨架，及当晚验收修复清单与仍未做的事。
 - **`docs/history/ACCEPTANCE_20261018_CLOSURE.md`：当前版本的结案验收（设计稿逐条对照 34 条），第 2 节是结案时的已知缺陷、待拍板项和没做的验证——下一阶段从这里开始。**（取代 A3 报告 §1 作为现行偏离清单；`ACCEPTANCE_20261013_A3.md` 保留作历史。）
 - `docs/decisions/0017`–`0020`：仍在生效的验收与运行规则（OpenMM 为准、MVP-3 范围、子集不能通过、重拟合不升级兜底键）。
+- `docs/decisions/0022`、`0023`、`0025`：10-24 吸收的 Sobtop 功能（感知层、fflib、localhess、CP2K、周期盒）以及 10-28 审阅对它们的修订。
 - `docs/superpowers/plans/2026-10-08-ffc-mvp2-mlp-torsion.md` §7：MVP-2 还没定的问题（与 B 相关）。
 - `docs/superpowers/plans/2026-10-17-mvp4-learned-bcc-proposal.md`：MVP-4 立项草案（S1–S6 待定，批准前禁止训练）。
 
@@ -52,7 +119,7 @@ TorsionDrive 仅二维 opt-in，装环境属用户显式决策）、§23 MVP-6�
 
 | 部分 | 状态 | 证据 |
 |---|---|---|
-| MVP-0～MVP-3 | **G0–G3 在当前源码上正式通过（2026-10-18 第 2 轮，含可选顺序重拟合）**，数值与之前各轮一致 | 下文“正式运行”；本轮无计算交接 |
+| MVP-0～MVP-3 | **G0–G3 在当前源码上正式通过（2026-10-28 第 3 轮，决策 0026 之后，只靠配置文件）**，report.md 与 10-18 第 2 轮逐字相同 | 下文“正式运行”；本轮无计算交接 |
 | G1.8 理论文档 | 已收口（四处修正，状态"已审阅"） | `docs/theory/hessian_methods.md` |
 | ORCA .hess 读取器（路线图 D3） | 完成，按 ORCA 6.1.1 真实文件实现；频率与 ORCA 相对差 5.7e-8 | `experiments/20261017_orca_hess_format/`；`tests/fixtures/hessian/orca/` |
 | C1 坐标合同 | 完成：`ffcoords/0.2` sidecar（带原子名），各命令 `--ir-in/--coords-in`，derive-bonded 输出 ir/coords/report | `ir/coords.py`、`cli.py` |
@@ -61,13 +128,23 @@ TorsionDrive 仅二维 opt-in，装环境属用户显式决策）、§23 MVP-6�
 | C5 组合验收 | 单元/组合级完成；**正式外部组合验收未做**（10-15 §5，需报资源） | 同上 |
 | MVP-5 fallback | 框架完成（gfnff → gfn2 → DFT 文件，质量门）；CLI 不暴露；调度研究未开始 | `hessian/fallback.py` |
 | MVP-4 learned BCC | 只有骨架 + 立项草案；**研究未立项** | `charge/learned_bcc.py`、立项草案 |
+| 感知层 / fflib（10-24，决策 0022） | 有单测，**还没接进 CLI 和管线**；10-28 修正了 bondcrit 窗口、improper 匹配、负 pn 三处语义（0025） | `perception/`、`fflib/` |
+| localhess（10-24，决策 0023） | experimental，CLI 可选；没有 oracle，只做了内部一致性检查 | `bonded/localhess.py` |
+| CP2K provider（10-24，决策 0023） | 和官方 FeCl2 示例逐位一致；10-28 起 CLI 用文件几何（0025） | `hessian/cp2k.py` |
+| IR 周期盒（10-24，决策 0023/0025） | 只作模拟盒元数据；三个导出器都写盒子，AMBER 只支持正交盒；sander 可读（10-28 起） | `ir/`、`exporters/` |
 | B 二面角质量 | **B1/B2 完成（2026-10-17）**：1-2 缺陷由能量账确认为单遍拟合的跨键耦合（主要是 0-1 甲基的 GAFF2 项被 1-2 吸收）；nma 1-3 扫描滞后 57 kJ/mol 另列。**B3 顺序重拟合机制实验完成**：1 轮后 1-2 由 3.36 降到 0.44（GAFF2 2.70），全局残差 0.83 → 0.22，无键明显变差；样本内结果，未采用为默认。**顺序依赖已查（2026-10-18）**：全部顺序趋向同一不动点，第 1 轮拟合项差 ≤2.5e-2，第 2 轮 ≤1.2e-3，第 3 轮 ≤1e-4 kJ/mol | `jobs/torsion_diagnosis_20261017/report.md`、`jobs/torsion_b3_sequential_20261017/report.md` |
 
-最近一次测试（2026-10-17 夜，node-A，去掉 Git 探测之后的源码）：**全量 561 个全部通过**——`pytest -m "not external"` 502 passed（85 s），`pytest -m external` 59 passed（546 s，其中 MACE 的 `test_derive_torsions_mace_ethanol` 415 s）。日志 `experiments/20261017_full_pytest/`。G0–G3 已于 2026-10-18 在当前源码上重跑并通过（见“正式运行”）。
+最近一次测试（2026-10-28，node-A，0025 修复后的源码）：`pytest -m "not external"` 579 passed（104 s，`experiments/20261028_review_pytest/pytest_not_external_after_fix.log`）；external 只跑了改动涉及的部分（见上）。
+
+更早一次（2026-10-17 夜，node-A，去掉 Git 探测之后的源码）：**全量 561 个全部通过**——`pytest -m "not external"` 502 passed（85 s），`pytest -m external` 59 passed（546 s，其中 MACE 的 `test_derive_torsions_mace_ethanol` 415 s）。日志 `experiments/20261017_full_pytest/`。G0–G3 已于 2026-10-18 在当前源码上重跑并通过（见“正式运行”）。
 
 ## 正式运行
 
-**最新：2026-10-18 第 2 轮，可选顺序重拟合接入后的源码，G0–G3 全部 passed**（node-A，三路并发，08:50–09:15 JST）。四次运行的 `source_sha256` 彼此一致（119 个文件），与运行后的工作区 0/119 不同；相对凌晨那轮改动的是 `torsion/mlp.py`、`torsion/mm.py`、`bonded/staleness.py`、`cli.py` 和相关测试，新增 `test_torsion_refinement.py`、`scripts/b3_order_dependence.py`。`git_commit` 为 null（决策 0021）。启动脚本 `jobs/launch_gates_20261018_2.sh`、`jobs/chain_g2_g3_20261018_2.sh`。
+**最新：2026-10-28 第 3 轮，决策 0026 之后的源码，只靠用户配置文件，G0–G3 全部 passed**（11:17–11:43 JST；G0 894 s、G1 920 s、G2 838 s、G3 639 s；`jobs/gate_mvp{0,1,2,3}_20261028_3/`；report.md 与第 2 轮逐字相同；pytest 603 + 60，0 失败）。
+
+前一轮：2026-10-28 第 2 轮，决策 0025 修复后的源码，G0–G3 全部 passed（node-A，非原作者账号，07:57–08:21 JST；G0 791 s、G1 921 s、G2 784 s、G3 641 s；`jobs/gate_mvp{0,1,2,3}_20261028_2/`，G2 `--resume jobs/gate_mvp2_20261018_2`，G3 `--scan-cache jobs/gate_mvp2_20261028_2/scans`）。四个 Gate 的 report.md 与 10-18 第 2 轮逐字相同；pytest 579 + 60，0 失败。同日第 1 轮（`_20261028`）因测试的 HOME 问题判为未通过，已被取代。
+
+上一轮：2026-10-18 第 2 轮，可选顺序重拟合接入后的源码，G0–G3 全部 passed（node-A，三路并发，08:50–09:15 JST）。四次运行的 `source_sha256` 彼此一致（119 个文件），与运行后的工作区 0/119 不同；相对凌晨那轮改动的是 `torsion/mlp.py`、`torsion/mm.py`、`bonded/staleness.py`、`cli.py` 和相关测试，新增 `test_torsion_refinement.py`、`scripts/b3_order_dependence.py`。`git_commit` 为 null（决策 0021）。启动脚本 `jobs/launch_gates_20261018_2.sh`、`jobs/chain_g2_g3_20261018_2.sh`。
 
 | Gate | 运行目录 | 结果 |
 |---|---|---|
@@ -85,7 +162,11 @@ TorsionDrive 仅二维 opt-in，装环境属用户显式决策）、§23 MVP-6�
 - `gate_mvp2_20261010/`、`gate_mvp3_20261010/`：调试冒烟（部分分子、跳过 pytest）。
 - 更早的 G0/G1 运行见 CHANGELOG。
 
-PID 记录（均已结束）：
+PID 记录：
+- 2026-10-28 第 3 轮（决策 0026 之后，只靠配置文件；均已结束）：external pytest 2162489（`experiments/20261028_tool_config_verify/pids.txt`），`gate_mvp0.pids` 2162531，`gate_mvp1.pids` 2162568，`gate_mvp2.pids` 2162569（串联 bash）/ 2162766（G2）；启动脚本 `jobs/launch_gates_20261028_3.sh`、`jobs/chain_g2_g3_20261028_3.sh`、`experiments/20261028_tool_config_verify/run_external.sh`。
+- 2026-10-28 第 2 轮（修好测试的 HOME 传递之后，均已结束）：`gate_mvp0.pids` 1656442，`gate_mvp1.pids` 1656443，`gate_mvp2.pids` 1656444（串联 bash）/ 1656487（G2）；启动脚本 `jobs/launch_gates_20261028_2.sh`、`jobs/chain_g2_g3_20261028_2.sh`。
+- 2026-10-28（0025 修复后，node-A，均已结束）：`jobs/gate_mvp0.pids` 1293456，`gate_mvp1.pids` 1293459，`gate_mvp2.pids` 1293467（串联 bash）/ 1293517（G2），G3 的 PID 由串联脚本追加到 `gate_mvp3.pids`。启动脚本 `jobs/launch_gates_20261028.sh`、`jobs/chain_g2_g3_20261028.sh`（只对这些进程把 HOME 指向原作者家目录，原因见脚本注释）。
+- 以下均已结束：
 - 2026-10-18 第 2 轮：`jobs/gate_mvp0.pids` 1936619，`gate_mvp1.pids` 1936639，`gate_mvp2.pids` 1936640（串联 bash）/ 1936695（G2），`gate_mvp3.pids` 2169319。
 - 2026-10-18：`jobs/gate_mvp0.pids` 1436597，`gate_mvp1.pids` 1436600，`gate_mvp2.pids` 1436609（串联 bash）/ 1436637（G2），`gate_mvp3.pids` 1663387。
 - 2026-10-13：`jobs/gate_mvp0.pids` 3046691，`gate_mvp1.pids` 3046692，`gate_mvp2.pids` 84807 / 84820（node-B），`gate_mvp3.pids` 3325239；启动脚本 `jobs/launch_a3_20261013.sh`、`jobs/launch_g3_20261013.sh`（当时没用 `scripts/run_logged.sh`，因为它调用 `git -c safe.directory`；2026-10-17 起已去掉 git 探测，决策 0021）。
@@ -97,6 +178,7 @@ PID 记录（均已结束）：
 ## 待办
 
 **下一步工作（按 10-15 计划，执行前报资源计划）：**
+0. ~~0025 修复后重跑 G0–G3~~：10-28 第 2 轮全部通过（见顶部）。（当时非原作者账号要靠改 HOME 才能跑；决策 0026 之后改为各自写 `~/.config/crucible/tools.toml`。）
 1. B3：机制实验与顺序依赖检查已做；可选 0–3 轮接口及换电荷同协议重放已于本轮准备，默认仍为单遍。下一步由计算接收方先跑新增回归与旧实验一致性检查，再做 B4 留出验证。有限轮按本键扫描更新不等价于联合最小二乘；全局拟合对照与默认策略不自动决定。见本轮无计算交接。
 2. C 收尾：~~C2 串联测试补 torsion 一步~~（2026-10-18 已补）；C5 正式外部组合验收（10-15 §5）。
 3. MVP-4 立项讨论（立项草案 S1–S6）。
@@ -106,7 +188,30 @@ PID 记录（均已结束）：
 5. nma 1-3 扫描滞后：用户 2026-10-17 定为先看分布、不设自动兜底阈值。分布已看（B3 报告末节）：432 帧中位数 0.001、90% 分位 0.01 kJ/mol；10 根键 ≤0.01，methyl_benzoate 1-2 为 0.41，nma 1-3 为 57.4（14 帧 > 1，集中在 ±60–120° 能垒区）。nma 1-3 单列为扫描质量问题，其"拟合改善"不算科学收益；是否重扫另定。
 5b. **已修（2026-10-17，决策 0021）**：RunContext 删除 Git 探测，git_commit / git_dirty 记 null；run_logged.sh 同步移除探测。回归 8 passed，未重跑 Gate。
 6. `derive-bonded --method` 是否默认 mseminario（A3 偏离 #8，设计 §6.1；10-15 计划把默认值列为接口建议）。
-7. 版本号（0.2.0）要不要改；10-17 改动后是否重跑 G0–G3（同一份源码身份）。
+7. 版本号（0.2.0）要不要改。（后半"10-17 改动后是否重跑 G0–G3"已完成：10-28 第 3 轮已在最新源码上重跑并通过。）
+8. 受约束松弛检查**阶段 2**（2026-11-01 计划 §5 已锁分子与判据）：新增 5 分子、需算 MACE 扫描 1–2.5 h，σ 按新扫描重取。阶段 1 已执行（见 2026-11-11 条目：停止条件均未触发，X 保留为候选诊断），阶段 2 做不做由用户定。
+
+### 代码侧未做的事（2026-11-11 盘点；依据：结案验收 §1、README Roadmap、上表）
+
+**已设计、代码未写**（决策 0024 的 MVP-6～9；结案验收 #2/#14/#26）：
+1. MVP-6 分子入口：SDF → antechamber（只做 GAFF2 typing）→ 骨架 IR；`molecule/`、`typing/` 模块不存在。
+2. 单命令 CLI `ffcompiler ligand.sdf --preset` 与 preset（§17/§22；验收 #26 注明依赖分子入口与交替完成判据）。
+3. MVP-7 扫描质量：多起点松弛扫描 + 逐格点分支诊断（分支只诊断、永不拟合）；首个应用 nma 1-3 重扫。
+4. MVP-8 平衡几何联合拟合：q⁰ 进拟合 + 梯度匹配（§6.4.3-1 预留接口落地），opt-in，对现行 global-fit 逐位退化。
+5. MVP-9 多构象联合拟合 + charge→torsions→global-fit 交替协议与 ε 完成判据（§6.4.4–6.4.6）。
+
+**只有骨架/框架，等研究立项（缺研究决定，不缺代码）**：
+6. MVP-4 learned BCC：`charge/learned_bcc.py` 骨架，无训练模型、未接 CLI；立项草案 S1–S6 未定，批准前禁训练。
+7. MVP-5 fallback 调度：`hessian/fallback.py` 阶梯已搭（gfnff→gfn2→DFT + 质量门），CLI 不暴露，§16 第 1 级"可信库参数"未接，不确定度调度未研究。
+
+**代码在、未接进管线（集成债）**：
+8. 感知层 `perception/` 与 `fflib/`（决策 0022）：有单测，未接 CLI 和管线（0025 修了 bondcrit 窗口、improper 匹配、负 pn 三处语义）。
+9. `localhess`（0023）：experimental、CLI 可选，无 oracle，只做过内部一致性检查。
+10. Level 3–4 验证基准（设计 §20）：完全没有（结案验收 #31）。
+
+**小项**：A4 小项（重复 `find_rotors`、畸形 mol2 报错、`step_deg` 提前检查等，表在 2026-10-11 计划 §3）；RESP provider 推迟（0018）；OpenMM 原生 CustomTorsionForce 模式（计划不做，MVP-2 计划 §1 第 7 条）；TorsionDrive 2-D opt-in（装环境是显式决定）。
+
+**验证/计算类（收尾用，不是写代码）**：B4 留出验证；C5 正式外部组合验收（需报资源）；松弛检查阶段 2（等上面第 8 条拍板）。
 
 **已知小问题（不阻塞）：**
 - A4 未做的小项（重复 `find_rotors`、畸形 mol2 报错、`step_deg` 提前检查等），表见 `2026-10-11-crucible-next-steps.md` §3 A4。
@@ -115,30 +220,11 @@ PID 记录（均已结束）：
 
 ## 待用户提交的草稿（`.commit_drafts/`）
 
-按时间顺序执行；是否已提交过由用户核对（agent 不跑 git）。
+按 `.git/logs/HEAD`，1–18 号草稿都已在 2026-10-25 17:25 之前提交，最后一次提交是 `chore: keep local reference PDFs out of the repository`；作废的那几份本来就不执行。目前待提交的只有：
 
-1. `20261008_*`（10 份）：10-08 的改名、T24–T30、评审修复、G2 首跑。
-2. `20261010_1200_docs-tidy.md`、`20261010_1715_g2-openmm-reference.md`、`20261010_1800_mvp3-plan.md`、`20261010_1945_mvp3-charge-providers.md`。
-3. `20261011_2330_a1a2-gate-scope-provenance.md`。
-4. `20261013_1340_refit-fallback-cache-paths.md`、`20261013_1530_a3-acceptance.md`。
-5. `20261017_1210_g18-doc-closure.md`：G1.8 文档收口（与 6 不重叠）。
-6. `20261017_2000_unbuilt-modules-accepted-and-fixed.md`：10-17 施工 + 当晚验收修复，一个提交。
-7. `20261017_2100_docs-tidy.md`：本次文档整理。
-8. `20261017_runtime-no-git.md`：移除 RunContext/日志包装器的 Git 探测，8 条回归通过；B3 联合目标等价条件澄清。
-9. `20261017_2300_b1b2b3-torsion-diagnosis.md`：B1/B2 诊断脚本与报告、B3 顺序重拟合机制实验、滞后分布，及相应文档。
-10. `20261018_0215_gates-rerun-current-source.md`：全量 pytest 与 G0–G3 在当前源码上重跑（全部通过）及相应文档。
-11. `20261018_1000_b3-order-and-c2-torsion-chain.md`：B3 顺序依赖检查；C2 含 torsion 的串联测试。
-12. `20261018_optional-sequential-refinement.md`：可选顺序更新接口、换电荷协议重放、报告/依赖与新增测试；2026-10-18 接收方验证结果已补进草稿。
-13. `20261018_0920_gates-rerun-after-refinement.md`：可选顺序重拟合接入后的 G0–G3 第 2 轮重跑（全部通过）及相应文档。
-14. `20261018_1000_closure-acceptance.md`：结案验收报告（放在最后执行；提交后把哈希补记进报告）。
-15. `20261008_allen-crosscheck.md`：决策 0011 的 Allen 2018 公式对照补记与原文 PDF（10-08 内容的遗留认领；PDF 入库与否执行时定）。
-16. `20261024_update-round2.md`：感知层、参数数据读取、CP2K 读取器、IR 周期盒、localhess 方法及决策 0022/0023（**提交信息按用户指示只写 "update"**；会连带 CHANGELOG 的 10-25 条目）。
-17. `20261025_next-phase-design.md`：设计稿下一阶段增补（§3.1、§6.4.4–6.4.6、§10.4–10.5、MVP-6～9）与决策 0024；仅文档。
-18. `20261025_readme-overhaul.md`：三份 README 全量重写（EN/zh-CN/ja；含 10-24 的 README 改动）；仅文档。
-    执行顺序 15 → 16 → 17 → 18。
-- **作废、不要执行**：`20261017_1240`、`_1500`、`_1540`、`_1620`、`_1650`、`_1720`（由 6 取代，文件开头已标注）。
-
-几份草稿涉及同一批文件（README、HANDOVER、CHANGELOG、roadmap）的工作区状态：先执行的那条会把后面的改动一起带上，后面的命令仍可执行。
+19. `20261028_review-fixes.md`：10-24 代码审阅修复（决策 0025）及相应文档。**入库前要先脱敏**（运行记录里有真实路径，见 CHANGELOG 和 0025）。
+20. `20261028_tool-config.md`：外部工具位置配置（决策 0026）。按 19 → 20 的顺序执行。
+21. `20261111_relaxed-check-phase1.md`：受约束松弛检查阶段 1（脚本 + 报告 + 计划状态 + HANDOVER/CHANGELOG）。
 
 ## 结论备忘
 

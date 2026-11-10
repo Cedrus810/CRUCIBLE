@@ -89,14 +89,24 @@ sidecar 在命令间忠实传递几何——原子顺序、元素、名字永不
 
 - Python ≥ 3.12，需要 `numpy`、`scipy`、`openmm`、`rdkit`；MLP 二面角与 NAGL 电荷功能另需
   ASE + MACE 和 OpenFF NAGL
-- 外部程序（只在用到对应功能或测试时需要）：
-  - `xtb` 6.7.1：默认 `~/software/xtb-dist/bin/xtb`，可用 `FFC_XTB` 替换
-  - GROMACS：按 `FFC_GMX`、`PATH`、`~/gmx26.3/bin/gmx` 的顺序查找；mixed 精度即可
-  - AmberTools `sander` / `tleap`：跨引擎检查与固件生成；AM1-BCC 电荷另用
-    `antechamber`（`FFC_ANTECHAMBER` 或 `PATH`）
-  - MACE-POLAR-1-M 模型（二面角扫描）：默认 `~/MLP/mace/MACE-POLAR-1-M.model`，
-    可用 `FFC_MACE_MODEL` 替换
-  - Sobtop 2026.1.16：仅用于重新生成参考数据（`scripts/make_sobtop_refs.py`）
+- 外部程序，各自只在用到对应功能时需要：`xtb` 6.7.1（gfnff/gfn2 Hessian）、AmberTools 的
+  `antechamber` / `sander` / `tleap` / `parmchk2`、GROMACS（可选的跨引擎比对；mixed 精度即可）、
+  MACE-POLAR-1-M 模型（二面角扫描）、Sobtop 2026.1.16（仅重新生成参考数据时）
+
+### 配置外部工具
+
+工具位置写在每个用户自己的配置文件里，不入库（`~/.config/crucible/tools.toml`，或 `FFC_CONFIG`
+指定的路径；决策 0026）。每个工具的查找顺序：环境变量 `FFC_<工具>` → 配置文件 → `PATH` →
+`~` 下的旧默认位置（`xtb` 版本固定，不从 `PATH` 取）。缺某个工具只会让用到它的功能不可用；
+写了路径但路径不可用则报错。
+
+```bash
+PYTHONPATH=src python -m ffcompiler.cli init-config   # 能找到的先填上，其余手填
+PYTHONPATH=src python -m ffcompiler.cli check-env     # 各工具解析到哪里、哪些功能可用
+```
+
+`crucible.example.toml` 列出全部配置项（占位路径）。`scripts/env.sh` 负责激活 conda 环境；
+目录布局不同时可用 `FFC_MAMBA_ROOT`、`FFC_ENV_NAME`、`FFC_MODULEFILES`、`FFC_GMX_MODULE` 覆盖。
 
 ```bash
 source scripts/env.sh
@@ -242,9 +252,9 @@ PYTHONPATH=src python -m pytest -m "not external" -q   # 单元测试（不需�
   `derive_bonded` 抛 `NonPositiveForceConstantError` 而不是静默兜底——这类体系请用 mSeminario
   或 DRIH。
 - mSeminario 的键常数跟随书写方向（与 Sobtop 相同）；对称化（默认开）消除方向不对称。
-- 导出写单残基。IR 携带可选周期盒（`box_nm`，决策 0023）：NumPy 能量用最近镜像 + 键图
-  解包裹，GROMACS/OpenMM 导出完整三斜盒，AMBER prmtop 仅正交；周期跨引擎腿尚未进入
-  check-equivalence。
+- 导出写单残基。IR 携带可选周期盒（`box_nm`，决策 0023/0025），只作模拟盒元数据：
+  写进输出文件（GROMACS/OpenMM 下三角三斜盒，AMBER prmtop 仅正交），不进入参考能量——
+  参考能量仍是各跨引擎腿共同计算的非周期哈密顿量。坐标须为完整分子。
 
 ## 仓库结构
 
@@ -261,6 +271,7 @@ src/ffcompiler/
   torsion/     可转键、MACE-POLAR 松弛扫描、MM 扣除、Fourier 拟合、MLP provider
   charge/      电荷 provider（载入、AM1-BCC、NAGL）、learned-BCC 骨架、写回与二面角重拟合
   validation/  跨引擎比较、GROMACS 适配、振动、pytest 记账
+  toolconfig.py  外部工具位置：FFC_* 环境变量 → 用户自己的 tools.toml → PATH → 旧默认位置
 scripts/       Gate、固件生成、Sobtop 参考数据
 tests/         单元与跨引擎测试、固件
 docs/          计划、决策记录、理论
@@ -274,7 +285,7 @@ jobs/          正式运行（只跟踪 manifest/acceptance/report）
 - [docs/history/ACCEPTANCE_20261018_CLOSURE.md](docs/history/ACCEPTANCE_20261018_CLOSURE.md)——
   当前版本的结案验收（34 条设计要点；§2 为已知缺陷、待拍板项与未做验证）
 - [docs/theory/hessian_methods.md](docs/theory/hessian_methods.md)——推导、单位、约定
-- [docs/decisions/](docs/decisions/README.md)——决策记录 0001–0024
+- [docs/decisions/](docs/decisions/README.md)——决策记录 0001–0026
 - [docs/superpowers/plans/](docs/superpowers/plans/)——路线图与 MVP 计划
 - [HANDOVER.md](HANDOVER.md)——当前已验证状态与下一步
 - [CHANGELOG.md](CHANGELOG.md)

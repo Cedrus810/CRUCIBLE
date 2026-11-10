@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -256,9 +257,12 @@ def test_cli_derive_bonded_ethanol_gfnff(tmp_path: Path) -> None:
         "--output", "gromacs", "amber", "openmm",
         "--outdir", str(tmp_path / "out"),
     ]
+    # PATH 精简是为了不让 PATH 上的 xtb 混进来；HOME 与 FFC_XTB 必须传下去，
+    # 否则默认路径 ~/software/xtb-dist 会按当前账户的家目录解析（决策 0025 附记）
+    env = {"PYTHONPATH": str(REPO / "src"), "PATH": "/usr/bin:/bin"}
+    env.update({k: os.environ[k] for k in ("HOME", "FFC_XTB", "FFC_CONFIG", "XDG_CONFIG_HOME") if k in os.environ})
     result = subprocess.run(
-        cmd, cwd=REPO, env={"PYTHONPATH": str(REPO / "src"), "PATH": "/usr/bin:/bin"},
-        capture_output=True, text=True, check=False,
+        cmd, cwd=REPO, env=env, capture_output=True, text=True, check=False,
     )
     assert result.returncode == 0, result.stderr
     out = tmp_path / "out"

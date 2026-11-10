@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import json
-import os
 import re
-import shutil
 import subprocess
 from pathlib import Path
 
@@ -20,11 +18,13 @@ from ffcompiler.torsion.rotors import check_mol_topology
 
 
 def antechamber_exe() -> str:
-    """FFC_ANTECHAMBER 或 PATH 里的 antechamber。"""
-    exe = os.environ.get("FFC_ANTECHAMBER") or shutil.which("antechamber")
-    if not exe:
-        raise ChargeError("antechamber not found (set FFC_ANTECHAMBER or put it on PATH)")
-    return exe
+    """FFC_ANTECHAMBER → 配置 [tools].antechamber → PATH（决策 0026）。"""
+    from ffcompiler.toolconfig import ToolConfigError, resolve
+
+    try:
+        return str(resolve("antechamber").path)
+    except ToolConfigError as exc:
+        raise ChargeError(str(exc)) from exc
 
 
 def _ambertools_version(exe: str) -> str | None:

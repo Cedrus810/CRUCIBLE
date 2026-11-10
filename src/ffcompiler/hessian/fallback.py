@@ -136,9 +136,9 @@ def default_ladder(
     xtb 两级共享 run_xtb_hessian 的接口；DFT 级必须显式给 fchk 或 .hess
     文件（按后缀选读取器），否则该级 unavailable。
     """
-    from ffcompiler.hessian.xtb import XTB_BINARY, run_xtb_hessian
+    from ffcompiler.hessian.xtb import run_xtb_hessian
 
-    binary = xtb_binary or XTB_BINARY
+    binary = xtb_binary  # None → run_xtb_hessian 内部按 toolconfig 解析
     tiers = [
         Tier("gfnff", run_xtb_hessian,
              dict(atomic_numbers=atomic_numbers, positions_nm=positions_nm,

@@ -1,5 +1,7 @@
 # 决策 0023：Sobtop 吸收第二批——localhess 方法、CP2K provider、IR 周期盒
 
+> 部分修订（2026-10-28，决策 0025）：周期盒改为只作模拟盒元数据，NumPy 参考能量不再 unwrap、不取最小镜像；AMBER 周期 prmtop 补齐 SOLVENT_POINTERS/ATOMS_PER_MOLECULE；CLI 的 cp2k-out 改用文件几何。
+
 ## 范围
 
 决策 0022 吸收了感知层与数据文件解析。本批按用户指示完成三件（并明确

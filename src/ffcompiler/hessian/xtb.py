@@ -20,9 +20,6 @@ from rdkit import Chem
 from ffcompiler.hessian.base import CartesianHessian
 from ffcompiler.units import HARTREE_KJ_MOL_PER_BOHR2_TO_KJ_MOL_PER_NM2
 
-XTB_BINARY = Path("~/software/xtb-dist/bin/xtb").expanduser()
-
-
 class XtbError(RuntimeError):
     """xtb 运行失败或其输出文件不符合格式。"""
 
@@ -219,13 +216,22 @@ def run_xtb_hessian(
     charge: int,
     workdir: Path,
     threads: int = 4,
-    binary: Path = XTB_BINARY,
+    binary: Path | None = None,
 ) -> CartesianHessian:
     """在 workdir 里跑 xtb 优化 + Hessian，返回 CartesianHessian（MVP-1 不支持开壳层）。
 
     成功条件：退出码 0、xtb.out 含 GEOMETRY OPTIMIZATION CONVERGED、
     hessian 与 xtbopt.xyz 存在；任何一条不满足抛 XtbError（附 xtb.out 末 30 行）。
+    ``binary`` 为 None 时按 toolconfig 解析（FFC_XTB → 配置 → 旧默认，决策 0026）。
     """
+    if binary is None:
+        from ffcompiler.toolconfig import ToolNotFoundError, resolve
+
+        try:
+            binary = resolve("xtb").path
+        except ToolNotFoundError as exc:
+            raise XtbError(str(exc)) from exc
+    binary = Path(binary)
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     _check_charge_and_electrons(

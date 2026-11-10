@@ -151,13 +151,16 @@ def parse_mdout_energies(text: str) -> dict[str, float]:
 
 def sander_energies(prmtop: Path, inpcrd: Path, workdir: Path) -> dict[str, float]:
     """sander 单点能量（kcal/mol），取输入坐标处的第一个能量块。"""
+    from ffcompiler.toolconfig import resolve
+
+    sander = str(resolve("sander").path)
     workdir = Path(workdir).resolve()
     workdir.mkdir(parents=True, exist_ok=True)
     mdin = workdir / "sander.mdin"
     mdout = workdir / "sander.mdout"
     mdin.write_text(_MDIN, encoding="utf-8")
     proc = subprocess.run(
-        ["sander", "-O", "-i", str(mdin), "-o", str(mdout),
+        [sander, "-O", "-i", str(mdin), "-o", str(mdout),
          "-p", str(Path(prmtop).resolve()), "-c", str(Path(inpcrd).resolve())],
         capture_output=True, text=True, timeout=600, cwd=workdir,
     )
@@ -270,10 +273,13 @@ def compare(
     amber_ir: ForceFieldIR | None = None,
     gromacs_ir: ForceFieldIR | None = None,
     include_gromacs: bool = True,
+    skip_missing_sander: bool = False,
 ) -> CrossEngineReport:
     """跑 §5 T9 的各条腿并套 §2.4 容差。
 
     amber_ir / gromacs_ir 默认与 ir 相同（测试注入篡改导出，只进对应格式的文件）。
+    skip_missing_sander=True（CLI 用）：找不到 sander 时跳过 sander 两路并记入
+    report.skipped；默认 False（Gate 用：全套验收，缺 sander 即报错，决策 0026）。
     """
     from ffcompiler.exporters.amber import write_amber
     from ffcompiler.exporters.gromacs import write_gromacs
@@ -350,47 +356,52 @@ def compare(
         _add_row(report, "openmm-top", "numpy-ir", key, e_top[key], e_ref, tol)
 
     # ---- sander 两条腿 --------------------------------------------------
-    numpy_kcal = _numpy_kcal_categories(ir, positions_nm)
-    sander_ours = sander_energies(
-        amber_files["prmtop"], amber_files["inpcrd"], workdir / "sander_ours",
-    )
-    # 近线性角（θ > 175°）：sander 与 OpenMM/numpy 的角度求值路径存在引擎间
-    # 系统差（决策 0004.2），sander-vs-numpy 的 angle/dihed 行跳过；同引擎的
-    # sander-tleap 对比保留。
-    near_linear: list[tuple[int, int, int]] = []
-    for angle in ir.angles:
-        theta_deg = math.degrees(_bond_angle(
-            positions_nm[angle.i], positions_nm[angle.j], positions_nm[angle.k_atom],
-        ))
-        if theta_deg > LINEAR_ANGLE_DEG:
-            near_linear.append((angle.i, angle.j, angle.k_atom))
-    if near_linear:
-        report.skipped["sander-ours:angle/dihed"] = (
-            f"near-linear angle(s) {near_linear[:3]} (> {LINEAR_ANGLE_DEG} deg); "
-            "engine-specific sander-vs-numpy difference (decision 0004.2)"
-        )
-    for key in _SANDER_KEYS:
-        if near_linear and key in ("angle", "dihed"):
-            continue
-        _add_row(report, "sander-ours", "numpy-ir", key, sander_ours[key],
-                 numpy_kcal[key], _SANDER_EEL(numpy_kcal[key])
-                 if key in ("eel", "eel14") else _SANDER_E(numpy_kcal[key]))
+    from ffcompiler.toolconfig import find
 
-    if tleap_prmtop is not None and tleap_inpcrd is not None:
-        # sander-tleap 腿必须在同一几何上比 Hamiltonian：给 tleap prmtop 配
-        # 当前 positions 的 rst7（tleap 自带的 inpcrd 是原始几何，扰动构型下
-        # 几何不一致会虚报失败）。
-        tleap_dir = workdir / "sander_tleap"
-        tleap_dir.mkdir(parents=True, exist_ok=True)
-        natom_tleap = read_prmtop(tleap_prmtop).pointer("NATOM")
-        if natom_tleap != len(positions_nm):
-            raise ValueError(f"tleap prmtop 有 {natom_tleap} 个原子，坐标有 {len(positions_nm)} 个")
-        tleap_crd = tleap_dir / "tleap.rst7"
-        write_rst7(np.asarray(positions_nm, dtype=np.float64) * 10.0, tleap_crd, title="tleap")
-        sander_tleap = sander_energies(tleap_prmtop, tleap_crd, tleap_dir)
+    if skip_missing_sander and find("sander") is None:
+        report.skipped["sander"] = "sander: not found（在配置文件 [tools].sander 里写上位置即可启用）"
+    else:
+        numpy_kcal = _numpy_kcal_categories(ir, positions_nm)
+        sander_ours = sander_energies(
+            amber_files["prmtop"], amber_files["inpcrd"], workdir / "sander_ours",
+        )
+        # 近线性角（θ > 175°）：sander 与 OpenMM/numpy 的角度求值路径存在引擎间
+        # 系统差（决策 0004.2），sander-vs-numpy 的 angle/dihed 行跳过；同引擎的
+        # sander-tleap 对比保留。
+        near_linear: list[tuple[int, int, int]] = []
+        for angle in ir.angles:
+            theta_deg = math.degrees(_bond_angle(
+                positions_nm[angle.i], positions_nm[angle.j], positions_nm[angle.k_atom],
+            ))
+            if theta_deg > LINEAR_ANGLE_DEG:
+                near_linear.append((angle.i, angle.j, angle.k_atom))
+        if near_linear:
+            report.skipped["sander-ours:angle/dihed"] = (
+                f"near-linear angle(s) {near_linear[:3]} (> {LINEAR_ANGLE_DEG} deg); "
+                "engine-specific sander-vs-numpy difference (decision 0004.2)"
+            )
         for key in _SANDER_KEYS:
-            _add_row(report, "sander-tleap", "sander-ours", key, sander_tleap[key],
-                     sander_ours[key], _SANDER_E(sander_ours[key]))
+            if near_linear and key in ("angle", "dihed"):
+                continue
+            _add_row(report, "sander-ours", "numpy-ir", key, sander_ours[key],
+                     numpy_kcal[key], _SANDER_EEL(numpy_kcal[key])
+                     if key in ("eel", "eel14") else _SANDER_E(numpy_kcal[key]))
+
+        if tleap_prmtop is not None and tleap_inpcrd is not None:
+            # sander-tleap 腿必须在同一几何上比 Hamiltonian：给 tleap prmtop 配
+            # 当前 positions 的 rst7（tleap 自带的 inpcrd 是原始几何，扰动构型下
+            # 几何不一致会虚报失败）。
+            tleap_dir = workdir / "sander_tleap"
+            tleap_dir.mkdir(parents=True, exist_ok=True)
+            natom_tleap = read_prmtop(tleap_prmtop).pointer("NATOM")
+            if natom_tleap != len(positions_nm):
+                raise ValueError(f"tleap prmtop 有 {natom_tleap} 个原子，坐标有 {len(positions_nm)} 个")
+            tleap_crd = tleap_dir / "tleap.rst7"
+            write_rst7(np.asarray(positions_nm, dtype=np.float64) * 10.0, tleap_crd, title="tleap")
+            sander_tleap = sander_energies(tleap_prmtop, tleap_crd, tleap_dir)
+            for key in _SANDER_KEYS:
+                _add_row(report, "sander-tleap", "sander-ours", key, sander_tleap[key],
+                         sander_ours[key], _SANDER_E(sander_ours[key]))
 
     # ---- gmx 腿（没有就 SKIPPED，决策 D1）-------------------------------
     if include_gromacs:

@@ -15,6 +15,8 @@
                           --hessian-provider gfnff|gfn2|fchk|orca-hess [--hessian-file F]
                           [--prior mseminario] [--alpha 1e-3] --output ... --outdir D
     ffcompiler check-staleness --ir-in F
+    ffcompiler init-config [--output F] [--force]   # 生成外部工具位置配置（不入库，决策 0026）
+    ffcompiler check-env                            # 各工具解析到哪里、哪些功能可用
 
 坐标合同（2026-10-15 计划 C1，2026-10-17 施工）：``--coords-in`` 只与
 ``--ir-in`` 同用，读取 ffcompiler/ir/coords.py 的 sidecar JSON，与 IR 显式核对
@@ -71,18 +73,33 @@ def _do_check_equivalence(args: argparse.Namespace) -> int:
     elif args.prmtop and args.inpcrd:
         kwargs["tleap_prmtop"] = args.prmtop
         kwargs["tleap_inpcrd"] = args.inpcrd
-    report = compare(ir, positions, Path(args.workdir), **kwargs)
+    report = compare(ir, positions, Path(args.workdir), skip_missing_sander=True, **kwargs)
     print(report.to_markdown())
     return 0 if report.passed else 1
 
 
+def _read_cp2k(path: Path, positions: np.ndarray):
+    """CP2K .out：几何取文件里的坐标表，交给拓扑检查与输入几何比对。
+
+    文件没有坐标表时才退回输入几何，并在 stderr 说明几何一致性未核对
+    （此时 Hessian 是在哪个几何上算的，本程序无从得知）。
+    """
+    from ffcompiler.hessian.cp2k import MissingCoordinatesError, read_cp2k_hess
+
+    try:
+        return read_cp2k_hess(path)
+    except MissingCoordinatesError:
+        print(f"note: {path} 没有 QUICKSTEP 坐标表，改用输入几何；"
+              "Hessian 几何与输入几何的一致性未核对", file=sys.stderr)
+        return read_cp2k_hess(path, positions_nm=positions)
+
+
 def _do_derive_bonded(args: argparse.Namespace) -> int:
     import json
-    import os
 
     from ffcompiler.bonded.assign import derive_bonded
     from ffcompiler.hessian.gaussian import read_fchk
-    from ffcompiler.hessian.xtb import XTB_BINARY, run_xtb_hessian
+    from ffcompiler.hessian.xtb import run_xtb_hessian
     from ffcompiler.ir import coords as ir_coords
     from ffcompiler.ir import io as ir_io
 
@@ -103,15 +120,13 @@ def _do_derive_bonded(args: argparse.Namespace) -> int:
         if not args.hessian_file:
             print("error: cp2k-out provider 需要 --hessian-file", file=sys.stderr)
             return 2
-        from ffcompiler.hessian.cp2k import read_cp2k_hess
-        h = read_cp2k_hess(Path(args.hessian_file), positions_nm=positions)
+        h = _read_cp2k(Path(args.hessian_file), positions)
     else:
         # 计划 §1 固定 xtb 6.7.1；FFC_XTB 只用于显式替换（同 FFC_GMX），不查 PATH
         h = run_xtb_hessian(
             np.array([a.atomic_number for a in ir.atoms]), positions,
             method=args.hessian_provider, charge=ir.total_charge,
             workdir=outdir / "xtb",
-            binary=Path(os.environ.get("FFC_XTB", str(XTB_BINARY))),
         )
     new_ir, hess_positions, report = derive_bonded(
         ir, h, method=args.method, symmetrize=not args.no_symmetrize,
@@ -345,7 +360,7 @@ def _do_global_fit(args: argparse.Namespace) -> int:
 
     from ffcompiler.bonded.global_fit import global_fit
     from ffcompiler.hessian.gaussian import read_fchk
-    from ffcompiler.hessian.xtb import XTB_BINARY, run_xtb_hessian
+    from ffcompiler.hessian.xtb import run_xtb_hessian
     from ffcompiler.ir import coords as ir_coords
     from ffcompiler.ir import io as ir_io
 
@@ -366,16 +381,12 @@ def _do_global_fit(args: argparse.Namespace) -> int:
         if not args.hessian_file:
             print("error: cp2k-out provider 需要 --hessian-file", file=sys.stderr)
             return 2
-        from ffcompiler.hessian.cp2k import read_cp2k_hess
-        h = read_cp2k_hess(Path(args.hessian_file), positions_nm=positions)
+        h = _read_cp2k(Path(args.hessian_file), positions)
     else:
-        import os
-
         h = run_xtb_hessian(
             np.array([a.atomic_number for a in ir.atoms]), positions,
             method=args.hessian_provider, charge=ir.total_charge,
             workdir=outdir / "xtb",
-            binary=Path(os.environ.get("FFC_XTB", str(XTB_BINARY))),
         )
     new_ir, hess_positions, report = global_fit(
         ir, h,
@@ -476,6 +487,53 @@ def _validate_common_inputs(parser: argparse.ArgumentParser, args: argparse.Name
             parser.error(f"缺少参数：{' '.join(missing)}（或改用 --ir-in [--coords-in]）")
 
 
+def _do_init_config(args: argparse.Namespace) -> int:
+    from ffcompiler import toolconfig as tc
+
+    out = args.output or tc.config_path()
+    if out.exists() and not args.force:
+        print(f"error: {out} 已存在；要覆盖请加 --force", file=sys.stderr)
+        return 2
+    # 目标配置本身可能还不存在或已写坏：读不了就跳过配置层，只从环境变量/PATH/旧默认探测
+    try:
+        tc.load_config()
+        use_config = True
+    except tc.ToolConfigError:
+        use_config = False
+
+    def detect(key: str):
+        try:
+            return tc.find(key, use_config=use_config)
+        except tc.ToolConfigError as exc:  # 单项写错：写成注释行并注明原因，不中断
+            return exc
+
+    detected = {key: detect(key) for key in tc.TOOLS}
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(tc.render_config(detected), encoding="utf-8")
+    missing = [k for k, v in detected.items() if not isinstance(v, tc.Resolved)]
+    print(f"config: {out}")
+    if missing:
+        print("未找到、需要手填（不用的功能可以不填）：" + ", ".join(missing))
+    return 0
+
+
+def _do_check_env(args: argparse.Namespace) -> int:
+    from ffcompiler import toolconfig as tc
+
+    rows = tc.check_rows()
+    print(f"config file: {tc.config_path()}")
+    print("| tool | status | source | path | version | used by |")
+    print("|---|---|---|---|---|---|")
+    for r in rows:
+        print(f"| {r['key']} | {r['status']} | {r['source']} | {r['path']} | {r['version']} | {r['used_by']} |")
+    print()
+    print("| 功能 | 可用 | 缺 |")
+    print("|---|---|---|")
+    for f in tc.check_features(rows):
+        print(f"| {f['feature']} | {'yes' if f['available'] else 'no'} | {', '.join(f['missing'])} |")
+    return 1 if any(r["status"] == "error" for r in rows) else 0
+
+
 def main(argv: list[str] | None = None) -> int:
     from ffcompiler import __version__
 
@@ -568,6 +626,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_stale.add_argument("--ir-in", required=True, type=Path)
 
+    p_init = sub.add_parser("init-config", help="生成外部工具位置配置（不入库），能自动找到的先填上")
+    p_init.add_argument("--output", type=Path, default=None,
+                        help="默认写到 FFC_CONFIG 或 ~/.config/crucible/tools.toml")
+    p_init.add_argument("--force", action="store_true", help="覆盖已存在的文件")
+    sub.add_parser("check-env", help="逐项显示外部工具解析到哪里、来源与版本")
+
     args = parser.parse_args(argv)
     _validate_common_inputs(parser, args)
     try:
@@ -585,6 +649,10 @@ def main(argv: list[str] | None = None) -> int:
             return _do_global_fit(args)
         if args.command == "check-staleness":
             return _do_check_staleness(args)
+        if args.command == "init-config":
+            return _do_init_config(args)
+        if args.command == "check-env":
+            return _do_check_env(args)
     except Exception as exc:  # noqa: BLE001 - CLI 边界：任何错误都以 1 退出
         print(f"error: {exc}", file=sys.stderr)
         return 1

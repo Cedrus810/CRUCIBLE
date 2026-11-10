@@ -9,7 +9,6 @@ import json
 import os
 from pathlib import Path
 import re
-import shutil
 import subprocess
 
 import numpy as np
@@ -24,22 +23,19 @@ TERMS = {
 
 
 def find_gromacs() -> str | None:
-    explicit = os.environ.get("FFC_GMX")
-    if explicit:
-        if not Path(explicit).is_file() or not os.access(explicit, os.X_OK):
-            raise ValueError(f"FFC_GMX is not executable: {explicit}")
-        return str(Path(explicit).resolve())
-    if found := shutil.which("gmx"):
-        return found
-    # User-provided installation; the ordinary AVX2 variant is the safe fallback.
-    known = Path("~/gmx26.3/bin/gmx").expanduser()
-    return str(known) if known.is_file() and os.access(known, os.X_OK) else None
+    """FFC_GMX → 配置 [tools].gmx → PATH → 旧默认 ~/gmx26.3（决策 0026）。显式路径不可用时报错。"""
+    from ffcompiler.toolconfig import find
+
+    found = find("gmx")
+    return str(found.path.resolve()) if found else None
 
 
 def _environment(executable: str) -> dict[str, str]:
+    from ffcompiler.toolconfig import gmx_library_dirs
+
     env = dict(os.environ)
     base = Path(executable).resolve().parents[1]
-    roots = [base / "lib64", base / "lib", Path("~/library/HDF5/lib").expanduser()]
+    roots = [base / "lib64", base / "lib", *gmx_library_dirs()]
     libraries = [str(p) for p in roots if p.is_dir()]
     if env.get("LD_LIBRARY_PATH"):
         libraries.append(env["LD_LIBRARY_PATH"])

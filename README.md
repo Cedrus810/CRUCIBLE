@@ -107,14 +107,27 @@ Use the existing scientific environment; nothing is installed by this project.
 
 - Python ≥ 3.12 with `numpy`, `scipy`, `openmm`, `rdkit`; for the MLP torsion and NAGL
   charge features also ASE + MACE and OpenFF NAGL
-- External programs (only for the corresponding features/tests):
-  - `xtb` 6.7.1 — default `~/software/xtb-dist/bin/xtb`, override with `FFC_XTB`
-  - GROMACS — found via `FFC_GMX`, `PATH`, or `~/gmx26.3/bin/gmx`; mixed precision is fine
-  - AmberTools `sander` / `tleap` — cross-engine checks and fixture generation; AM1-BCC
-    charges additionally use `antechamber` (`FFC_ANTECHAMBER` or `PATH`)
-  - MACE-POLAR-1-M model for torsion scans — default
-    `~/MLP/mace/MACE-POLAR-1-M.model`, override with `FFC_MACE_MODEL`
-  - Sobtop 2026.1.16 — only to regenerate reference data (`scripts/make_sobtop_refs.py`)
+- External programs, each needed only by the features that use it: `xtb` 6.7.1 (gfnff/gfn2
+  Hessians), AmberTools `antechamber` / `sander` / `tleap` / `parmchk2`, GROMACS (optional
+  cross-engine leg; mixed precision is fine), the MACE-POLAR-1-M model (torsion scans), and
+  Sobtop 2026.1.16 (only to regenerate reference data)
+
+### Configure external tools
+
+Tool locations live in a per-user config file that is never committed
+(`~/.config/crucible/tools.toml`, or the path in `FFC_CONFIG`; decision 0026). Each tool is
+looked up as: environment variable `FFC_<TOOL>` → config file → `PATH` → legacy default under
+`~` (`xtb` is pinned and never taken from `PATH`). A missing tool only disables the features
+that need it; a path that is written down but unusable is an error.
+
+```bash
+PYTHONPATH=src python -m ffcompiler.cli init-config   # fills in what it can find; edit the rest
+PYTHONPATH=src python -m ffcompiler.cli check-env     # where each tool resolved, which features work
+```
+
+`crucible.example.toml` lists every key with placeholder paths. `scripts/env.sh` activates
+the conda environment; override `FFC_MAMBA_ROOT`, `FFC_ENV_NAME`, `FFC_MODULEFILES`,
+`FFC_GMX_MODULE` if your layout differs.
 
 ```bash
 source scripts/env.sh
@@ -282,9 +295,10 @@ PYTHONPATH=src python -m pytest -m "not external" -q   # unit tests (no external
 - mSeminario bond constants follow the written bond direction (as Sobtop does);
   symmetrization (on by default) removes the resulting asymmetry.
 - Export writes a single residue. The IR carries an optional periodic box (`box_nm`,
-  decision 0023): NumPy energies use minimum image + bond-graph unwrap, GROMACS/OpenMM
-  export full triclinic boxes, AMBER prmtop only orthorhombic; periodic cross-engine legs
-  are not yet part of check-equivalence.
+  decisions 0023/0025) as simulation-cell metadata: it is written to the output files
+  (GROMACS/OpenMM lower-triangular triclinic, AMBER prmtop orthorhombic only) but does not
+  enter the reference energy, which stays the non-periodic Hamiltonian that every
+  cross-engine leg computes. Coordinates must be whole molecules.
 
 ## Repository layout
 
@@ -301,6 +315,7 @@ src/ffcompiler/
   torsion/     rotatable bonds, MACE-POLAR relaxed scans, MM subtraction, Fourier fit, MLP provider
   charge/      charge providers (loaded, AM1-BCC, NAGL), learned-BCC skeleton, write-back and torsion refit
   validation/  cross-engine comparison, GROMACS adapter, vibrations, pytest accounting
+  toolconfig.py  external tool locations: FFC_* env → per-user tools.toml → PATH → legacy default
 scripts/       Gates, fixture generation, Sobtop reference data
 tests/         unit and cross-engine tests, fixtures
 docs/          plans, decision records, theory
@@ -317,7 +332,7 @@ jobs/          formal runs (only manifest/acceptance/report are tracked)
   decisions and missing validation in §2)
 - [docs/theory/hessian_methods.md](docs/theory/hessian_methods.md) — derivations, units,
   conventions
-- [docs/decisions/](docs/decisions/README.md) — decision records 0001–0024
+- [docs/decisions/](docs/decisions/README.md) — decision records 0001–0026
 - [docs/superpowers/plans/](docs/superpowers/plans/) — roadmap and MVP plans
 - [HANDOVER.md](HANDOVER.md) — current verified state and next steps
 - [CHANGELOG.md](CHANGELOG.md)

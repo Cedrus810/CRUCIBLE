@@ -28,7 +28,10 @@ Superseded records are kept verbatim as history.
 | [0020](0020-refit-fallback-and-cache-paths.md) | 重拟合不升级原兜底键；G2 `--resume` / G3 `--scan-cache` 路径写错时报错，G3 无默认缓存 | 有效 |
 | [0021](0021-runtime-no-git-probes.md) | RunContext 与 run_logged.sh 不探测 Git；提交与 dirty 状态记 null | 有效 |
 | [0022](0022-sobtop-absorption.md) | 吸收 Sobtop 逆向：perception/fflib 两包 + 复现边界条件修正 | 有效 |
-| [0023](0023-sobtop-round2.md) | Sobtop 吸收第二批：localhess（隐藏方法5复刻，experimental）、CP2K provider、IR 周期盒；mol2 结构入口不做 | 有效 |
+| [0023](0023-sobtop-round2.md) | Sobtop 吸收第二批：localhess（隐藏方法5复刻，experimental）、CP2K provider、IR 周期盒；mol2 结构入口不做 | 有效（周期盒语义由 0025 修订） |
+| [0024](0024-next-phase-design.md) | 设计稿下一阶段增补：分子入口、扫描质量、联合拟合（仅设计） | 有效 |
+| [0025](0025-review-fixes-periodic-box-semantics.md) | 10-24 代码审阅修复：周期盒只作元数据、AMBER 周期 prmtop、CP2K 几何、bondcrit/improper/负 pn 语义 | 有效 |
+| [0026](0026-tool-config.md) | 外部工具位置由用户自己的配置文件给出（tools.toml + init-config + check-env），缺工具只影响用到它的功能 | 有效 |
 
 
 新记录用下一个编号，文件名 `NNNN-short-topic.md`；取代旧记录时在旧记录标题下加一行说明。
