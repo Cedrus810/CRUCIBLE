@@ -1,0 +1,796 @@
+{
+  "schema": "ffir/0.1",
+  "name": "ethanol",
+  "atoms": [
+    {
+      "index": 0,
+      "name": "C1",
+      "element": "C",
+      "atomic_number": 6,
+      "mass": 12.01,
+      "atom_type": "c3",
+      "formal_charge": 0,
+      "partial_charge": -0.13610011085318538,
+      "sigma": 0.33977095312572575,
+      "epsilon": 0.4510352003144314,
+      "residue_name": "MOL"
+    },
+    {
+      "index": 1,
+      "name": "C2",
+      "element": "C",
+      "atomic_number": 6,
+      "mass": 12.01,
+      "atom_type": "c3",
+      "formal_charge": 0,
+      "partial_charge": 0.12639988914681463,
+      "sigma": 0.33977095312572575,
+      "epsilon": 0.4510352003144314,
+      "residue_name": "MOL"
+    },
+    {
+      "index": 2,
+      "name": "O1",
+      "element": "O",
+      "atomic_number": 8,
+      "mass": 16.0,
+      "atom_type": "oh",
+      "formal_charge": 0,
+      "partial_charge": -0.599800113048298,
+      "sigma": 0.3242871333503238,
+      "epsilon": 0.3891120004851147,
+      "residue_name": "MOL"
+    },
+    {
+      "index": 3,
+      "name": "H1",
+      "element": "H",
+      "atomic_number": 1,
+      "mass": 1.008,
+      "atom_type": "hc",
+      "formal_charge": 0,
+      "partial_charge": 0.042366888921815574,
+      "sigma": 0.2600176998083396,
+      "epsilon": 0.08702720023662243,
+      "residue_name": "MOL"
+    },
+    {
+      "index": 4,
+      "name": "H2",
+      "element": "H",
+      "atomic_number": 1,
+      "mass": 1.008,
+      "atom_type": "hc",
+      "formal_charge": 0,
+      "partial_charge": 0.042366888921815574,
+      "sigma": 0.2600176998083396,
+      "epsilon": 0.08702720023662243,
+      "residue_name": "MOL"
+    },
+    {
+      "index": 5,
+      "name": "H3",
+      "element": "H",
+      "atomic_number": 1,
+      "mass": 1.008,
+      "atom_type": "hc",
+      "formal_charge": 0,
+      "partial_charge": 0.042366888921815574,
+      "sigma": 0.2600176998083396,
+      "epsilon": 0.08702720023662243,
+      "residue_name": "MOL"
+    },
+    {
+      "index": 6,
+      "name": "H4",
+      "element": "H",
+      "atomic_number": 1,
+      "mass": 1.008,
+      "atom_type": "h1",
+      "formal_charge": 0,
+      "partial_charge": 0.04319988892730336,
+      "sigma": 0.2421997255202334,
+      "epsilon": 0.08702720008258066,
+      "residue_name": "MOL"
+    },
+    {
+      "index": 7,
+      "name": "H5",
+      "element": "H",
+      "atomic_number": 1,
+      "mass": 1.008,
+      "atom_type": "h1",
+      "formal_charge": 0,
+      "partial_charge": 0.04319988892730336,
+      "sigma": 0.2421997255202334,
+      "epsilon": 0.08702720008258066,
+      "residue_name": "MOL"
+    },
+    {
+      "index": 8,
+      "name": "H6",
+      "element": "H",
+      "atomic_number": 1,
+      "mass": 1.008,
+      "atom_type": "ho",
+      "formal_charge": 0,
+      "partial_charge": 0.3959998891468146,
+      "sigma": 0.05379246460854296,
+      "epsilon": 0.019664799991173057,
+      "residue_name": "MOL"
+    }
+  ],
+  "bonds": [
+    {
+      "i": 0,
+      "j": 1,
+      "r0": 0.15152720822879717,
+      "k": 174290.67822456526,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 1,
+      "j": 2,
+      "r0": 0.14119915265032068,
+      "k": 201846.8412679885,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 0,
+      "j": 3,
+      "r0": 0.10908196459530922,
+      "k": 290714.2458133309,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0006484234048699132
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 0,
+      "j": 4,
+      "r0": 0.10908196459530922,
+      "k": 290714.2458133309,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0006484234048699132
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 0,
+      "j": 5,
+      "r0": 0.10908196459530922,
+      "k": 290714.2458133309,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0006484234048699132
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 1,
+      "j": 6,
+      "r0": 0.10982688982407582,
+      "k": 276958.1159206828,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0013740739759561782
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 1,
+      "j": 7,
+      "r0": 0.10982688982407582,
+      "k": 276958.1159206828,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0013740739759561782
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 2,
+      "j": 8,
+      "r0": 0.09841510217579211,
+      "k": 427031.7014905789,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0
+      },
+      "uncertainty": null
+    }
+  ],
+  "angles": [
+    {
+      "i": 0,
+      "j": 1,
+      "k_atom": 2,
+      "theta0": 1.9739087452287953,
+      "force_constant": 536.1223217297651,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 0,
+      "j": 1,
+      "k_atom": 6,
+      "theta0": 1.9411023810752295,
+      "force_constant": 362.305805153974,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0031499417935442558
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 0,
+      "j": 1,
+      "k_atom": 7,
+      "theta0": 1.9411023810752295,
+      "force_constant": 362.305805153974,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0031499417935442558
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 1,
+      "j": 0,
+      "k_atom": 3,
+      "theta0": 1.9420532712693674,
+      "force_constant": 350.7025500695925,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.02377005673326466
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 1,
+      "j": 0,
+      "k_atom": 4,
+      "theta0": 1.9420532712693674,
+      "force_constant": 350.7025500695925,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.02377005673326466
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 1,
+      "j": 0,
+      "k_atom": 5,
+      "theta0": 1.9420532712693674,
+      "force_constant": 350.7025500695925,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.02377005673326466
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 1,
+      "j": 2,
+      "k_atom": 8,
+      "theta0": 1.9235671751828405,
+      "force_constant": 383.33538300307913,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 2,
+      "j": 1,
+      "k_atom": 6,
+      "theta0": 1.875199724372522,
+      "force_constant": 319.71623782941776,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.16101211409591806
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 2,
+      "j": 1,
+      "k_atom": 7,
+      "theta0": 1.875199724372522,
+      "force_constant": 319.71623782941776,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.16101211409591806
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 3,
+      "j": 0,
+      "k_atom": 4,
+      "theta0": 1.8781255226463864,
+      "force_constant": 220.04651615969763,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.012292940436828631
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 3,
+      "j": 0,
+      "k_atom": 5,
+      "theta0": 1.8781255226463864,
+      "force_constant": 220.04651615969763,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.012292940436828631
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 4,
+      "j": 0,
+      "k_atom": 5,
+      "theta0": 1.8781255226463864,
+      "force_constant": 220.04651615969763,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.012292940436828631
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 6,
+      "j": 1,
+      "k_atom": 7,
+      "theta0": 1.851107087466935,
+      "force_constant": 220.53279231487352,
+      "source": "m2seminario",
+      "meta": {
+        "hessian_provider": "xtb",
+        "hessian_method": "gfnff",
+        "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+        "symmetrized": true,
+        "class_spread": 0.0
+      },
+      "uncertainty": null
+    }
+  ],
+  "proper_torsions": [
+    {
+      "i": 0,
+      "j": 1,
+      "k": 2,
+      "l": 8,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.25104,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "c3-c3-oh-ho"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 3,
+      "j": 0,
+      "k": 1,
+      "l": 2,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.37656,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-oh"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 4,
+      "j": 0,
+      "k": 1,
+      "l": 2,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.37656,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-oh"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 5,
+      "j": 0,
+      "k": 1,
+      "l": 2,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.37656,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-oh"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 3,
+      "j": 0,
+      "k": 1,
+      "l": 6,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.6508444463040001,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-h1"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 3,
+      "j": 0,
+      "k": 1,
+      "l": 7,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.6508444463040001,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-h1"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 4,
+      "j": 0,
+      "k": 1,
+      "l": 6,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.6508444463040001,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-h1"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 4,
+      "j": 0,
+      "k": 1,
+      "l": 7,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.6508444463040001,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-h1"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 5,
+      "j": 0,
+      "k": 1,
+      "l": 6,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.6508444463040001,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-h1"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 5,
+      "j": 0,
+      "k": 1,
+      "l": 7,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.6508444463040001,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "hc-c3-c3-h1"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 6,
+      "j": 1,
+      "k": 2,
+      "l": 8,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.514632,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "h1-c3-oh-ho"
+      },
+      "uncertainty": null
+    },
+    {
+      "i": 7,
+      "j": 1,
+      "k": 2,
+      "l": 8,
+      "periodicity": 3,
+      "phase": 0.0,
+      "force_constant": 0.514632,
+      "source": "gaff2-library",
+      "meta": {
+        "amber_types": "h1-c3-oh-ho"
+      },
+      "uncertainty": null
+    }
+  ],
+  "impropers": [],
+  "exclusions": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      6,
+      7
+    ]
+  ],
+  "pairs14": [
+    [
+      0,
+      8
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      4,
+      7
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      5,
+      7
+    ],
+    [
+      6,
+      8
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "total_charge": 0,
+  "forcefield_family": "amber",
+  "combination_rule": "lorentz-berthelot",
+  "coulomb_14_scale": 0.8333333333333334,
+  "vdw_14_scale": 0.5,
+  "box_nm": null,
+  "provenance": {
+    "inputs": {
+      "prmtop": {
+        "path": "/home/ruigengji/CRUCIBLE/tests/fixtures/gaff2/ethanol/ethanol.prmtop",
+        "sha256": "47beb57637da6db2ea26683b0618ef43101ceb51632499e226d673fe394b8563"
+      },
+      "inpcrd": {
+        "path": "/home/ruigengji/CRUCIBLE/tests/fixtures/gaff2/ethanol/ethanol.inpcrd",
+        "sha256": "44350931adcde460f6394fe09dbf47abc8769720dab23e12034b326c6085afda"
+      },
+      "sdf": {
+        "path": "/home/ruigengji/CRUCIBLE/tests/fixtures/gaff2/ethanol/ethanol.sdf",
+        "sha256": "e262b4cb3b71ea190f62945d5028ca3fe3d6c7f27f668c625b1ad4cbca6b152c"
+      }
+    },
+    "prmtop_reader": "ffcompiler.formats.amber",
+    "bonded": {
+      "method": "m2seminario",
+      "hessian_provider": "xtb",
+      "hessian_method": "gfnff",
+      "hessian_sha256": "24397ec419105ea215057a57a3758e722660e60f0b36a11aadb260b805885167",
+      "symmetrized": true,
+      "linear_angle_policy": "error",
+      "linear_angles_kept": [],
+      "max_class_spread": 0.16101211409591806,
+      "max_bond_ratio_dev": 0.011394221347269529
+    }
+  }
+}

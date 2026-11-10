@@ -1,0 +1,63 @@
+{
+  "gate": "G2",
+  "passed": false,
+  "criteria": {
+    "G2.1": true,
+    "G2.2": true,
+    "G2.3": false,
+    "G2.4": true,
+    "G2.5": true
+  },
+  "rotor_counts": {
+    "ethanol": 2,
+    "dmso": 2,
+    "nma": 3,
+    "methyl_benzoate": 3,
+    "acetate": 1,
+    "methylammonium": 1,
+    "benzene": 0,
+    "chlorobenzene": 0,
+    "cyclopropane": 0,
+    "cyclobutane": 0,
+    "norbornane": 0
+  },
+  "compare": {
+    "ethanol": true,
+    "dmso": true,
+    "nma": false,
+    "methyl_benzoate": true,
+    "acetate": true,
+    "methylammonium": true,
+    "benzene": true,
+    "chlorobenzene": true,
+    "cyclopropane": true,
+    "cyclobutane": true,
+    "norbornane": true
+  },
+  "self_consistency": {
+    "G2.1 fourier": "passed",
+    "G2.1 mm": "passed"
+  },
+  "fallbacks": [],
+  "failures": [],
+  "pytest_summary": {
+    "not external": {
+      "passed": 410,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    },
+    "external": {
+      "passed": 28,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unexpected_skips": 0,
+      "returncode": 0,
+      "accepted": true
+    }
+  }
+}

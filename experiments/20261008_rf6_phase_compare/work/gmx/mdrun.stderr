@@ -1,0 +1,32 @@
+                      :-) GROMACS - gmx mdrun, 2026.3 (-:
+
+Executable:   /home/ruigengji/gmx26.3/bin/gmx
+Data prefix:  /home/ruigengji/gmx26.3
+Working dir:  /home/ruigengji/CRUCIBLE/experiments/20261008_rf6_phase_compare/work/gmx
+Command line:
+  gmx mdrun -s run.tpr -rerun frame.gro -deffnm rerun -ntmpi 1 -ntomp 1 -nb cpu -bonded cpu
+
+Compiled SIMD is AVX2_256, but CPU also supports AVX_512 (see log).
+Reading file run.tpr, VERSION 2026.3 (single precision)
+Using 1 MPI thread
+Using 1 OpenMP thread 
+
+
+You are using the following feature(s) which are partially, but not fully validated. Please check your results. If you find issues, report them on the GROMACS forum or at https://gitlab.com/gromacs/gromacs/-/issues
+  an external FMM library
+
+NOTE: Thread affinity was not set.
+starting md rerun 'ethanol', reading coordinates from input trajectory 'frame.gro'
+
+Reading frames from gro file 'ffcompiler ethanol t= 0', 9 atoms.
+
+Reading frame       0 time    0.000   
+Last frame          0 time    0.000   
+
+               Core t (s)   Wall t (s)        (%)
+       Time:        0.000        0.005        6.7
+                 (ns/day)    (hour/ns)    (ms/step)  (Matom*steps/s) 
+Performance:       17.107        1.403        5.051            0.002 
+
+GROMACS reminds you: "I spent a lot of money on booze, birds and fast cars. The rest I just squandered." (George Best)
+

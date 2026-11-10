@@ -1,0 +1,35 @@
+                      :-) GROMACS - gmx grompp, 2026.3 (-:
+
+Executable:   /home/ruigengji/gmx26.3/bin/gmx
+Data prefix:  /home/ruigengji/gmx26.3
+Working dir:  /home/ruigengji/CRUCIBLE/experiments/20261008_rf6_phase_compare/work/gmx
+Command line:
+  gmx grompp -f singlepoint.mdp -c frame.gro -p /home/ruigengji/CRUCIBLE/experiments/20261008_rf6_phase_compare/work/gromacs/topol.top -o run.tpr -po processed.mdp
+
+
+NOTE 1 [file singlepoint.mdp]:
+  With Verlet lists and no buffer tolerance, the optimal nstlist is >= 10,
+  with GPUs >= 20. Note that with the Verlet scheme, nstlist has no effect
+  on the accuracy of your simulation.
+
+Generating 1-4 interactions: fudge = 0.5
+
+NOTE 2 [file topol.top, line 11]:
+  The bond in molecule-type ethanol between atoms 3 O1 and 9 H6 has an
+  estimated oscillational period of 9.1e-03 ps, which is less than 10 times
+  the time step of 1.0e-03 ps.
+  Maybe you forgot to change the constraints mdp option.
+
+Number of degrees of freedom in T-Coupling group rest is 27.00
+The integrator does not provide a ensemble temperature, there is no system ensemble temperature
+
+NOTE 3 [file singlepoint.mdp]:
+  You are using a plain Coulomb cut-off, which might produce artifacts.
+  You might want to consider using PME electrostatics.
+
+
+
+There were 3 NOTEs
+
+GROMACS reminds you: "I spent a lot of money on booze, birds and fast cars. The rest I just squandered." (George Best)
+

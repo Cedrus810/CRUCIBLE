@@ -1,0 +1,20 @@
+{
+  "task": "energy metric vs constrained MM relaxation (innovation_screen_20261029 §8)",
+  "argv": [
+    "scripts/torsion_relax_energy.py",
+    "--g2-run",
+    "jobs/gate_mvp2_20261013",
+    "--outdir",
+    "jobs/torsion_force_bound_20261101/relax",
+    "--molecules",
+    "methyl_benzoate"
+  ],
+  "host": "kasuga01",
+  "python": "3.12.13",
+  "wall_s": 146.42328095436096,
+  "fmax_eV_per_A": 0.001,
+  "max_steps": 5000,
+  "h_hess_nm": 1e-05,
+  "h_dihed_nm": 1e-06,
+  "units": "energy kJ/mol"
+}

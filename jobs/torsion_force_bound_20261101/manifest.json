@@ -1,0 +1,20 @@
+{
+  "task": "candidate A smoke: torsion-unfixable force bound (innovation_screen_20261029 §3.1)",
+  "argv": [
+    "scripts/torsion_force_bound.py",
+    "--g2-run",
+    "jobs/gate_mvp2_20261013",
+    "--outdir",
+    "jobs/torsion_force_bound_20261101",
+    "--molecules",
+    "methyl_benzoate"
+  ],
+  "host": "kasuga01",
+  "python": "3.12.13",
+  "wall_s": 157.60134363174438,
+  "g2_run": "jobs/gate_mvp2_20261013",
+  "molecules": [
+    "methyl_benzoate"
+  ],
+  "units": "force kJ/mol/nm, angle deg"
+}

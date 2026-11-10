@@ -1,0 +1,26 @@
+{
+  "gate": "G2",
+  "passed": false,
+  "criteria": {
+    "G2.1": false,
+    "G2.2": true,
+    "G2.3": false,
+    "G2.4": false,
+    "G2.5": false
+  },
+  "rotor_counts": {
+    "acetonitrile": 0,
+    "benzene": 0
+  },
+  "compare": {
+    "acetonitrile": false,
+    "benzene": true
+  },
+  "self_consistency": {
+    "G2.1 fourier": "missing",
+    "G2.1 mm": "missing"
+  },
+  "fallbacks": [],
+  "failures": [],
+  "pytest_summary": {}
+}

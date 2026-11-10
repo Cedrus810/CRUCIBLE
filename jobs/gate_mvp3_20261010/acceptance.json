@@ -1,0 +1,97 @@
+{
+  "gate": "G3",
+  "passed": false,
+  "criteria": {
+    "G3.1": true,
+    "G3.2": true,
+    "G3.3": true,
+    "G3.4": true,
+    "G3.5": false
+  },
+  "g31": {
+    "ethanol": 1.1111125908236374e-11,
+    "acetate": 4.285727328579014e-11
+  },
+  "g32": {
+    "loaded/ethanol": 0.0,
+    "am1bcc/ethanol": 0.0,
+    "nagl/ethanol": 0.0,
+    "loaded/acetate": 0.0,
+    "am1bcc/acetate": 0.0,
+    "nagl/acetate": 0.0
+  },
+  "compare": {
+    "loaded/ethanol": true,
+    "am1bcc/ethanol": true,
+    "nagl/ethanol": true,
+    "loaded/acetate": true,
+    "am1bcc/acetate": true,
+    "nagl/acetate": true
+  },
+  "sander_known_limitation": {},
+  "g34": {
+    "ethanol": {
+      "identical": true,
+      "nagl_statuses": [
+        "mlp",
+        "mlp"
+      ]
+    },
+    "acetate": {
+      "identical": true,
+      "nagl_statuses": [
+        "mlp"
+      ]
+    }
+  },
+  "nagl_vs_am1bcc": {
+    "ethanol": {
+      "max_abs": 0.03981011256983545,
+      "rms": 0.018244244434586512
+    },
+    "acetate": {
+      "max_abs": 0.020835775266085266,
+      "rms": 0.012724524824031998
+    }
+  },
+  "profiles": [
+    {
+      "molecule": "ethanol",
+      "bond": "0-1",
+      "charges": "am1bcc",
+      "profile_rmse": 0.053863291188347304
+    },
+    {
+      "molecule": "ethanol",
+      "bond": "0-1",
+      "charges": "nagl",
+      "profile_rmse": 0.06872292519289117
+    },
+    {
+      "molecule": "ethanol",
+      "bond": "1-2",
+      "charges": "am1bcc",
+      "profile_rmse": 0.10361161313192264
+    },
+    {
+      "molecule": "ethanol",
+      "bond": "1-2",
+      "charges": "nagl",
+      "profile_rmse": 0.09242699872480183
+    },
+    {
+      "molecule": "acetate",
+      "bond": "0-1",
+      "charges": "am1bcc",
+      "profile_rmse": 0.008018890665358271
+    },
+    {
+      "molecule": "acetate",
+      "bond": "0-1",
+      "charges": "nagl",
+      "profile_rmse": 0.007907397560701685
+    }
+  ],
+  "failures": [],
+  "pytest_summary": {}
+}

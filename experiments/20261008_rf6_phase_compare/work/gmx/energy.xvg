@@ -1,0 +1,32 @@
+# This file was created Thu Oct  8 17:54:21 2026
+# Created by:
+#                      :-) GROMACS - gmx energy, 2026.3 (-:
+# 
+# Executable:   /home/ruigengji/gmx26.3/bin/gmx
+# Data prefix:  /home/ruigengji/gmx26.3
+# Working dir:  /home/ruigengji/CRUCIBLE/experiments/20261008_rf6_phase_compare/work/gmx
+# Command line:
+#   gmx energy -f rerun.edr -o energy.xvg -dp
+# gmx energy is part of G R O M A C S:
+#
+# Grunge ROck MAChoS
+#
+@    title "GROMACS Energies"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "(kJ/mol)"
+@TYPE xy
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "Bond"
+@ s1 legend "Angle"
+@ s2 legend "Proper Dih."
+@ s3 legend "LJ-14"
+@ s4 legend "Coulomb-14"
+@ s5 legend "LJ (SR)"
+@ s6 legend "Coulomb (SR)"
+@ s7 legend "Potential"
+    0.000000    0.477280378342    1.032525062561    4.191842556000    0.714569389820  -34.886600494385   -0.016826264560   24.221818923950   -4.265390396118
