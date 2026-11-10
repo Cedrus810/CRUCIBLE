@@ -1,0 +1,17 @@
+# CRUCIBLE 外部工具位置模板。
+# 复制到 ~/.config/crucible/tools.toml（或用 FFC_CONFIG 指定的位置）后改成本机路径；
+# 也可以运行 `ffcompiler init-config` 自动生成，再运行 `ffcompiler check-env` 检查。
+# 查找顺序：环境变量 FFC_<KEY> → 配置文件 → PATH → 旧默认位置。不用的功能可以不填。
+
+[tools]
+xtb = "/path/to/xtb-6.7.1/bin/xtb"                  # 必填（gfnff/gfn2 Hessian）；不查 PATH
+antechamber = "/path/to/amber/bin/antechamber"      # AM1-BCC 电荷；在 PATH 上可省略
+sander = "/path/to/amber/bin/sander"                # 跨引擎 sander 腿；在 PATH 上可省略
+tleap = "/path/to/amber/bin/tleap"                  # 重建固件；在 PATH 上可省略
+parmchk2 = "/path/to/amber/bin/parmchk2"            # 重建固件；在 PATH 上可省略
+gmx = "/path/to/gromacs/bin/gmx"                    # 可选：跨引擎 GROMACS 腿
+mace_model = "/path/to/MACE-POLAR-1-M.model"        # 可选：MLP 二面角扫描
+sobtop_source = "/path/to/sobtop_2026.1.16"         # 可选：重新生成 Sobtop 参考
+
+[runtime]
+gmx_ld_library_path = ["/path/to/hdf5/lib"]         # 可选：gmx 需要的额外库目录
