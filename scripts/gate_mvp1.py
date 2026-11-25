@@ -534,7 +534,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(prog="gate_mvp1")
     parser.add_argument("--providers", nargs="+", default=["gfnff", "gfn2"],
                         choices=["gfnff", "gfn2"],
-                        help="（子集运行 passed 恒为 false，决策 0019）")
+                        help="Hessian provider 子集（默认 gfnff gfn2）；子集运行 passed 恒为 false（决策 0019）")
     parser.add_argument("--jobs", type=int, default=1, help="并行 xtb 运行数")
     parser.add_argument("--skip-compare", action="store_true",
                         help="调试用：跳过跨引擎比较（Gate 将判为未通过）")

@@ -21,6 +21,7 @@ from .base import TorsionProvider
 from .fourier import fit_fourier, to_ir_terms
 from .mace import MODEL_NAME, molecule_info
 from .mm import mm_energy, mm_energy_without_bond
+from .multistart import DEFAULT_MULTISTART, etkdg_starts, merge_start_scans
 from .rotors import find_rotors
 from .scan import ScanError, ScanResult, relaxed_scan
 
@@ -37,11 +38,14 @@ class TorsionReport:
     molecule_fallback: str | None
     scans: dict[tuple[int, int], ScanResult] = field(default_factory=dict, repr=False)
     refinement: dict | None = None
+    multistart: dict | None = None  # MVP-7：{"spec", "identities"}（分子级，各键共用）
 
     def to_dict(self) -> dict:
         out = {"molecule_fallback": self.molecule_fallback, "rotors": self.rotors}
         if self.refinement is not None:
             out["refinement"] = self.refinement
+        if self.multistart is not None:
+            out["multistart"] = self.multistart
         return out
 
 
@@ -110,9 +114,12 @@ def model_file_identity(path: Path | None) -> dict | None:
 
 
 def scan_cache_key(model: str, quartet, info: Mapping, scan_kwargs: Mapping, *,
-                   model_file: Mapping | None, numbers, bonds, reference: Mapping | None = None) -> str:
+                   model_file: Mapping | None, numbers, bonds, reference: Mapping | None = None,
+                   start: Mapping | None = None) -> str:
     """扫描缓存键：模型名与文件身份、四元组、电荷/spin、扫描参数、原子序数与键（计划 §2.7）；
-    reference：参考势依赖 IR 时（mm-self）的身份，逐项字面值。为 None 时不写入，已有 MACE 缓存键不变。"""
+    reference：参考势依赖 IR 时（mm-self）的身份，逐项字面值。为 None 时不写入，已有 MACE 缓存键不变。
+    start：MVP-7 多起点的起点身份（§10.4 缓存身份含起点来源）；x0 起点为 None，
+    键与现行逐位一致——默认单起点路径的缓存身份不变。"""
     payload = {"model": model, "model_file": dict(model_file) if model_file else None,
                "quartet": list(quartet), "info": dict(info),
                "scan": {k: scan_kwargs[k] for k in sorted(scan_kwargs)},
@@ -120,31 +127,50 @@ def scan_cache_key(model: str, quartet, info: Mapping, scan_kwargs: Mapping, *,
                "bonds": sorted([min(int(a), int(b)), max(int(a), int(b))] for a, b in bonds)}
     if reference is not None:
         payload["reference"] = dict(reference)
+    if start is not None:
+        payload["start"] = dict(start)
     return json.dumps(payload, sort_keys=True)
 
 
 def save_scan(path: Path, key: str, scan: ScanResult) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(".tmp.npz")
-    np.savez(tmp, key=np.array(key), quartet=np.array(scan.quartet), phi_target_rad=scan.phi_target_rad,
-             phi_rad=scan.phi_rad, energy=scan.energy, positions=scan.positions,
-             hysteresis=scan.hysteresis, converged=scan.converged,
-             max_bond_change_pm=np.array(scan.max_bond_change_pm), params=np.array(json.dumps(scan.params)))
+    arrays = dict(
+        key=np.array(key), quartet=np.array(scan.quartet), phi_target_rad=scan.phi_target_rad,
+        phi_rad=scan.phi_rad, energy=scan.energy, positions=scan.positions,
+        hysteresis=scan.hysteresis, converged=scan.converged,
+        max_bond_change_pm=np.array(scan.max_bond_change_pm), params=np.array(json.dumps(scan.params)))
+    if scan.candidates is not None:
+        arrays.update(
+            cand_energy=scan.candidates["energy"], cand_converged=scan.candidates["converged"],
+            cand_positions=scan.candidates["positions"], cand_phi_target_rad=scan.candidates["phi_target_rad"],
+            cand_phi_rad=scan.candidates["phi_rad"])
+    np.savez(tmp, **arrays)
     tmp.replace(path)
 
 
 def load_scan(path: Path, key: str) -> ScanResult | None:
-    """文件存在且记录的扫描参数逐项相等才复用（不用 hash，计划 §2.7）。"""
+    """文件存在且记录的扫描参数逐项相等才复用（不用 hash，计划 §2.7）。
+
+    MVP-7 候选块（cand_*）可选：旧缓存没有时 candidates 为 None，数值部分不受影响。"""
     if not path.is_file():
         return None
     with np.load(path) as d:
         if str(d["key"]) != key:
             return None
+        candidates = None
+        if "cand_energy" in d.files:
+            candidates = {
+                "energy": d["cand_energy"], "converged": d["cand_converged"].astype(bool),
+                "positions": d["cand_positions"], "phi_target_rad": d["cand_phi_target_rad"],
+                "phi_rad": d["cand_phi_rad"],
+            }
         return ScanResult(
             quartet=tuple(int(a) for a in d["quartet"]), phi_target_rad=d["phi_target_rad"],
             phi_rad=d["phi_rad"], energy=d["energy"], positions=d["positions"],
             hysteresis=d["hysteresis"], converged=d["converged"].astype(bool),
             max_bond_change_pm=float(d["max_bond_change_pm"]), params=json.loads(str(d["params"])),
+            candidates=candidates,
         )
 
 
@@ -171,13 +197,19 @@ class MLPTorsionProvider(TorsionProvider):
         reference: Mapping | None = None,
         fit_bonds: Iterable[Iterable[int]] | None = None,
         refinement_rounds: int = 0,
+        multistart: Mapping | None = None,
     ) -> None:
         """model_path：参考势的模型文件（写进 provenance 与缓存键）；默认工厂时取 default_model_path()。
         cache_only：只从缓存读扫描，缺失记为兜底 `no_cached_scan`，不在本进程重扫（Gate 拟合阶段用）。
         reference：参考势依赖 IR 时的身份（mm-self 记扫描时的电荷），进缓存键与 provenance；参考势在扫描时冻结。
         fit_bonds：只处理这些键（重拟合用）；其余键保留原项，记为兜底 `not_selected`。
         refinement_rounds：单遍之后额外做 0–3 轮顺序更新（默认 0），不重扫；
-        每次仍仅使用本键扫描，不保证全部扫描的联合目标单调下降。"""
+        每次仍仅使用本键扫描，不保证全部扫描的联合目标单调下降。
+        multistart：MVP-7 多起点（§10.4）；None = 现行单起点，行为与缓存键逐位不变。
+        两种形式：fresh = 调优项（n_confs/seed/dedup_nm/threshold_nm/opt_fmax/opt_max_steps，
+        缺项取 torsion.multistart.DEFAULT_MULTISTART）；refit = provenance 里的
+        ``{"spec": ..., "identities": [None, ...]}``（x0 的身份是 None，缓存按身份逐腿定位，
+        不再调用 RDKit/参考势）。x0 恒为第一起点；各起点键进缓存身份（§10.4）。"""
         _validate_refinement_rounds(refinement_rounds)
         self.refinement_rounds = refinement_rounds
         if model_path is None and calculator_factory is None:
@@ -193,6 +225,20 @@ class MLPTorsionProvider(TorsionProvider):
         self.model_name = model_name
         self.reference = dict(reference) if reference is not None else None
         self.fit_bonds = None if fit_bonds is None else {frozenset(b) for b in fit_bonds}
+        if multistart is not None:
+            spec = dict(multistart)
+            identities = spec.pop("identities", None)
+            if identities is not None:
+                if not isinstance(identities, list) or not identities or identities[0] is not None:
+                    raise ValueError(
+                        "multistart 'identities' 必须是以 x0（None）开头的列表（refit 形式）")
+                self.multistart_identities: list | None = list(identities)
+            else:
+                self.multistart_identities = None
+            self.multistart_spec: dict | None = spec
+        else:
+            self.multistart_spec = None
+            self.multistart_identities = None
 
     def parameterize(self, ir: ForceFieldIR, positions_nm: np.ndarray, mol: Chem.Mol):
         pos = np.asarray(positions_nm, dtype=np.float64)
@@ -218,29 +264,18 @@ class MLPTorsionProvider(TorsionProvider):
         torsions = list(ir.proper_torsions)
         report = TorsionReport(rows, None)
         model_file = model_file_identity(self.model_path)
+        ms_identities: list | None = None
         for rotor, row in zip(rotors, rows):
             j, k = rotor.bond
             if self.fit_bonds is not None and frozenset(rotor.bond) not in self.fit_bonds:
                 row.update(status="fallback", reason="not_selected")
                 continue
-            key = scan_cache_key(self.model_name, rotor.scan_quartet, info, self.scan_kwargs,
-                                 model_file=model_file, numbers=numbers, bonds=bonds,
-                                 reference=self.reference)
-            cache = self.scan_cache / f"{j}-{k}.npz" if self.scan_cache else None
-            scan = load_scan(cache, key) if cache else None
-            if scan is None and self.cache_only:
-                row.update(status="fallback", reason="no_cached_scan")
-                continue
+            scan = self._acquire_scan(ir, mol, numbers, pos, bonds, info, model_file, rotor, row)
+            identities_i = row.pop("multistart_identities", None)  # 分子级，各键相同
+            if identities_i is not None:
+                ms_identities = identities_i
             if scan is None:
-                try:
-                    calc = self.calculator_factory(ir)
-                    scan = relaxed_scan(calc, numbers, pos, rotor.scan_quartet, bonds,
-                                        info=info, **self.scan_kwargs)
-                except ScanError as exc:
-                    row.update(status="fallback", reason="mlp_error", error=str(exc))
-                    continue
-                if cache:
-                    save_scan(cache, key, scan)
+                continue
             report.scans[rotor.bond] = scan
             row.update(max_hysteresis=float(np.max(scan.hysteresis)),
                        max_bond_change_pm=scan.max_bond_change_pm)
@@ -251,15 +286,140 @@ class MLPTorsionProvider(TorsionProvider):
             fit = fit_fourier(scan.phi_rad, y)
             meta = {"model": self.model_name, "scan_quartet": "-".join(map(str, rotor.scan_quartet)),
                     "fit_rmse": fit.rmse, "n_points": int(len(y)), "rotor_class": rotor.rotor_class}
+            if scan.params.get("n_starts"):
+                meta["n_starts"] = int(scan.params["n_starts"])
             torsions = [t for t in torsions if {t.j, t.k} != {j, k}]
             torsions += to_ir_terms(fit, rotor.scan_quartet, source="mlp", meta=meta)
             replaced = [{"index": idx, **asdict(t), "meta": dict(t.meta)}
                         for idx, t in enumerate(ir.proper_torsions) if {t.j, t.k} == {j, k}]
             row.update(status="mlp", fit_rmse=fit.rmse, fit_max_abs_residual=fit.max_abs_residual,
                        replaced_terms=replaced)
+            if row.get("multistart_identities") is not None:
+                ms_identities = row.pop("multistart_identities")
+        if ms_identities is not None:
+            report.multistart = {"spec": deepcopy(self.multistart_spec),
+                                 "identities": deepcopy(ms_identities)}
         if self.refinement_rounds:
             torsions = self._refine(ir, torsions, report)
         return self._finish(ir, torsions, report, info), report
+
+    def _acquire_scan(self, ir, mol, numbers, pos, bonds, info, model_file, rotor, row):
+        """取得该键的扫描：单起点 = 现行路径（缓存键与行为逐位不变）；
+        多起点 = 各起点独立 relaxed_scan（缓存身份含 start 块）后逐格点合并的包络。
+
+        返回 ScanResult 或 None（此时 row 已标 fallback）。"""
+        if self.multistart_spec is None:
+            j, k = rotor.bond
+            key = scan_cache_key(self.model_name, rotor.scan_quartet, info, self.scan_kwargs,
+                                 model_file=model_file, numbers=numbers, bonds=bonds,
+                                 reference=self.reference)
+            cache = self.scan_cache / f"{j}-{k}.npz" if self.scan_cache else None
+            scan = load_scan(cache, key) if cache else None
+            if scan is None and self.cache_only:
+                row.update(status="fallback", reason="no_cached_scan")
+                return None
+            if scan is None:
+                try:
+                    calc = self.calculator_factory(ir)
+                    scan = relaxed_scan(calc, numbers, pos, rotor.scan_quartet, bonds,
+                                        info=info, **self.scan_kwargs)
+                except ScanError as exc:
+                    row.update(status="fallback", reason="mlp_error", error=str(exc))
+                    return None
+                if cache:
+                    save_scan(cache, key, scan)
+            return scan
+        try:
+            return self._multistart_scan(ir, mol, numbers, pos, bonds, info, model_file, rotor, row)
+        except ScanError as exc:
+            row.update(status="fallback", reason="mlp_error", error=str(exc))
+            return None
+
+    def _multistart_scan(self, ir, mol, numbers, pos, bonds, info, model_file, rotor, row):
+        """MVP-7（§10.4）：x0 + ETKDG 起点逐个 relaxed_scan，逐格点合并出包络。
+
+        - x0 腿用现行缓存键/文件（无 start 块，候选块照存）；ETKDG 腿文件名
+          ``{j}-{k}.{label}.npz``，键含 start 身份；
+        - 非 x0 起点以 x0 的 φ0 为网格原点（grid_origin_rad），逐格点合并良定义；
+        - fresh 形式生成 ETKDG 起点（RDKit + 参考势优化）；refit 形式按存档身份
+          逐腿读缓存，不调用 RDKit/参考势；
+        - cache_only 下任一腿缺失 → 兜底 no_cached_scan（不在本进程重扫）。
+
+        row 写入 "multistart"（诊断，逐格点数组在内）与临时 "multistart_identities"
+        （parameterize 取走作 report.multistart）。返回包络 ScanResult。"""
+        j, k = rotor.bond
+
+        def leg_cache(start):
+            if self.scan_cache is None:
+                return None
+            if start is None:
+                return self.scan_cache / f"{j}-{k}.npz"
+            return self.scan_cache / f"{j}-{k}.{start['label']}.npz"
+
+        def leg_key(start):
+            return scan_cache_key(self.model_name, rotor.scan_quartet, info, self.scan_kwargs,
+                                  model_file=model_file, numbers=numbers, bonds=bonds,
+                                  reference=self.reference, start=start)
+
+        calc = None
+
+        def make_calc():
+            nonlocal calc
+            if calc is None:
+                calc = self.calculator_factory(ir)
+            return calc
+
+        def leg(start, *, grid_origin=None, positions=None):
+            cache = leg_cache(start)
+            scan = load_scan(cache, leg_key(start)) if cache else None
+            if scan is None:
+                if self.cache_only:
+                    return None
+                scan = relaxed_scan(make_calc(), numbers,
+                                    pos if positions is None else positions,
+                                    rotor.scan_quartet, bonds, info=info,
+                                    collect_candidates=True, grid_origin_rad=grid_origin,
+                                    **self.scan_kwargs)
+                if cache:
+                    save_scan(cache, leg_key(start), scan)
+            return scan
+
+        x0_scan = leg(None)
+        if x0_scan is None:
+            row.update(status="fallback", reason="no_cached_scan")
+            return None
+        scans = [x0_scan]
+        labels = ["x0"]
+        identities: list = [None]
+        extra_start_specs: list = []
+        if self.multistart_identities is not None:
+            extra = list(self.multistart_identities[1:])
+        else:
+            spec = {key: self.multistart_spec.get(key, default)
+                    for key, default in DEFAULT_MULTISTART.items()
+                    if key != "threshold_nm"}
+            extra_start_specs = etkdg_starts(ir, mol, pos, make_calc(), **spec)
+            extra = [s.identity for s in extra_start_specs]
+        for i, identity in enumerate(extra):
+            start_spec = extra_start_specs[i] if self.multistart_identities is None else None
+            s_scan = leg(identity,
+                         grid_origin=float(x0_scan.phi_target_rad[0]),
+                         positions=None if start_spec is None else start_spec.positions_nm)
+            if s_scan is None:
+                row.update(status="fallback", reason="no_cached_scan")
+                return None
+            scans.append(s_scan)
+            labels.append(str(identity["label"]))
+            identities.append(identity)
+        heavy = np.array([a.atomic_number > 1 for a in ir.atoms])
+        envelope, diag = merge_start_scans(
+            scans, bonds, heavy,
+            threshold_nm=float(self.multistart_spec.get(
+                "threshold_nm", DEFAULT_MULTISTART["threshold_nm"])))
+        diag["start_labels"] = labels
+        row["multistart"] = diag
+        row["multistart_identities"] = identities
+        return envelope
 
     def _refine(self, ir: ForceFieldIR, torsions: list, report: TorsionReport) -> list:
         """只更新本次单遍成功的键，固定键号顺序；原 replaced_terms 不改写。"""
@@ -335,7 +495,8 @@ def refit_torsions(ir: ForceFieldIR, positions_nm: np.ndarray, mol: Chem.Mol, *,
     if protocol and protocol.get("order") != sorted([list(r["bond"]) for r in rows]):
         raise TorsionRefitError("torsion fit_protocol order does not match the original mlp bonds")
     if scan_cache is None:
-        raise TorsionRefitError("IR has MLP torsions: changing charges needs scan_cache to refit them")
+        raise TorsionRefitError(
+            "IR has MLP torsions: changing charges needs scan_cache (CLI: --scan-cache) to refit them")
     mlp_bonds = [frozenset(r["bond"]) for r in rows]
     terms = [t for t in ir.proper_torsions if frozenset((t.j, t.k)) not in mlp_bonds]
     for rec in sorted((rec for r in rows for rec in r["replaced_terms"]), key=lambda rec: rec["index"]):
@@ -348,7 +509,7 @@ def refit_torsions(ir: ForceFieldIR, positions_nm: np.ndarray, mol: Chem.Mol, *,
                                   scan_kwargs=prov.get("scan"), scan_cache=scan_cache,
                                   model_name=prov.get("model", MODEL_NAME), model_path=model_path,
                                   cache_only=True, reference=prov.get("reference"), fit_bonds=mlp_bonds,
-                                  refinement_rounds=rounds)
+                                  refinement_rounds=rounds, multistart=prov.get("multistart"))
     new_ir, report = provider.parameterize(base, positions_nm, mol)
     lost = [r["bond"] for r in report.rotors if r["status"] != "mlp" and frozenset(r["bond"]) in mlp_bonds]
     if lost:

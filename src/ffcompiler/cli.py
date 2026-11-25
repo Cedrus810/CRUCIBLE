@@ -15,6 +15,9 @@
                           --hessian-provider gfnff|gfn2|fchk|orca-hess [--hessian-file F]
                           [--prior mseminario] [--alpha 1e-3] --output ... --outdir D
     ffcompiler check-staleness --ir-in F
+    ffcompiler enter ligand.sdf --outdir D [--net-charge N] [--output ...]  # MVP-6 分子入口（§3.1）
+    ffcompiler run ligand.sdf --preset fast --output gromacs amber openmm   # §22 单命令（MVP-6；
+                            # 字面形式 ffcompiler ligand.sdf --preset fast 亦可，argv 垫片前置 run）
     ffcompiler init-config [--output F] [--force]   # 生成外部工具位置配置（不入库，决策 0026）
     ffcompiler check-env                            # 各工具解析到哪里、哪些功能可用
 
@@ -37,6 +40,13 @@ from pathlib import Path
 import numpy as np
 
 from ffcompiler.importers import from_amber
+from ffcompiler.presets import PRESETS
+
+# §22 字面形式的 argv 垫片用：首 token 是这些名字时按子命令处理，否则视为 SDF 进单命令。
+_SUBCOMMANDS = frozenset({
+    "convert", "check-equivalence", "derive-bonded", "derive-torsions", "assign-charges",
+    "global-fit", "check-staleness", "init-config", "check-env", "enter", "run",
+})
 
 
 def _do_convert(args: argparse.Namespace) -> int:
@@ -173,6 +183,12 @@ def _do_derive_torsions(args: argparse.Namespace) -> int:
     from ffcompiler.ir import io as ir_io
     from ffcompiler.torsion.mlp import MLPTorsionProvider
 
+    # A4 提前检查：点数不足 13 时 Fourier（n_max=6）必失败，别扫完整根键才发现
+    n_grid = round(360.0 / float(args.step_deg))
+    if n_grid < 13:
+        print(f"error: --step-deg {args.step_deg} 只给出 {n_grid} 个扫描点；"
+              "Fourier 拟合（n_max=6）至少需要 13 个点", file=sys.stderr)
+        return 2
     ir, positions, mol, positions_source = _load_ir_positions(
         args, need_mol=True, with_source=True)
     outdir = Path(args.outdir)
@@ -181,20 +197,50 @@ def _do_derive_torsions(args: argparse.Namespace) -> int:
         # 调试/测试用：参考势取输入 IR 自身的 MM，在扫描时冻结（键里记电荷）；之后换电荷重拟合仍用这次的参考能
         from ffcompiler.torsion.mm import OpenMMCalculator
 
+        multistart = None
+        if args.multistart > 0:
+            multistart = {"n_confs": int(args.multistart)}
+            if args.multistart_threshold is not None:
+                multistart["threshold_nm"] = float(args.multistart_threshold)
         provider = MLPTorsionProvider(lambda ir_: OpenMMCalculator(ir_),
                                       supported=frozenset(range(1, 119)),
                                       scan_kwargs={"step_deg": args.step_deg}, model_name="mm-self",
                                       scan_cache=scan_cache,
                                       refinement_rounds=args.refinement_rounds,
                                       reference={"kind": "mm-self",
-                                                 "charges": [a.partial_charge for a in ir.atoms]})
+                                                 "charges": [a.partial_charge for a in ir.atoms]},
+                                      multistart=multistart)
     else:
-        from ffcompiler.torsion.mace import default_model_path, polar_calculator
+        from ffcompiler.torsion import xtb_ref
 
-        model_path = default_model_path()
-        provider = MLPTorsionProvider(lambda ir_: polar_calculator(model_path=model_path, device=args.device),
-                                      scan_kwargs={"step_deg": args.step_deg}, model_path=model_path,
-                                      scan_cache=scan_cache, refinement_rounds=args.refinement_rounds)
+        reference = args.reference
+        if reference == "auto":
+            # 决策 0028：离子/两性离子默认用 xtb GFN2，其余 MACE（中性分子行为与缓存键不变）
+            reference = "xtb-gfn2" if xtb_ref.is_ion_or_zwitterion(ir) else "mace"
+            print(f"derive-torsions: --reference auto → {reference}"
+                  f"（总电荷 {ir.total_charge:+d}，形式电荷原子 "
+                  f"{sum(1 for a in ir.atoms if a.formal_charge)} 个；决策 0028）", file=sys.stderr)
+        multistart = None
+        if args.multistart > 0:
+            multistart = {"n_confs": int(args.multistart)}
+            if args.multistart_threshold is not None:
+                multistart["threshold_nm"] = float(args.multistart_threshold)
+        if reference == "xtb-gfn2":
+            binary = xtb_ref.xtb_binary()
+            charge = int(ir.total_charge)
+            provider = MLPTorsionProvider(
+                lambda ir_: xtb_ref.XtbGFN2Calculator(charge, binary=binary),
+                supported=xtb_ref.SUPPORTED, scan_kwargs={"step_deg": args.step_deg},
+                model_name=xtb_ref.MODEL_NAME, model_path=binary, scan_cache=scan_cache,
+                refinement_rounds=args.refinement_rounds, multistart=multistart)
+        else:
+            from ffcompiler.torsion.mace import default_model_path, polar_calculator
+
+            model_path = default_model_path()
+            provider = MLPTorsionProvider(lambda ir_: polar_calculator(model_path=model_path, device=args.device),
+                                          scan_kwargs={"step_deg": args.step_deg}, model_path=model_path,
+                                          scan_cache=scan_cache, refinement_rounds=args.refinement_rounds,
+                                          multistart=multistart)
     new_ir, report = provider.parameterize(ir, positions, mol)
     outdir.mkdir(parents=True, exist_ok=True)
     written = _write_engines(new_ir, positions, outdir, args.output)
@@ -534,6 +580,174 @@ def _do_check_env(args: argparse.Namespace) -> int:
     return 1 if any(r["status"] == "error" for r in rows) else 0
 
 
+def _do_enter(args: argparse.Namespace) -> int:
+    """分子入口（MVP-6，设计 §3.1）：SDF → 骨架 IR + 坐标 sidecar（+可选引擎文件）。"""
+    import json
+
+    from ffcompiler.ir import coords as ir_coords
+    from ffcompiler.ir import io as ir_io
+    from ffcompiler.typing.gaff2 import run_entry
+
+    outdir = Path(args.outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
+    entry = run_entry(args.sdf, outdir, name=args.name or Path(args.sdf).stem,
+                      net_charge=args.net_charge)
+    ir_json = outdir / "ir.json"
+    coords_json = outdir / "coords.json"
+    ir_io.to_json(entry.ir, ir_json)
+    ir_coords.to_json(
+        ir_coords.from_positions(entry.positions_nm, entry.ir, source=f"entry:{args.sdf}"),
+        coords_json)
+    written = _write_engines(entry.ir, entry.positions_nm, outdir, args.output or [])
+    manifest = {
+        "task": "MVP-6 molecule entry (design §3.1)",
+        "argv": sys.argv,
+        "commands": entry.commands,
+        "ambertools_version": entry.ambertools_version,
+        "artifacts": {k: str(v) for k, v in entry.artifacts.items()},
+        "provenance_entry": entry.ir.provenance.get("entry"),
+    }
+    (outdir / "entry_manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"entry: ambertools {entry.ambertools_version}, net charge {entry.ir.total_charge}")
+    print(f"ir: {ir_json}")
+    print(f"coords: {coords_json}")
+    for kind, path in written.items():
+        print(f"{kind}: {path}")
+    return 0
+
+
+def _do_run(args: argparse.Namespace) -> int:
+    """§22 单命令（MVP-6）：entry → derive-bonded → assign-charges → derive-torsions → 导出。
+
+    编排复用各分段 handler（构造 Namespace），单命令与分段命令走同一代码路径
+    （2026-11-11 计划 §3）；中间步不重复写引擎文件，最后一次性导出。
+    preset 表见 ``ffcompiler.presets``（§17 逐字）；不可用项显式报错，不静默替换。
+    """
+    import json
+
+    from ffcompiler.ir import coords as ir_coords
+    from ffcompiler.ir import io as ir_io
+
+    if not args.output:
+        print("error: 单命令模式需要 --output（gromacs/amber/openmm，可多选）", file=sys.stderr)
+        return 2
+    if not args.preset:
+        print("error: 单命令模式需要 --preset（fast|balanced|high|rigid，设计 §17）", file=sys.stderr)
+        return 2
+    cfg = PRESETS[args.preset]
+    # A4 提前检查（同 derive-torsions）：点数不足 13 时 Fourier 必失败
+    n_grid = round(360.0 / float(args.step_deg))
+    if n_grid < 13:
+        print(f"error: --step-deg {args.step_deg} 只给出 {n_grid} 个扫描点；"
+              "Fourier 拟合（n_max=6）至少需要 13 个点", file=sys.stderr)
+        return 2
+    charge = args.charge or cfg["charge"]
+    if charge == "new_charge":
+        print("error: preset 的 charge provider 'new_charge' 是 MVP-4（learned BCC，未立项）；"
+              "请用 --charge entry|am1bcc|nagl|loaded（entry=保留入口 AM1-BCC 骨架电荷）",
+              file=sys.stderr)
+        return 2
+    hessian = args.hessian or cfg["bonded"]["hessian"]
+    if hessian == "orca":
+        # 设计 §17 的 provider 名 orca → CLI 的 orca-hess（读 .hess 文件，2026-11-11 计划 §4）
+        hessian = "orca-hess"
+    bonded_method = args.bonded_method or cfg["bonded"]["method"]
+    if args.torsion == "none":
+        torsion = None
+    else:
+        torsion = args.torsion or cfg.get("torsion")
+    if hessian in ("fchk", "orca-hess", "cp2k-out") and not args.hessian_file:
+        print(f"error: --hessian {hessian} 需要 --hessian-file（入口不产生 Hessian 文件）",
+              file=sys.stderr)
+        return 2
+    workdir = args.workdir or Path(f"{Path(args.sdf).stem}_ffcompiler")
+    if workdir.exists() and not args.force:
+        print(f"error: {workdir} 已存在；要覆盖请加 --force", file=sys.stderr)
+        return 2
+    workdir.mkdir(parents=True, exist_ok=True)
+    for step in ("bonded", "charge", "torsion"):
+        (workdir / step).mkdir(exist_ok=True)  # 各步 handler 不都自建目录，先备好
+
+    steps: list[dict] = []
+    from ffcompiler.typing.gaff2 import run_entry
+
+    entry = run_entry(args.sdf, workdir / "entry",
+                      name=args.name or Path(args.sdf).stem, net_charge=args.net_charge)
+    # run_entry 是库函数（返回对象）；按 C1 合同落盘 IR/坐标，供后续 handler 以 --ir-in 消费
+    ir_io.to_json(entry.ir, workdir / "entry" / "ir.json")
+    ir_coords.to_json(
+        ir_coords.from_positions(entry.positions_nm, entry.ir, source=f"entry:{args.sdf}"),
+        workdir / "entry" / "coords.json")
+    steps.append({"step": "entry", "dir": str(workdir / "entry"),
+                  "ambertools_version": entry.ambertools_version})
+    cur = workdir / "entry"
+
+    rc = _do_derive_bonded(argparse.Namespace(
+        ir_in=cur / "ir.json", coords_in=cur / "coords.json", prmtop=None, inpcrd=None, sdf=None,
+        hessian_provider=hessian, hessian_file=args.hessian_file, method=bonded_method,
+        no_symmetrize=False, linear_angles="error", output=[],
+        outdir=workdir / "bonded", ir_json=None, coords_json=None))
+    if rc:
+        return rc
+    steps.append({"step": "derive-bonded", "hessian": hessian, "method": bonded_method})
+    cur = workdir / "bonded"
+
+    if charge == "entry":
+        (workdir / "charge").mkdir(exist_ok=True)
+        (workdir / "charge" / "charge_kept.json").write_text(json.dumps(
+            {"kept": "entry_am1bcc",
+             "note": "§3.1 退路语义（决策 0024 裁定 1）：保留入口 AM1-BCC 骨架电荷，"
+                     "未运行 charge provider"},
+            ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        steps.append({"step": "assign-charges", "kept": "entry_am1bcc"})
+    else:
+        rc = _do_assign_charges(argparse.Namespace(
+            ir_in=cur / "ir.json", coords_in=cur / "coords.json", prmtop=None, inpcrd=None,
+            sdf=args.sdf, method=charge, charges_file=args.charges_file, scan_cache=None,
+            output=[], outdir=workdir / "charge", ir_json=None, coords_json=None))
+        if rc:
+            return rc
+        steps.append({"step": "assign-charges", "method": charge})
+        cur = workdir / "charge"
+
+    if torsion == "mlp":
+        rc = _do_derive_torsions(argparse.Namespace(
+            ir_in=cur / "ir.json", coords_in=cur / "coords.json", prmtop=None, inpcrd=None,
+            sdf=args.sdf, reference="auto", device=args.device, step_deg=args.step_deg,
+            refinement_rounds=args.refinement_rounds, multistart=0, multistart_threshold=None,
+            output=[], outdir=workdir / "torsion", ir_json=None, coords_json=None, scan_cache=None))
+        if rc:
+            return rc
+        steps.append({"step": "derive-torsions", "reference": "auto (decision 0028)", "device": args.device,
+                      "step_deg": args.step_deg, "refinement_rounds": args.refinement_rounds})
+        cur = workdir / "torsion"
+
+    ir_final = ir_io.from_json(cur / "ir.json")
+    bundle = ir_coords.from_json(cur / "coords.json")
+    written = _write_engines(ir_final, bundle.positions_nm, workdir, args.output)
+    manifest = {
+        "task": "MVP-6 single-command run (design §22)",
+        "argv": sys.argv,
+        "preset": args.preset,
+        "preset_config": cfg,
+        "resolved": {"hessian": hessian, "bonded_method": bonded_method,
+                     "torsion": torsion, "charge": charge},
+        "steps": steps,
+        "outputs": {k: str(v) for k, v in written.items()},
+        "rigid_torsion_note": (
+            "设计 §17.4 的 rigid_torsion:drih 未执行（DRIH 是 bonded 方法；设计表内部不一致"
+            "待澄清，2026-11-11 计划 §4）"
+            if cfg.get("rigid_torsion") and torsion is None else None),
+    }
+    (workdir / "run_manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"done: preset={args.preset} → {workdir}")
+    for kind, path in written.items():
+        print(f"{kind}: {path}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     from ffcompiler import __version__
 
@@ -545,7 +759,7 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     parser.add_argument("--version", action="version", version=f"ffcompiler {__version__}")
-    sub = parser.add_subparsers(dest="command", required=True)
+    sub = parser.add_subparsers(dest="command", required=False)
 
     p_convert = sub.add_parser("convert", help="导入 prmtop（或 --ir-in）并按 --output 写出")
     _add_common_inputs(p_convert)
@@ -579,11 +793,18 @@ def main(argv: list[str] | None = None) -> int:
 
     p_tors = sub.add_parser("derive-torsions", help="MLP（MACE-POLAR）二面角扫描与拟合（MVP-2）")
     _add_common_inputs(p_tors)
-    p_tors.add_argument("--reference", choices=["mace", "mm"], default="mace")
+    p_tors.add_argument("--reference", choices=["auto", "mace", "mm", "xtb-gfn2"], default="auto",
+                        help="auto（默认）= 离子/两性离子用 xtb-gfn2、其余 mace（决策 0028）；"
+                             "mace/xtb-gfn2 显式强制；mm 为测试用 GAFF2 自身 MM")
     p_tors.add_argument("--device", default="cpu")
     p_tors.add_argument("--step-deg", type=float, default=10.0)
     p_tors.add_argument("--refinement-rounds", type=int, choices=range(4), default=0,
                         help="单遍之后额外做 0–3 轮顺序重拟合（默认 0，不重扫）；换电荷时沿用记录值")
+    p_tors.add_argument("--multistart", type=int, default=0,
+                        help="MVP-7 多起点（§10.4）：额外的 ETKDG 起点数（默认 0 = 现行单起点，"
+                             "缓存键与行为逐位不变）；x0 恒为第一起点，Fourier 拟合消费包络")
+    p_tors.add_argument("--multistart-threshold", type=float, default=None,
+                        help="分支聚类阈值（对齐后重原子 RMSD，nm；默认 0.05）")
     p_tors.add_argument("--output", nargs="+", required=True,
                         choices=["gromacs", "amber", "openmm"])
     p_tors.add_argument("--outdir", required=True, type=Path)
@@ -632,7 +853,54 @@ def main(argv: list[str] | None = None) -> int:
     p_init.add_argument("--force", action="store_true", help="覆盖已存在的文件")
     sub.add_parser("check-env", help="逐项显示外部工具解析到哪里、来源与版本")
 
-    args = parser.parse_args(argv)
+    p_enter = sub.add_parser("enter", help="分子入口（MVP-6）：SDF → GAFF2 骨架 IR（设计 §3.1）")
+    p_enter.add_argument("sdf", type=Path)
+    p_enter.add_argument("--net-charge", type=int, default=None,
+                         help="净电荷；缺省取 SDF formal charge 总和")
+    p_enter.add_argument("--name", default=None, help="分子名（缺省 SDF _Name 或文件名）")
+    p_enter.add_argument("--outdir", required=True, type=Path)
+    p_enter.add_argument("--output", nargs="+", choices=["gromacs", "amber", "openmm"],
+                         default=[], help="可选：入口 IR 直接导出引擎文件")
+
+    p_run = sub.add_parser("run", help="§22 单命令：SDF → preset 全流程参数化 → 导出（MVP-6）")
+    p_run.add_argument("sdf", type=Path)
+    p_run.add_argument("--preset", choices=sorted(PRESETS), default=None,
+                       help="设计 §17 preset：fast | balanced | high | rigid（必需）")
+    p_run.add_argument("--charge", choices=["entry", "am1bcc", "nagl", "loaded"], default=None,
+                       help="覆盖 preset 电荷 provider（new_charge=MVP-4 未立项会报错；"
+                            "entry=保留入口 AM1-BCC 骨架电荷，决策 0024 裁定 1）")
+    p_run.add_argument("--charges-file", type=Path, default=None,
+                       help="--charge loaded 的电荷文件（mol2 或每行一个）")
+    p_run.add_argument("--hessian", choices=["gfnff", "gfn2", "fchk", "orca-hess", "cp2k-out"],
+                       default=None, help="覆盖 preset 的 Hessian provider")
+    p_run.add_argument("--hessian-file", type=Path, default=None,
+                       help="fchk/orca-hess/cp2k-out 的 Hessian 文件")
+    p_run.add_argument("--bonded-method", choices=["mseminario", "m2seminario", "drih"],
+                       default=None, help="覆盖 preset 的 bonded 方法")
+    p_run.add_argument("--torsion", choices=["mlp", "none"], default=None,
+                       help="覆盖 preset 的 torsion 步（none=跳过，如 rigid）")
+    p_run.add_argument("--device", default="cpu", help="MACE 设备")
+    p_run.add_argument("--step-deg", type=float, default=10.0)
+    p_run.add_argument("--refinement-rounds", type=int, choices=range(4), default=0)
+    p_run.add_argument("--net-charge", type=int, default=None,
+                       help="净电荷；缺省取 SDF formal charge 总和")
+    p_run.add_argument("--name", default=None, help="分子名（缺省 SDF _Name 或文件名）")
+    p_run.add_argument("--workdir", type=Path, default=None,
+                       help="运行目录（缺省 ./<sdf stem>_ffcompiler）")
+    p_run.add_argument("--force", action="store_true", help="允许覆盖已存在的运行目录")
+    p_run.add_argument("--output", nargs="+", choices=["gromacs", "amber", "openmm"],
+                       default=None, help="最终导出引擎（可多选；缺失时报错，见 _do_run）")
+
+    # §22 字面形式（`ffcompiler ligand.sdf --preset fast`）：argparse 的 subparsers 会把
+    # 首个位置参数当子命令名，故在解析前垫一个 run（2026-11-11 计划 §3）。
+    tokens = list(sys.argv[1:]) if argv is None else list(argv)
+    if tokens and not tokens[0].startswith("-") and tokens[0] not in _SUBCOMMANDS:
+        tokens.insert(0, "run")
+
+    args = parser.parse_args(tokens)
+    if args.command is None:
+        parser.print_help()
+        return 2
     _validate_common_inputs(parser, args)
     try:
         if args.command == "convert":
@@ -653,6 +921,10 @@ def main(argv: list[str] | None = None) -> int:
             return _do_init_config(args)
         if args.command == "check-env":
             return _do_check_env(args)
+        if args.command == "enter":
+            return _do_enter(args)
+        if args.command == "run":
+            return _do_run(args)
     except Exception as exc:  # noqa: BLE001 - CLI 边界：任何错误都以 1 退出
         print(f"error: {exc}", file=sys.stderr)
         return 1

@@ -14,13 +14,21 @@ def read_mol2_atoms(path: Path) -> list[tuple[str, float]]:
     """mol2 的 @<TRIPOS>ATOM 段 → [(atom name, 电荷)]。"""
     rows: list[tuple[str, float]] = []
     in_atoms = False
-    for line in Path(path).read_text(encoding="utf-8").splitlines():
+    for lineno, line in enumerate(Path(path).read_text(encoding="utf-8").splitlines(), start=1):
         if line.startswith("@<TRIPOS>"):
             in_atoms = line.startswith("@<TRIPOS>ATOM")
             continue
         if in_atoms and line.strip():
             parts = line.split()
-            rows.append((parts[1], float(parts[8])))
+            if len(parts) < 9:
+                raise ValueError(
+                    f"{path}:{lineno}: mol2 ATOM 行列数不足（需 ≥9 列，含电荷列）：{line.strip()!r}")
+            try:
+                charge = float(parts[8])
+            except ValueError:
+                raise ValueError(
+                    f"{path}:{lineno}: mol2 ATOM 行第 9 列（电荷）不是数字：{parts[8]!r}") from None
+            rows.append((parts[1], charge))
     return rows
 
 

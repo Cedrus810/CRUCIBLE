@@ -202,8 +202,9 @@ def main() -> int:
         for n, count in expected_g34.items():
             ir, pos, mol = systems[n]
             try:
-                if len(find_rotors(ir, mol, pos)) != count:
-                    raise RuntimeError(f"find_rotors 给出 {len(find_rotors(ir, mol, pos))} 根，预期 {count}")
+                rotors_found = find_rotors(ir, mol, pos)
+                if len(rotors_found) != count:
+                    raise RuntimeError(f"find_rotors 给出 {len(rotors_found)} 根，预期 {count}")
                 q_ir, _ = assign_charges(ir, AM1BCCCharges(run_dir / "am1bcc_g34a" / n), pos, mol)
                 provider = MLPTorsionProvider(_no_reference, supported=frozenset(range(1, 119)),
                                               scan_cache=args.scan_cache / n, model_path=model_path,

@@ -26,6 +26,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 DEFAULT_OUT = REPO_ROOT / "tests" / "fixtures" / "gaff2"
 
+from ffcompiler.typing.gaff2 import TypingError, ambertools_version, equalize_mol2_charges  # noqa: E402
+
 
 def _tool(key: str) -> str:
     """AmberTools 程序位置：FFC_<KEY> → 配置 [tools] → PATH（决策 0026）。"""
@@ -60,17 +62,6 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: fh.read(1 << 20), b""):
             h.update(chunk)
     return h.hexdigest()
-
-
-def ambertools_version() -> str:
-    import os
-
-    meta_dir = Path(os.environ.get("CONDA_PREFIX", "")) / "conda-meta"
-    if meta_dir.is_dir():
-        for meta in sorted(meta_dir.glob("ambertools-*.json")):
-            data = json.loads(meta.read_text(encoding="utf-8"))
-            return str(data.get("version", "unknown"))
-    return "unknown"
 
 
 def step_fail(name: str, step: str, detail: str) -> None:
@@ -110,47 +101,6 @@ def build_sdf(name: str, smiles: str, sdf: Path) -> int:
     return mol.GetNumAtoms()
 
 
-def _equalize_mol2_charges(mol2: Path, charge: int, name: str) -> None:
-    """把 AM1-BCC 电荷的净残差均摊回每个原子，使 Σq 与 -nc 一致（计划要求 1e-4）。
-
-    antechamber -c bcc 的电荷经 4 位小数舍入后总和会残留 ~1e-3 的漂移，
-    且 -eq 等价化不强制归零总电荷。这里只改 @<TRIPOS>ATOM 的电荷列，
-    不影响原子类型，parmchk2/tleap 结果的其余部分不变。
-    """
-    lines = mol2.read_text(encoding="utf-8").splitlines()
-    atom_rows: list[int] = []
-    in_atoms = False
-    for n, line in enumerate(lines):
-        if line.startswith("@<TRIPOS>ATOM"):
-            in_atoms = True
-            continue
-        if line.startswith("@<TRIPOS>"):
-            in_atoms = False
-            continue
-        if in_atoms and line.strip():
-            atom_rows.append(n)
-    if not atom_rows:
-        step_fail(name, "charge-equalize", f"no ATOM records found in {mol2}")
-    charges = [float(lines[n].split()[8]) for n in atom_rows]
-    residual = charge - sum(charges)
-    log = f"net charge target {charge}, raw sum {sum(charges):.6f}, residual {residual:.6f}\n"
-    if abs(residual) > 1e-12:
-        corr = residual / len(atom_rows)
-        values = [q + corr for q in charges]
-        # 以写出的精度为准：末原子吸收残余，使文件里的电荷和精确等于 -nc
-        values[-1] += charge - sum(values)
-        for n, value in zip(atom_rows, values):
-            parts = lines[n].split()
-            parts[8] = f"{value:.10f}"
-            lines[n] = " ".join(parts)
-        new_sum = sum(float(lines[n].split()[8]) for n in atom_rows)
-        if abs(new_sum - charge) > 1e-8:
-            step_fail(name, "charge-equalize", f"after adjustment sum is {new_sum}")
-        log += f"adjusted by {corr:.6e} per atom; new sum {new_sum:.10f}\n"
-    mol2.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    (mol2.parent / "charge_equalize.log").write_text(log, encoding="utf-8")
-
-
 def generate_one(name: str, smiles: str, charge: int, outdir: Path) -> dict:
     mdir = outdir / name
     mdir.mkdir(parents=True, exist_ok=True)
@@ -169,7 +119,10 @@ def generate_one(name: str, smiles: str, charge: int, outdir: Path) -> dict:
     )
     if not mol2.is_file():
         step_fail(name, "antechamber", f"{mol2} not produced")
-    _equalize_mol2_charges(mol2, charge, name)
+    try:
+        equalize_mol2_charges(mol2, charge, name=name)
+    except TypingError as exc:
+        step_fail(name, "charge-equalize", str(exc))
 
     _run(
         [_tool("parmchk2"), "-i", mol2.name, "-f", "mol2", "-o", frcmod.name, "-s", "gaff2"],

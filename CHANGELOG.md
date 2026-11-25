@@ -3,6 +3,166 @@
 All notable changes to ffcompiler. Dates are Asia/Tokyo. Decision records live in
 [`docs/decisions/`](docs/decisions/README.md).
 
+## [Unreleased] — Batch 1 code layer, continued: xtb_sp stage and multistart report (2026-11-24)
+
+### Added
+- `hessian/xtb.py`: `run_xtb_singlepoint` (GFN2/GFN-FF single point + gradient at the given
+  geometry, `--grad --chrg Q --uhf 0`, stale gradient files removed before the run, same
+  closed-shell pre-check as the Hessian runner) and `read_xtb_gradient` (Turbomole gradient
+  file, last cycle, Eh and Eh/Bohr). Format checked against real xtb 6.7.1 output.
+  `run_xtb_hessian` is unchanged.
+- `scripts/coverage_diagnose.py`: the `xtb_sp` stage is now implemented (opt-in,
+  `--xtb-threads`, default 4); failures are recorded as gaps under the existing verdict rules.
+- `scripts/torsion_multistart_report.py`: read-only multistart diagnostic report (plan §3.1)
+  from a multistart `torsion_report.json`, optionally the scan cache and a single-start
+  baseline report; writes report.md, per_point.csv, summary.json. Lists numbers only; no
+  thresholds, no verdicts.
+
+- `scripts/coverage_diagnose.py`: opt-in stages `fallback` (GFN-FF --ohess → mSeminario,
+  counts linear angles kept at GAFF2 library values and notes that the fast preset would reject
+  them; non-positive k recorded as a failure) and `scan_probe` (first rotor, current
+  MLPTorsionProvider with MACE at 10°, timed, cached per molecule; skip without rotors);
+  new `--mace-threads` and `--device`. `scan_probe` joins the verdict stage list.
+
+### Changed
+- Ions and zwitterions use xtb GFN2 as the torsion-scan reference potential (decision 0028):
+  `torsion/xtb_ref.py` (`is_ion_or_zwitterion`, ASE `XtbGFN2Calculator` calling `xtb --gfn 2 --grad`
+  per step); `derive-torsions --reference` gains `auto` (new default: GFN2 for ions/zwitterions,
+  MACE otherwise) and `xtb-gfn2`; `run` uses `auto`; coverage refcheck/scan_probe follow the same
+  rule. Neutral molecules and the G2/G3 gates are unchanged.
+
+### Fixed (2026-11-25)
+- `run` passed derive-torsions a Namespace without `multistart`/`multistart_threshold` (since
+  2026-11-22), so `run` failed at the torsion step; a new test checks every `args.X` the handler
+  reads.
+
+### Changed (continued)
+- `run_xtb_hessian` restarts `--ohess` from xtb's `xtbhess.xyz` when the optimisation stops at a
+  saddle point (lowest frequency below the same −20 cm⁻¹ line that `check_hessian` rejects), up to
+  `max_imaginary_restarts=2`; restarts are recorded in `meta["imaginary_restarts"]` and in
+  `provenance.bonded.hessian_imaginary_restarts` only when they happen (decision 0027). Without a
+  restart the result is bit-identical (ethanol hessian file byte-equal to the earlier run).
+  Acetone, methyl acetate, styrene and glycine zwitterion now pass the fast-preset bonded step.
+- Coverage verdict (user decision 2026-11-24, same reasoning as decision 0013): when every
+  failing export row comes from the mixed-precision GROMACS leg, the export stage records a
+  `gmx_mixed_precision` gap instead of blocking. Failures on any other leg, leg errors and force
+  failures still block. Acetonitrile now reads ok_with_gaps.
+
+- `scripts/make_coverage_set.py` and `benchmarks/coverage_set/` (molecules.json + 22 new SDFs):
+  the 34-molecule coverage table approved by the user; new SDFs use the fixture recipe
+  (`make_fixtures.build_sdf`, ETKDGv3 seed 20261004 + MMFF94); the 12 fixtures are referenced in
+  place. `tests/unit/test_coverage_set.py` checks count, plan categories, 3D SDFs and charges.
+
+### Fixed
+- `scripts/coverage_diagnose.py` (2026-11-22 code, never run on real molecules before): the entry
+  stage reported ir.json/coords.json paths without writing them; `_write_record` was called but
+  not defined; downstream stages used `read_rst7` output (Å) as nm, scaling geometries 10×.
+  Downstream positions now come from the entry stage's nm coordinate sidecar. Covered by the new
+  external test `test_driver_light_stages_on_real_ethanol`.
+
+### Verified
+- Related tests on this machine: test_hessian_xtb + test_coverage 30 passed (non-external);
+  new external xtb single-point test 1 passed; test_torsion_multistart_report 4 passed.
+- Smoke `experiments/20261124_multistart_report_smoke/` (ethanol, mm reference, 20° grid,
+  `--multistart 2`): report produced; the single-start baseline sharing the cache finished in
+  1.9 s with all cache files untouched, confirming the default {x0} cache key matches the
+  multistart x0 leg. Full regression not run.
+- Coverage-driver smoke `experiments/20261124_coverage_stages_smoke/` (ethanol, acetonitrile,
+  benzene; all nine stages): ethanol ok (scan_probe 250 s), benzene ok, acetonitrile blocked by
+  the gmx leg on its near-linear angle (the mixed-precision effect of decision 0013).
+  test_coverage 25 passed including 2 external tests.
+- Full coverage diagnostic over 34 molecules (`jobs/coverage_20261124/`): 26 ok / 8 gaps / 0 blocked
+  before decision 0027, 30 ok / 4 gaps / 0 blocked after it (remaining gaps: two ions pending the
+  reference-potential decision, acetonitrile, oxirane). Pre-fix results kept in `prefix_0027/`.
+  After decision 0028 the three ion/zwitterion entries were rerun with GFN2: 32 ok / 2 gaps /
+  0 blocked (acetonitrile, oxirane); previous records and MACE scans kept in `prefix_0028/`.
+- Light-stage smoke over all 34 molecules (`experiments/20261124_coverage_light_smoke/`): 0 blocked,
+  31 ok, 3 ok_with_gaps (acetonitrile gmx mixed precision; acetate and methylammonium pending the
+  ion reference-potential decision); no frcmod ATTN lines.
+
+## [Unreleased] — Batch 1 code layer: coverage diagnostics, MVP-7 multistart scans, independent-validation assembly (2026-11-22)
+
+Plan: `docs/superpowers/plans/2026-11-20-coverage-validation-batch1-plan.md`. Code and
+unit tests only, per the user's instruction; no scans, no MD, no external tools, no
+environment changes, no git operations.
+
+### Added
+- Coverage diagnostics (§A): `validation/coverage.py` (record schema, parmchk2 frcmod
+  ATTN parsing, locked verdict rules — blocked on entry/typing failure or non-equivalent
+  export, ok_with_gaps on frcmod gaps / reference-applicability / fit fallbacks — table
+  loading, summary rendering) and the driver `scripts/coverage_diagnose.py` (light stages
+  entry/rotors/frcmod/export/refcheck by default; mace_smoke opt-in; xtb_sp deliberately
+  not implemented this round and errors when named; per-molecule record.json enables
+  resume-by-existence). No molecule table built yet (34-molecule draft pending decision 1).
+- MVP-7 multistart scans (§B, design §10.4; default {x0} path bit-identical — unit-checked:
+  no `start` block in the default cache key, collect_candidates leaves the main arrays
+  untouched, no multistart provenance block on the default path):
+  `clustering.py` (reflection-free Kabsch, aligned heavy-atom RMSD, energy-ordered greedy
+  clustering shared by §B branches and §C1 basins); `torsion/scan.py` grows optional
+  `collect_candidates` (per-direction candidate arrays) and `grid_origin_rad` (aligns a
+  non-x0 start's grid to x0's φ0); `torsion/multistart.py` (`etkdg_starts`: embed →
+  reference-potential optimization → dedup, identities carry seed/params/RDKit version into
+  the cache key; `merge_start_scans`: per-grid-point envelope + branch diagnostics —
+  branches are diagnostics only, never enter the fit objective); `MLPTorsionProvider`
+  accepts `multistart=` (fresh tuning spec, or refit form replaying archived identities
+  from the cache without calling RDKit/the reference); candidate blocks persist as `cand_*`
+  (old caches stay readable); `refit_torsions` restores multistart identities; CLI gains
+  `--multistart N --multistart-threshold nm` on derive-torsions (both mace and mm-self).
+  Branch threshold defaults to 0.05 nm (build-time ruling, overridable).
+- Independent validation (§C): `validation/holdout.py` (basin-wise whole-basin-in/out
+  holdout split with a holdout-fraction cap; single-basin scans yield an empty holdout
+  with an explanatory note); `validation/variants.py` (`substitute_terms` /
+  `comparison_matrix`: bonded / torsion / charge / vdw single swaps plus full, each
+  variant passes `validate`); `validation/liquid.py` (`pack_box`: deterministic cubic-grid
+  packing at a target density, errors instead of silently lowering the density;
+  `to_liquid_system`: PME + LJ cutoff + dispersion correction with exporter-consistent
+  exception semantics — the NoCutoff exporter path is untouched, decision 0023 semantics;
+  `liquid_dynamics`: NPT Simulation on the CPU platform).
+
+### Verified
+- Per-file unit runs on this machine: test_coverage.py 16 passed; test_torsion_multistart.py
+  16 passed (142 s, GAFF2 MM as the reference potential — no MACE); test_holdout_variants.py
+  + test_liquid.py 17 passed.
+- The full `pytest -m "not external"` regression was NOT run (stopped by user instruction,
+  2026-11-22); external tests and the G0–G3 gates were not touched. The latest full-gate
+  pass remains the 2026-10-28 round 3.
+
+## [Unreleased] — MVP-6 molecule entry & single-command CLI (2026-11-11)
+
+### Added
+- `ffcompiler/molecule/io.py`: SDF input contract (design §3.1) — parse, require 3D
+  coordinates (no silent conformer generation), formal-charge vs net-charge check,
+  0.5 Å atom-overlap gate, sha256 for provenance.
+- `ffcompiler/typing/gaff2.py`: antechamber `-c bcc -at gaff2` (the §3.1-sanctioned fallback;
+  this AmberTools has no `-c zero`) → charge equalization → parmchk2 → tleap → the existing
+  prmtop importer. Command lines, AmberTools version and input hashes recorded under
+  `provenance["entry"]`; term sources stay `gaff2-library`.
+  `equalize_mol2_charges`/`ambertools_version` moved here from scripts/make_fixtures.py
+  (math unchanged line-for-line; fixtures not regenerated).
+- `ffcompiler/presets.py`: design §17 presets verbatim (fast/balanced/high/rigid).
+- CLI: `enter` (SDF → skeleton IR + coords sidecar) and `run` (design §22 single command:
+  entry → derive-bonded → assign-charges → derive-torsions → one-shot export, orchestrating
+  the existing subcommand handlers). The literal form `ffcompiler ligand.sdf --preset fast ...`
+  works via an argv shim. Unavailable preset providers error explicitly: `new_charge` is
+  MVP-4 (not chartered); `--charge entry` keeps the skeleton AM1-BCC charges (decision 0024
+  ruling 1); design name `orca` maps to the `orca-hess` provider. The rigid preset's
+  `rigid_torsion: drih` is a design-table inconsistency (DRIH is a bonded method) — not
+  executed, recorded in run_manifest as pending clarification.
+- A4 cleanups (2026-10-11 plan §3): malformed-mol2 errors carry file:line (charge/loaded.py);
+  early step_deg point-count check on both CLI scan entries (scan.py itself untouched);
+  TorsionRefitError message names `--scan-cache`; scan failure messages carry the exception
+  class (torsion/scan.py); duplicate find_rotors call removed (scripts/gate_mvp3.py);
+  G1 `--providers` help text (scripts/gate_mvp1.py).
+
+### Verified
+- `pytest -m "not external"`: 629 passed (was 603; 26 new unit tests).
+- Design §3.1 acceptance point 2: all 12 committed fixtures rebuilt from their original SDFs
+  match the prmtop-imported IRs on names/elements/GAFF2 types, LJ, exclusions/1-4 and every
+  library bond/angle/torsion value (charges within 1e-6); external test 12/12 (5.3 s).
+- End-to-end smoke of the single command on ethanol (`--preset fast --charge entry`): entry
+  (real antechamber/sqm) → bonded (xtb) → torsion (MACE) all execute on this machine; the
+  formal G4 gate run needs the gate machine (resource report pending).
+
 ## [Unreleased] — Constrained relaxation check, phase 1 (2026-11-11)
 
 ### Added

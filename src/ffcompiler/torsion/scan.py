@@ -1,8 +1,14 @@
-"""ASE 约束松弛二面角扫描（MVP-2 计划 §2.2，T26）。
+"""ASE 约束松弛二面角扫描（MVP-2 计划 §2.2，T26；MVP-7 多起点扩展 §10.4）。
 
 对任意 ASE 计算器：先无约束松弛得 x0、φ0；网格 φ_s = φ0 + step·s；正反两遍顺序扫描，
 每步在上一步几何上把 k 侧刚性转到 φ_s，再用 FixInternals 硬约束该二面角做 LBFGS 松弛。
 每个网格点取两遍中能量较低的几何。能量单位 kJ/mol，坐标 nm，角度 rad（IR 定义）。
+
+MVP-7 扩展（2026-11-20 计划 §B，均带默认值、默认路径逐位不变）：
+- ``collect_candidates=True``：逐格点记录正反两方向的候选（能量/收敛/几何/角度），
+  存进 :attr:`ScanResult.candidates`，供多起点合并层做分支聚类；不改变任何主数组；
+- ``grid_origin_rad``：网格原点用给定 φ（x0 起点的 φ0）而非起点自身松弛后的 φ——
+  非x0 起点先刚性转到该角度、再在约束下松弛，使各起点的网格点对齐，逐格点合并良定义。
 """
 
 from __future__ import annotations
@@ -35,6 +41,10 @@ class ScanResult:
     converged: np.ndarray           # (n,) bool
     max_bond_change_pm: float
     params: dict = field(default_factory=dict)
+    # MVP-7：collect_candidates=True 时的逐方向候选（默认 None，旧缓存无此块）。
+    # 键与形状：energy (2,n) kJ/mol、converged (2,n)、positions (2,n,N,3) nm、
+    # phi_target_rad / phi_rad (2,n)；第 0 行正向、第 1 行反向，s=0 两行同为起点。
+    candidates: dict | None = None
 
 
 def _rotating_side(quartet, bonds, n_atoms: int) -> list[bool]:
@@ -71,6 +81,8 @@ def relaxed_scan(
     step_deg: float = 10.0,
     fmax: float = 0.005,
     max_steps: int = 2000,
+    grid_origin_rad: float | None = None,
+    collect_candidates: bool = False,
 ) -> ScanResult:
     n_grid = round(360.0 / step_deg)
     if not math.isclose(n_grid * step_deg, 360.0):
@@ -90,21 +102,41 @@ def relaxed_scan(
             f = atoms.get_forces()
         except ScanError:
             raise
-        except Exception as exc:  # 参考势求值失败：带上位置信息重抛
-            raise ScanError(f"四元组 {quartet} {where}：参考势求值失败：{exc!r}") from exc
+        except Exception as exc:  # 参考势求值失败：带上异常类别与位置信息重抛（A4 异常分类）
+            raise ScanError(f"四元组 {quartet} {where}：参考势求值失败"
+                            f"[{type(exc).__module__}.{type(exc).__name__}]：{exc!r}") from exc
         if not (math.isfinite(e) and np.all(np.isfinite(f))):
             raise ScanError(f"四元组 {quartet} {where}：能量或力非有限（E={e}）")
         return conv, e
 
-    conv0, e0 = relax("起点")
+    if grid_origin_rad is not None:
+        # §10.4 多起点：网格原点对齐 x0 的 φ0——起点几何先刚性转到该角度，再在约束下松弛。
+        atoms.set_dihedral(*quartet, math.degrees(grid_origin_rad) % 360.0, mask=mask)
+        atoms.set_constraint(
+            FixInternals(dihedrals_deg=[[atoms.get_dihedral(*quartet), list(quartet)]]))
+        conv0, e0 = relax("网格原点")
+    else:
+        conv0, e0 = relax("起点")
     x0 = atoms.positions.copy()
     phi0_ase = atoms.get_dihedral(*quartet)
     r0 = np.linalg.norm(x0[bond_idx[:, 0]] - x0[bond_idx[:, 1]], axis=1)
 
+    n_atoms = len(atoms)
+    cand_e = np.empty((2, n_grid))
+    cand_c = np.empty((2, n_grid), dtype=bool)
+    cand_p = np.empty((2, n_grid, n_atoms, 3))
+    cand_t = np.empty((2, n_grid))
+    cand_phi = np.empty((2, n_grid))
+
     passes: list[dict[int, tuple]] = []
-    for direction in (+1, -1):
+    for d_idx, direction in enumerate((+1, -1)):
         atoms.set_constraint()
         atoms.positions = x0.copy()
+        if collect_candidates:
+            phi_x0 = _phi(x0, quartet)
+            cand_e[d_idx, 0], cand_c[d_idx, 0] = e0, conv0
+            cand_p[d_idx, 0] = x0 * ANGSTROM_NM
+            cand_t[d_idx, 0] = cand_phi[d_idx, 0] = phi_x0
         got: dict[int, tuple] = {}
         for m in range(1, n_grid):
             s = (direction * m) % n_grid
@@ -115,13 +147,18 @@ def relaxed_scan(
             atoms.set_constraint(FixInternals(dihedrals_deg=[[atoms.get_dihedral(*quartet), list(quartet)]]))
             conv, e = relax(f"网格点 s={s}")
             got[s] = (e, atoms.positions.copy(), phi_target, conv)
+            if collect_candidates:
+                cand_e[d_idx, s], cand_c[d_idx, s] = e, conv
+                cand_p[d_idx, s] = atoms.positions.copy() * ANGSTROM_NM
+                cand_t[d_idx, s] = phi_target
+                cand_phi[d_idx, s] = _phi(atoms.positions, quartet)
         atoms.set_constraint()
         passes.append(got)
 
     energy = np.empty(n_grid)
     phi = np.empty(n_grid)
     phi_t = np.empty(n_grid)
-    pos = np.empty((n_grid, len(atoms), 3))
+    pos = np.empty((n_grid, n_atoms, 3))
     hyst = np.zeros(n_grid)
     converged = np.empty(n_grid, dtype=bool)
     phi_x0 = _phi(x0, quartet)
@@ -147,4 +184,8 @@ def relaxed_scan(
         converged=converged,
         max_bond_change_pm=float(np.max(np.abs(r_all - r0)) * 100.0),
         params={"step_deg": float(step_deg), "fmax_eV_per_A": float(fmax), "max_steps": int(max_steps)},
+        candidates={
+            "energy": cand_e, "converged": cand_c, "positions": cand_p,
+            "phi_target_rad": cand_t, "phi_rad": cand_phi,
+        } if collect_candidates else None,
     )

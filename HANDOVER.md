@@ -1,5 +1,187 @@
 # CRUCIBLE（原 forcefield_compiler）交接状态 — 2026-10-28（Asia/Tokyo）
 
+## 2026-11-24 第一批代码层续：xtb_sp 诊断阶段、多起点诊断报告脚本
+
+用户 2026-11-24 确认"就是 22 给你干了一半"，接着补 11-22 批次剩下的代码。计划仍是
+`docs/superpowers/plans/2026-11-20-coverage-validation-batch1-plan.md`，§7 待拍板 1–6 仍待定。
+- **xtb_sp（计划 §2.2 第 4 项）**：`hessian/xtb.py` 新增 `run_xtb_singlepoint`（`--gfn 2 --grad
+  --chrg Q --uhf 0`，入口几何、不优化；运行前清掉旧 gradient/energy；开壳层沿用同一电子数预检）
+  与 `read_xtb_gradient`（Turbomole gradient 文件，取最后一个 cycle，Eh 与 Eh/Bohr 不换算）。
+  格式按本机 xtb 6.7.1 真实输出核对后写的。`run_xtb_hessian` 未动。驱动
+  `scripts/coverage_diagnose.py` 的 xtb_sp 阶段改为真实实现（opt-in，`--xtb-threads` 默认 4）；
+  失败按既有 verdict 规则记缺项、不阻塞，规则本身未改。
+- **多起点诊断报告（计划 §3.1）**：新脚本 `scripts/torsion_multistart_report.py`，只读多起点
+  derive-torsions 的 `torsion_report.json`（可选扫描缓存补逐点角度/x0 能量/逐腿滞后、可选单起点
+  基线对照 fit_rmse），产出 report.md / per_point.csv / summary.json。只列数、不判定、不设阈值。
+- **验证（本机）**：`test_hessian_xtb.py` + `test_coverage.py` 非 external 30 passed；新 external
+  `test_run_singlepoint_ethanol_gfn2` 1 passed（5 s，真调 xtb）；`test_torsion_multistart_report.py`
+  4 passed。冒烟 `experiments/20261124_multistart_report_smoke/`（ethanol，`--reference mm
+  --step-deg 20 --multistart 2`，1 min 47 s）：报告走通；单起点基线用同一缓存 1.9 s 完成，
+  前后 `scans/` 四个 npz 修改时间不变——默认 {x0} 缓存键与多起点 x0 腿一致，实跑确认。
+  全量回归仍未跑（11-22 用户指令）。
+- **§2.2 第 3、6 项（用户 2026-11-24 "你可以接手给干了"）**：驱动新增两个 opt-in 阶段——
+  `fallback`（xtb GFN-FF --ohess → mSeminario，线性角取 library 以便计数；兜底 = 线性角保留
+  GAFF2 库值，同时记"fast preset linear_angles=error 会拒绝"；非正 k 记 fail）与 `scan_probe`
+  （find_rotors 第一根键，现行 MLPTorsionProvider + MACE、10°，计时；缓存在
+  `<name>/scan_probe/scans`；无可转键记 skip；该键兜底记缺项）。新参数 `--mace-threads`、`--device`。
+  verdict 规则文字未改，只把 scan_probe 加入判定枚举（属"后续拟合步兜底 → 缺项"）。
+- **修了 11-22 驱动的三个潜伏错误**（此前驱动从未在真实分子上跑过，单测没覆盖入口）：
+  ① `stage_entry` 返回 ir.json/coords.json 路径但不写文件；② 调用了未定义的 `_write_record`；
+  ③ 下游坐标用 `read_rst7`（Å）当 nm，几何放大 10 倍（xtb SCC 不收敛、GFN-FF Hessian 平移残差
+  6.9e-3 被质量门拒）——改为读入口落盘的 coords sidecar（nm）。新 external 测试
+  `test_driver_light_stages_on_real_ethanol` 覆盖这三处（含 coords×10 与 inpcrd 逐位一致）。
+- **冒烟** `experiments/20261124_coverage_stages_smoke/`（ethanol/acetonitrile/benzene，九个阶段全点名，
+  16 线程，5 min 24 s；前两轮失败的产物改名保留 `out_2_rst7_angstrom_bug/`、`run_1/2_*.log`）：
+  ethanol ok（scan_probe 0-1 键 250 s，fit_rmse 0.022）；benzene ok（无可转键 skip）；
+  acetonitrile blocked——gmx 腿 angle 1.1e-3 kJ/mol 超容差 1.0e-4（相对 2.4e-3，近线性角，与决策
+  0013 记录的混合精度现象相同），fallback 记 1 个线性角兜底。
+- **用户决定 2026-11-24**（原话："可以  就这么定"，针对 Claude 提议"混合精度 GROMACS 腿的超差只记作
+  精度缺项、不再判 blocked，其余各腿超差仍算 blocked"）：已实现——超差行全部来自 gmx 腿且
+  precision=mixed、无其他腿超差/出错/力超差时，export 记 ok + `gmx_mixed_precision` 缺项（超差行原样
+  留在记录里）；verdict 规则 docstring 同步。单测 6 例（1 例转缺项 + 5 例仍 blocked）。实跑：
+  acetonitrile 重跑（`out_4_precision_rule/`）判 ok_with_gaps，缺项 = gmx 混合精度（angle,total；
+  rel 2.4e-3）+ 1 个线性角库值。`test_coverage.py` 31 passed。
+- **覆盖集清单（计划 §2.1，用户已认可 34 个）**：新脚本 `scripts/make_coverage_set.py` →
+  `benchmarks/coverage_set/molecules.json` + `sdf/`（22 个新增）。SDF 来源用户未指定，沿用固件配方
+  （复用 `make_fixtures.build_sdf`：RDKit ETKDGv3 种子 20261004 → MMFF94）；12 个固件直接引用
+  `tests/fixtures/gaff2/` 原文件（计划 §2.4 不动 fixtures）。`tests/unit/test_coverage_set.py` 3 passed。
+- **34 分子轻阶段冒烟** `experiments/20261124_coverage_light_smoke/`（entry/rotors/frcmod/export/refcheck，
+  47 min 38 s——当时 NFS 慢，进程长时间处于 D 状态 rpc_wait，不是计算量）：0 blocked、31 ok、3
+  ok_with_gaps（acetonitrile gmx 混合精度；acetate、methylammonium 离子 MACE 适用性待定）；frcmod 全部
+  0 ATTN；19 个分子有可转键、15 个没有。重阶段（mace_smoke/xtb_sp/fallback/scan_probe）未跑，正式跑批
+  待用户批准资源。
+- **覆盖集正式诊断（用户 2026-11-25 "183走起"）**：183（node-C，40 核）上 8 worker × 5 线程（= 40 物理核；
+  计划表原写 181、4×9，用户改到 183 后按空闲机器改为 8×5），34 分子 × 9 阶段，输出
+  `jobs/coverage_20261124/`，启动脚本 `jobs/launch_coverage_20261124.sh`，PID 在该目录 `pids.txt`
+  （worker0–7：79515–79543，02:48:58 起）。183 上的运行账号无个人工具配置 → 用 `FFC_CONFIG` 指向同目录
+  `tools.toml`（原作者账号的配置原样复制；含真实路径，被 jobs/** 规则挡在库外）；183 上 check-env 全 ok。
+  续跑 = 重跑启动脚本。已全部结束并汇总（见下条）。
+  误启动一次（02:48:24）：脚本把数组命名为 `GROUPS`（bash 内置只读，赋值被静默忽略），11 个进程拿到
+  组 ID 当 `--molecules`，参数检查报错自行退出、无产物；日志存 `misfire_GROUPS_builtin/`，已改名
+  `MOL_GROUPS` 并在 183 上空跑核对后重启。
+- **覆盖集正式诊断结果**（183，02:48:58–03:32:42，44 min；汇总在 183 上执行，8 个 worker 日志 0 个
+  UNEXPECTED/Traceback）：34 分子 **26 ok / 8 ok_with_gaps / 0 blocked**（`jobs/coverage_20261124/report.md`）。
+  - export、mace_smoke、xtb_sp：34/34 ok；scan_probe：19 ok（全部 status=mlp，无兜底）、15 skip（无可转键）。
+  - **fallback（fast preset bonded：GFN-FF --ohess → mSeminario）5 个失败** → 单命令 `run --preset fast`
+    对它们会失败：acetone（2 虚频，最低 −56 cm⁻¹）、methyl_acetate（−63）、styrene（−41）、
+    glycine_zwitterion（−222）——GFN-FF vtight 优化落在鞍点、被 Hessian 质量门拒；oxirane——mSeminario
+    两个三元环角 k ≈ −92（与决策 0014 环丙烷同类方法局限）。
+  - **glycine_zwitterion 的 scan_probe 病态但判定未报**：fit_rmse 1473 kJ/mol、滞后 38.8 kJ/mol，status
+    仍为 mlp（扫描质量不设自动阈值，§10.4 / 用户 10-17 裁定）。【未核实推断】气相两性离子在约束扫描中
+    发生质子转移。只报告，未加门。
+  - 扫描滞后偏大：aniline 17.5、anisole 6.35 kJ/mol（其余 ≤ 0.06）——与 nma 1-3 同类扫描分支问题，
+    可作 MVP-7 多起点重扫候选。
+  - scan_probe 耗时 140–1742 s/键（5 线程），19 键合计 12180 s；大致随原子数增长。
+  - **4 个虚频分子已诊断（用户 2026-11-25 "可以"）** `experiments/20261125_saddle_diagnosis/`：从 xtb 自己写的
+    `xtbhess.xyz`（沿虚频扭曲）用同一 `run_xtb_hessian`（GFN-FF --ohess vtight）重启一次，四个全部无虚频、
+    过 `check_hessian`、能量更低（−0.18 ~ −9.4 kJ/mol）→ GFN-FF 优化停在鞍点、管线不重启（代码里不处理
+    xtbhess.xyz），不是势能面或 Hessian 问题。acetone/methyl_acetate 虚频主要是甲基扭转（重叠 0.71/0.97），
+    styrene/glycine 为混合模式。停在鞍点的原因（起点近对称）是推断，未验证。
+  - **已修（决策 0027，用户 2026-11-25 "可以"）**：`run_xtb_hessian` 在最低频率 < −20 cm⁻¹ 且有
+    xtbhess.xyz 时从它重启（`imag_restart_<k>/`，最多 2 次），只在发生时记 meta/provenance；不触发时逐位
+    不变（ethanol 实测 hessian 逐字节相同）。验证：`test_hessian_xtb.py` 23 passed（新 5 单测 + acetone
+    external）；test_assign/pipeline_chain/fallback/coverage 64 passed；5 个失败分子重跑 fallback
+    （`experiments/20261125_imag_restart_verify/`）：4 个转通过，oxirane 仍失败（负环角 k，另一原因）。
+    G0–G3 未重跑（Gate 分子都过质量门，不触发重启）。
+- **覆盖集正式结果（第 2 轮，0027 之后；用户 2026-11-25 "181继续跑"）**：181 上 8 worker × 4 线程
+  （181 有他人负载，未用满 40 核），`--force` 重算，08:57–09:06；扫描走缓存（缓存文件仍是第 1 轮 03:08）。
+  **30 ok / 4 ok_with_gaps / 0 blocked**（`jobs/coverage_20261124/report.md` 已替换）：fallback 33 ok / 1 fail
+  （oxirane 负环角 k）；剩余缺项 = acetate、methylammonium（离子 MACE 待拍板 2）、acetonitrile（gmx 混合
+  精度 + 线性角库值）、oxirane。**glycine_zwitterion 现判 ok，但其 scan_probe 仍病态（fit_rmse 1473 kJ/mol，
+  判定不看扫描质量）**。修复前结果留底在 `jobs/coverage_20261124/prefix_0027/`（34 record + report/summary/manifest）；
+  启动脚本加 `NT`/`TAG` 与参数透传，第 2 轮 PID/日志带 `_r2`。
+  - 另见：NonPositiveForceConstantError 的提示文字固定写"可改用 mseminario 或 drih"，当前方法就是
+    mseminario 时会误导（老代码，未改）。
+- **离子/两性离子参考势改用 xtb GFN2（决策 0028，用户 2026-11-25 "可以"，计划 §7 待拍板 2）**：新模块
+  `torsion/xtb_ref.py`（判定 + ASE 计算器，每步调 `xtb --gfn 2 --grad`）；CLI `--reference` 加 `auto`（默认）
+  与 `xtb-gfn2`，`run` 用 auto；覆盖集 refcheck/scan_probe 同规则。Gate G2/G3 直接建 MACE，不受影响。
+  顺带修 11-22 潜伏错误：`run` 给 derive-torsions 的 Namespace 缺 `multistart`/`multistart_threshold`
+  （run 走到二面角步必 AttributeError）；新测试从 handler 源码扫 `args.X` 逐项核对，确认能抓到原错误。
+  测试：test_torsion_xtb_ref（含 external：力 = −dE/dx 有限差分、能量 = 直接单点）+ test_coverage 38 passed；
+  test_cli_entry 10 passed。冒烟 `experiments/20261125_gfn2_reference_smoke/`：CLI methylammonium auto→gfn2，
+  35 s 扫完、fit_rmse 0.018；随后 assign-charges am1bcc 按缓存 refit 成功（cache_only + `_no_reference`，
+  身份不符会兜底 no_cached_scan，实为 mlp）；覆盖集 acetate、methylammonium 用 GFN2 → **ok**（各 28 s）；
+  **glycine_zwitterion 在 GFN2 下扫描同样病态**（fit_rmse 1205 kJ/mol、滞后 38.2）——不是 MACE 特有，
+  【未核实推断】气相两性离子约束扫描中质子转移。正式覆盖集（jobs/coverage_20261124）的两个离子仍是 MACE
+  结果（ok_with_gaps），未按 0028 重跑。
+- **正式覆盖集第 3 次更新（0028 之后；用户 2026-11-25 "可以"）**：181 上只对 acetate、methylammonium、
+  glycine_zwitterion `--force` 重跑 9 个阶段（日志 `jobs/coverage_20261124/rerun_0028.log`），再汇总全量。
+  **现行结果：32 ok / 2 ok_with_gaps / 0 blocked**（剩余缺项：acetonitrile gmx 混合精度 + 线性角库值；
+  oxirane 负环角 k）。三者 scan_probe 均为 xtb-gfn2：acetate 28 s / rmse 0.0035；methylammonium 27 s / 0.018；
+  glycine_zwitterion 117 s / **rmse 1205、滞后 38.2（病态，判定不看扫描质量）**。重跑前的 3 份 record、
+  它们的 MACE 扫描缓存（同名 0-1.npz 会被 GFN2 覆盖）与汇总留底在 `jobs/coverage_20261124/prefix_0028/`。
+- **发现（未改，待用户定）**：CLI 帮助称 `--multistart N` 为"额外的 ETKDG 起点数"，实际 N 是
+  嵌入的构象数，与 x0/彼此重复的被去重（冒烟中 N=2 只得到 1 条 etkdg 腿）。
+- **未做**：§20 状态标注（改设计稿，计划写明批准后随 §C 提交，计划未批）；一切正式计算。
+- **用户决定 2026-11-24**：计划 §7 待拍板 1 认可 34 个分子（原话："可以"）；SDF 来源未定。
+- 提交草稿：`.commit_drafts/20261125_1113_coverage-run-saddle-restart-ion-gfn2.md`（24 号，2026-11-25 用户确认整理）。
+
+## 2026-11-22 第一批代码层：覆盖集诊断、MVP-7 多起点、独立验证装配（2026-11-20 计划 §A/§B/§C）
+
+用户 2026-11-22 指示"先补代码"后动工。只写代码与单测，未跑任何计算/MD/外部工具，
+未动环境、无 git 操作。计划：`docs/superpowers/plans/2026-11-20-coverage-validation-batch1-plan.md`（状态行已更新）。
+- **§A 覆盖集**：`validation/coverage.py`（记录 schema、frcmod ATTN 解析、verdict 判定
+  【blocked = entry/typing 失败或导出不等价；ok_with_gaps = frcmod 缺项/参考势适用性/拟合兜底；
+  规则施工前锁定】、清单加载与汇总）+ 驱动 `scripts/coverage_diagnose.py`（默认轻阶段
+  entry/rotors/frcmod/export/refcheck；mace_smoke opt-in；**xtb_sp 本轮未实现，点名即报错**；
+  `<name>/record.json` 存在即跳过，续跑同松弛检查惯例）。**覆盖集清单 JSON 尚未建**（34 分子
+  草案待拍板 1），跑批需要 antechamber 等外部工具，属另批资源。
+- **§B MVP-7（§10.4 落地；默认 {x0} 逐位不变——有单测核对：默认缓存键无 start 块、
+  collect_candidates 不改主数组、默认路径 provenance 无 multistart 块）**：
+  - `clustering.py`：Kabsch 对齐（无反射）+ 对齐重原子 RMSD + 能量升序贪心聚类（§B 分支
+    与 §C1 盆地共用一套实现）；
+  - `torsion/scan.py`：新增 `collect_candidates`（逐方向候选块）与 `grid_origin_rad`
+    （非 x0 起点网格对齐 x0 的 φ0）；默认调用路径不变；
+  - `torsion/multistart.py`：`etkdg_starts`（ETKDG 嵌入 → 参考势优化 → 去重；身份含
+    seed/参数/RDKit 版本，进缓存键）+ `merge_start_scans`（逐格点合并出包络 + 分支诊断：
+    逐点分支数/分支间能差/包络相对单起点增益；**分支只进诊断、永不进拟合目标**）；
+  - `torsion/mlp.py`：`MLPTorsionProvider(multistart=...)`（fresh = 调优项；refit = 按
+    provenance 存档身份只读缓存，不调 RDKit/参考势）；缓存键加 start 块（x0 = None 与
+    现行键逐位一致，旧 MACE 缓存不失效）；候选块以 cand_* 落盘，旧缓存无此块仍可读；
+    `refit_torsions` 从 provenance 恢复多起点身份；CLI `--multistart N
+    --multistart-threshold nm`（derive-torsions 与 mm-self 参考势两路都接）；
+  - 分支聚类阈值默认 0.05 nm（施工裁定，可参数覆盖；§7 待拍板 4 未涵盖此项，列为可调）。
+- **§C**：`validation/holdout.py`（B4 落地：盆地整进整出划分 + holdout 上限
+  max_holdout_frac=0.4；单盆地/放不下 → 留出为空并写 note，不硬造）；`validation/variants.py`
+  （`substitute_terms`/`comparison_matrix`：bonded/torsion/charge/vdw 单替换 + full，
+  每个变体过 validate）；`validation/liquid.py`（`pack_box` 立方格点 + 抖动装箱，确定性
+  seed，格点放不下即报错不静默降密度；`to_liquid_system` = PME + LJ 截断 + 色散修正，
+  exceptions 语义同导出器，**导出器 NoCutoff 路径不动（决策 0023 语义）**；`liquid_dynamics`
+  = NPT Simulation（LangevinMiddle + MonteCarloBarostat，CPU 平台））。
+- **验证（本机、逐文件单跑）**：test_coverage 16 passed；test_torsion_multistart 16 passed
+  （142 s，GAFF2 MM 作参考势，不用 MACE）；test_holdout_variants + test_liquid 17 passed。
+  **全量 `pytest -m "not external"` 未跑**（用户 2026-11-22 指令"回归停掉"，命令未执行）；
+  external / G0–G3 / G4 均未动。开工前 G0–G3 第 3 轮（10-28）仍为最新通过记录。
+- **未做**：一切计算（覆盖集跑批、nma 1-3 多起点重扫、二聚体/液体基准）；CLI 不加覆盖集
+  子命令（脚本驱动）；xtb_sp 诊断阶段；多起点诊断报告脚本；设计 §20 状态标注；§7 待拍板
+  1–6 原样待定。
+- 提交草稿：`.commit_drafts/20261122_batch1-code.md`（23 号）。
+
+## 2026-11-11 MVP-6 分子入口与单命令 CLI（决策 0024 裁定 8 的首个实施）+ A4 快修
+
+按施工计划 `docs/superpowers/plans/2026-11-11-mvp6-molecule-entry.md` 实施（开工裁定
+`-c bcc` 在其 §1 锁定：本机 AmberTools 无 `-c zero`，取 §3.1 预留退路，与 12 固件配方一致）。
+- 新增：`molecule/io.py`（SDF 几何合同：解析、必须有 3D、formal charge=净电荷、0.5 Å 穿距门、
+  sha256；不做任何构象生成）、`typing/gaff2.py`（antechamber → 电荷均摊 → parmchk2 → tleap →
+  现有 from_amber；provenance 增 `entry` 块，各项 source 保持 gaff2-library）、`presets.py`
+  （设计 §17 逐字冻结）；CLI 新增 `enter` 与 `run` 子命令，§22 字面形式
+  （`ffcompiler ligand.sdf --preset fast ...`）经 argv 垫片支持；编排复用各分段 handler。
+  `equalize_mol2_charges`/`ambertools_version` 自 make_fixtures 移入库（数学逐行不变，固件未重新生成）。
+- preset 语义：new_charge（=MVP-4 未立项）显式报错；`--charge entry` 保留入口 AM1-BCC
+  （决策 0024 裁定 1）；设计名 orca → CLI orca-hess 翻译；rigid 的 rigid_torsion:drih 是
+  设计表内部不一致（DRIH 是 bonded 方法）→ v1 不执行、run_manifest 记待澄清（**待用户拍板**）。
+- 验证：`pytest -m "not external"` **629 passed**（原 603 + 新 26；yayoi，79 s）；新外部测试
+  **12 固件 SDF 重建等价 12/12（5.3 s，本机，只调 antechamber/parmchk2/tleap）**——设计 §3.1
+  验收要点 2/3 完成；真机冒烟 `run ethanol.sdf --preset fast --charge entry` **完整走通并导出
+  gromacs 三件套，exit 0（约 40 min，时间几乎全在 MACE 扫描）**——验收要点 1 以冒烟形式达成，
+  细节见台账 `.superpowers/sdd/2026-11-11-mvp6-molecule-entry/progress.md`。
+- A4 快修六项（畸形 mol2 报错、step_deg 提前检查【CLI 层，scan.py 保持纯净】、
+  TorsionRefitError 消息、异常分类、gate_mvp3 重复 find_rotors、gate_mvp1 help）；
+  rotors 列表共享复核为已被 deepcopy 覆盖；SDF 提示确认不触发。
+- **未做**：G4 Gate 脚本与正式端到端验收（需 Gate 机器资源另报）；MVP-7/8/9；MVP-4 立项；
+  MVP-5 调度；perception/fflib 接线；localhess oracle；Level 3–4（见"代码侧未做的事"清单）。
+提交草稿：`.commit_drafts/20261111_mvp6-molecule-entry.md`。
+
 ## 2026-11-11 受约束松弛检查 阶段 1（2026-11-01 计划获用户批准后执行）
 
 按 `docs/superpowers/plans/2026-11-01-relaxed-check-plan.md`（用户 11-11 批准阶段 1）与施工计划
@@ -10,7 +192,7 @@
 - **实施偏差**：dmso 的 bg 松弛要同时固定 4 个同轴二面角，ASE FixInternals 投影不收敛
   （maxstep/epsilon 调参均不可救）。脚本内实现 `MultiDihedral`（对全部约束同时解 Gauss-Newton
   投影），可行集合、fmax、LBFGS 不变，统一用于全部 12 键。验证：methyl_benzoate 三键 bg_relax
-  与 11-01（kasuga01、FixInternals）最大差 4.6e-6 kJ/mol（跨机复现）。首版投影符号错在写帧前
+  与 11-01（node-A、FixInternals）最大差 4.6e-6 kJ/mol（跨机复现）。首版投影符号错在写帧前
   由插桩发现并修复；汇总层两处 bug（RMSE 双减参考能、numpy 列未减 E_ref）修正后从帧 CSV 重建。
 - **验收**（施工计划 §5）：P0 对 B2 十二键最大偏差 2.7e-11；自检 24 行全过（约束漂移最差
   9.7e-13 rad）；机器 yayoi（8 核），并行相共约 75 s。
@@ -129,6 +311,7 @@ TorsionDrive 仅二维 opt-in，装环境属用户显式决策）、§23 MVP-6�
 | MVP-5 fallback | 框架完成（gfnff → gfn2 → DFT 文件，质量门）；CLI 不暴露；调度研究未开始 | `hessian/fallback.py` |
 | MVP-4 learned BCC | 只有骨架 + 立项草案；**研究未立项** | `charge/learned_bcc.py`、立项草案 |
 | 感知层 / fflib（10-24，决策 0022） | 有单测，**还没接进 CLI 和管线**；10-28 修正了 bondcrit 窗口、improper 匹配、负 pn 三处语义（0025） | `perception/`、`fflib/` |
+| MVP-6 分子入口 + 单命令 CLI（2026-11-11） | **完成**：enter/run CLI、preset（§17）；12 固件 SDF 重建等价 12/12（本机）；**G4 未建、端到端正式验收待 Gate 机** | `molecule/`、`typing/`、`presets.py`、`tests/unit/test_molecule_entry.py` |
 | localhess（10-24，决策 0023） | experimental，CLI 可选；没有 oracle，只做了内部一致性检查 | `bonded/localhess.py` |
 | CP2K provider（10-24，决策 0023） | 和官方 FeCl2 示例逐位一致；10-28 起 CLI 用文件几何（0025） | `hessian/cp2k.py` |
 | IR 周期盒（10-24，决策 0023/0025） | 只作模拟盒元数据；三个导出器都写盒子，AMBER 只支持正交盒；sander 可读（10-28 起） | `ir/`、`exporters/` |
@@ -193,10 +376,11 @@ PID 记录：
 
 ### 代码侧未做的事（2026-11-11 盘点；依据：结案验收 §1、README Roadmap、上表）
 
-**已设计、代码未写**（决策 0024 的 MVP-6～9；结案验收 #2/#14/#26）：
-1. MVP-6 分子入口：SDF → antechamber（只做 GAFF2 typing）→ 骨架 IR；`molecule/`、`typing/` 模块不存在。
-2. 单命令 CLI `ffcompiler ligand.sdf --preset` 与 preset（§17/§22；验收 #26 注明依赖分子入口与交替完成判据）。
-3. MVP-7 扫描质量：多起点松弛扫描 + 逐格点分支诊断（分支只诊断、永不拟合）；首个应用 nma 1-3 重扫。
+**已设计、代码未写**（决策 0024 的 MVP-7～9；MVP-6 已于 2026-11-11 完成，见顶部条目）：
+1. ~~MVP-6 分子入口 + 单命令 CLI + preset~~：**已完成（2026-11-11）**；遗留：G4 Gate 脚本与正式端到端验收（需 Gate 机器，资源另报）、rigid preset 的 rigid_torsion 语义待拍板。
+2. MVP-7 扫描质量：多起点松弛扫描 + 逐格点分支诊断（分支只诊断、永不拟合）；首个应用 nma 1-3 重扫。
+3. MVP-8 平衡几何联合拟合：q⁰ 进拟合 + 梯度匹配（§6.4.3-1 预留接口落地），opt-in，对现行 global-fit 逐位退化。
+4. MVP-9 多构象联合拟合 + charge→torsions→global-fit 交替协议与 ε 完成判据（§6.4.4–6.4.6）。
 4. MVP-8 平衡几何联合拟合：q⁰ 进拟合 + 梯度匹配（§6.4.3-1 预留接口落地），opt-in，对现行 global-fit 逐位退化。
 5. MVP-9 多构象联合拟合 + charge→torsions→global-fit 交替协议与 ε 完成判据（§6.4.4–6.4.6）。
 
@@ -209,9 +393,9 @@ PID 记录：
 9. `localhess`（0023）：experimental、CLI 可选，无 oracle，只做过内部一致性检查。
 10. Level 3–4 验证基准（设计 §20）：完全没有（结案验收 #31）。
 
-**小项**：A4 小项（重复 `find_rotors`、畸形 mol2 报错、`step_deg` 提前检查等，表在 2026-10-11 计划 §3）；RESP provider 推迟（0018）；OpenMM 原生 CustomTorsionForce 模式（计划不做，MVP-2 计划 §1 第 7 条）；TorsionDrive 2-D opt-in（装环境是显式决定）。
+**小项**：A4 六项已完成（2026-11-11：重复 `find_rotors`、畸形 mol2 报错、`step_deg` 提前检查、TorsionRefitError 消息、扫描异常分类、G1 help）；A4 剩余：可转键对称类报告（需小规格）、主进程线程上限时机（动 Gate 语义）、甲铵正离子 MACE 回归（需 MACE 机器，不加未经运行的 external 测试）；RESP provider 推迟（0018）；OpenMM 原生 CustomTorsionForce 模式（计划不做，MVP-2 计划 §1 第 7 条）；TorsionDrive 2-D opt-in（装环境是显式决定）。
 
-**验证/计算类（收尾用，不是写代码）**：B4 留出验证；C5 正式外部组合验收（需报资源）；松弛检查阶段 2（等上面第 8 条拍板）。
+**验证/计算类（收尾用，不是写代码）**：B4 留出验证；C5 正式外部组合验收（需报资源）；G4（MVP-6 的 Gate，需 Gate 机器）；松弛检查阶段 2（等上面第 8 条拍板）。
 
 **已知小问题（不阻塞）：**
 - A4 未做的小项（重复 `find_rotors`、畸形 mol2 报错、`step_deg` 提前检查等），表见 `2026-10-11-crucible-next-steps.md` §3 A4。
@@ -220,11 +404,15 @@ PID 记录：
 
 ## 待用户提交的草稿（`.commit_drafts/`）
 
-按 `.git/logs/HEAD`，1–18 号草稿都已在 2026-10-25 17:25 之前提交，最后一次提交是 `chore: keep local reference PDFs out of the repository`；作废的那几份本来就不执行。目前待提交的只有：
+按 `.git/logs/HEAD`，1–18 号草稿都已在 2026-10-25 17:25 之前提交；作废的那几份本来就不执行。
+**状态更新（2026-11-25 整理执行）：19–21 号（review-fixes / tool-config / relaxed-check-phase1）已并入 2026-11-11 03:02 的提交（`f20f4cd`：sobtop 吸收 + 决策 0022–0025；`88e370d`：tool config 决策 0026 + relaxed-check 脚本；`c4216ce`：实验记录与 gate manifests）。22–24 号于 2026-11-25 按序执行，以下清单保留作历史记录：**
 
 19. `20261028_review-fixes.md`：10-24 代码审阅修复（决策 0025）及相应文档。**入库前要先脱敏**（运行记录里有真实路径，见 CHANGELOG 和 0025）。
 20. `20261028_tool-config.md`：外部工具位置配置（决策 0026）。按 19 → 20 的顺序执行。
 21. `20261111_relaxed-check-phase1.md`：受约束松弛检查阶段 1（脚本 + 报告 + 计划状态 + HANDOVER/CHANGELOG）。
+22. `20261111_mvp6-molecule-entry.md`：MVP-6 分子入口 + 单命令 CLI + preset + A4 快修（新模块/CLI/测试/计划文档/HANDOVER/CHANGELOG）。21 → 22 顺序执行。
+23. `20261122_batch1-code.md`：第一批代码层（覆盖集诊断 / MVP-7 多起点 / 独立验证装配 + 52 个新单测；全量回归按用户指令未跑）。22 → 23 顺序执行。
+24. `20261125_1113_coverage-run-saddle-restart-ion-gfn2.md`：覆盖集诊断收口（xtb_sp/fallback/scan_probe、驱动三个潜伏错误、34 分子清单、多起点报告）+ 决策 0027 鞍点重启 + 决策 0028 离子 GFN2 参考势与 `run` 参数修复 + 覆盖集结果（32/2/0）。已脱敏，相关测试 129 passed。23 → 24 顺序执行。
 
 ## 结论备忘
 
