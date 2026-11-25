@@ -32,6 +32,8 @@ Superseded records are kept verbatim as history.
 | [0024](0024-next-phase-design.md) | 设计稿下一阶段增补：分子入口、扫描质量、联合拟合（仅设计） | 有效 |
 | [0025](0025-review-fixes-periodic-box-semantics.md) | 10-24 代码审阅修复：周期盒只作元数据、AMBER 周期 prmtop、CP2K 几何、bondcrit/improper/负 pn 语义 | 有效 |
 | [0026](0026-tool-config.md) | 外部工具位置由用户自己的配置文件给出（tools.toml + init-config + check-env），缺工具只影响用到它的功能 | 有效 |
+| [0027](0027-xtb-saddle-restart.md) | xtb `--ohess` 停在鞍点（最低频率 < −20 cm⁻¹）时从 xtbhess.xyz 自动重启，最多 2 次，只在发生时记 provenance | 有效 |
+| [0028](0028-ion-reference-gfn2.md) | 离子与两性离子的二面角参考势默认用 xtb GFN2（`--reference auto`），中性分子仍用 MACE；部分取代 0016 修订 | 有效 |
 
 
 新记录用下一个编号，文件名 `NNNN-short-topic.md`；取代旧记录时在旧记录标题下加一行说明。

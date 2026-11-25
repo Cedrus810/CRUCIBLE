@@ -1,0 +1,274 @@
+[
+  {
+    "name": "ethanol",
+    "category": "alcohol_ether",
+    "sdf": "../../tests/fixtures/gaff2/ethanol/ethanol.sdf",
+    "net_charge": 0,
+    "smiles": "CCO",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "nma",
+    "category": "carbonyl_ester_amide",
+    "sdf": "../../tests/fixtures/gaff2/nma/nma.sdf",
+    "net_charge": 0,
+    "smiles": "CC(=O)NC",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "methyl_benzoate",
+    "category": "carbonyl_ester_amide",
+    "sdf": "../../tests/fixtures/gaff2/methyl_benzoate/methyl_benzoate.sdf",
+    "net_charge": 0,
+    "smiles": "COC(=O)c1ccccc1",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "benzene",
+    "category": "aromatic_conjugated_fused",
+    "sdf": "../../tests/fixtures/gaff2/benzene/benzene.sdf",
+    "net_charge": 0,
+    "smiles": "c1ccccc1",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "chlorobenzene",
+    "category": "aromatic_conjugated_fused",
+    "sdf": "../../tests/fixtures/gaff2/chlorobenzene/chlorobenzene.sdf",
+    "net_charge": 0,
+    "smiles": "Clc1ccccc1",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "norbornane",
+    "category": "aromatic_conjugated_fused",
+    "sdf": "../../tests/fixtures/gaff2/norbornane/norbornane.sdf",
+    "net_charge": 0,
+    "smiles": "C1CC2CCC1C2",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "cyclopropane",
+    "category": "small_ring",
+    "sdf": "../../tests/fixtures/gaff2/cyclopropane/cyclopropane.sdf",
+    "net_charge": 0,
+    "smiles": "C1CC1",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "cyclobutane",
+    "category": "small_ring",
+    "sdf": "../../tests/fixtures/gaff2/cyclobutane/cyclobutane.sdf",
+    "net_charge": 0,
+    "smiles": "C1CCC1",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "dmso",
+    "category": "heteroatom_halogen",
+    "sdf": "../../tests/fixtures/gaff2/dmso/dmso.sdf",
+    "net_charge": 0,
+    "smiles": "CS(C)=O",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "acetonitrile",
+    "category": "heteroatom_halogen",
+    "sdf": "../../tests/fixtures/gaff2/acetonitrile/acetonitrile.sdf",
+    "net_charge": 0,
+    "smiles": "CC#N",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "acetate",
+    "category": "ion_zwitterion",
+    "sdf": "../../tests/fixtures/gaff2/acetate/acetate.sdf",
+    "net_charge": -1,
+    "smiles": "CC(=O)[O-]",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "methylammonium",
+    "category": "ion_zwitterion",
+    "sdf": "../../tests/fixtures/gaff2/methylammonium/methylammonium.sdf",
+    "net_charge": 1,
+    "smiles": "C[NH3+]",
+    "source": "fixture (scripts/make_fixtures.py)"
+  },
+  {
+    "name": "methanol",
+    "category": "alcohol_ether",
+    "sdf": "sdf/methanol.sdf",
+    "net_charge": 0,
+    "smiles": "CO",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "diethyl_ether",
+    "category": "alcohol_ether",
+    "sdf": "sdf/diethyl_ether.sdf",
+    "net_charge": 0,
+    "smiles": "CCOCC",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "thf",
+    "category": "alcohol_ether",
+    "sdf": "sdf/thf.sdf",
+    "net_charge": 0,
+    "smiles": "C1CCOC1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "acetone",
+    "category": "carbonyl_ester_amide",
+    "sdf": "sdf/acetone.sdf",
+    "net_charge": 0,
+    "smiles": "CC(C)=O",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "methyl_acetate",
+    "category": "carbonyl_ester_amide",
+    "sdf": "sdf/methyl_acetate.sdf",
+    "net_charge": 0,
+    "smiles": "COC(C)=O",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "methylamine",
+    "category": "amine",
+    "sdf": "sdf/methylamine.sdf",
+    "net_charge": 0,
+    "smiles": "CN",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "aniline",
+    "category": "amine",
+    "sdf": "sdf/aniline.sdf",
+    "net_charge": 0,
+    "smiles": "Nc1ccccc1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "furan",
+    "category": "heteroaromatic",
+    "sdf": "sdf/furan.sdf",
+    "net_charge": 0,
+    "smiles": "c1ccoc1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "imidazole",
+    "category": "heteroaromatic",
+    "sdf": "sdf/imidazole.sdf",
+    "net_charge": 0,
+    "smiles": "c1c[nH]cn1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "pyridine",
+    "category": "heteroaromatic",
+    "sdf": "sdf/pyridine.sdf",
+    "net_charge": 0,
+    "smiles": "c1ccncc1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "styrene",
+    "category": "aromatic_conjugated_fused",
+    "sdf": "sdf/styrene.sdf",
+    "net_charge": 0,
+    "smiles": "C=Cc1ccccc1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "naphthalene",
+    "category": "aromatic_conjugated_fused",
+    "sdf": "sdf/naphthalene.sdf",
+    "net_charge": 0,
+    "smiles": "c1ccc2ccccc2c1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "anisole",
+    "category": "aromatic_conjugated_fused",
+    "sdf": "sdf/anisole.sdf",
+    "net_charge": 0,
+    "smiles": "COc1ccccc1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "oxirane",
+    "category": "small_ring",
+    "sdf": "sdf/oxirane.sdf",
+    "net_charge": 0,
+    "smiles": "C1CO1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "methanethiol",
+    "category": "heteroatom_halogen",
+    "sdf": "sdf/methanethiol.sdf",
+    "net_charge": 0,
+    "smiles": "CS",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "dimethyl_sulfide",
+    "category": "heteroatom_halogen",
+    "sdf": "sdf/dimethyl_sulfide.sdf",
+    "net_charge": 0,
+    "smiles": "CSC",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "thiophene",
+    "category": "heteroatom_halogen",
+    "sdf": "sdf/thiophene.sdf",
+    "net_charge": 0,
+    "smiles": "c1ccsc1",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "dcm",
+    "category": "heteroatom_halogen",
+    "sdf": "sdf/dcm.sdf",
+    "net_charge": 0,
+    "smiles": "ClCCl",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "chloroform",
+    "category": "heteroatom_halogen",
+    "sdf": "sdf/chloroform.sdf",
+    "net_charge": 0,
+    "smiles": "ClC(Cl)Cl",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "tfe",
+    "category": "heteroatom_halogen",
+    "sdf": "sdf/tfe.sdf",
+    "net_charge": 0,
+    "smiles": "OCC(F)(F)F",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "trimethyl_phosphate",
+    "category": "heteroatom_halogen",
+    "sdf": "sdf/trimethyl_phosphate.sdf",
+    "net_charge": 0,
+    "smiles": "COP(=O)(OC)OC",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  },
+  {
+    "name": "glycine_zwitterion",
+    "category": "ion_zwitterion",
+    "sdf": "sdf/glycine_zwitterion.sdf",
+    "net_charge": 0,
+    "smiles": "[NH3+]CC(=O)[O-]",
+    "source": "RDKit ETKDGv3 seed 20261004 + MMFF94 (make_fixtures.build_sdf)"
+  }
+]

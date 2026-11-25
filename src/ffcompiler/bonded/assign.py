@@ -266,22 +266,24 @@ def derive_bonded(
             )
         )
 
+    bonded_prov = {
+        "method": method,
+        "hessian_provider": h.provider,
+        "hessian_method": h.method,
+        "hessian_sha256": h.source_sha256,
+        "symmetrized": symmetrize,
+        "linear_angle_policy": linear_angle_policy,
+        "linear_angles_kept": [list(a) for a in sorted(kept_linear)],
+        "max_class_spread": max(class_spread.values(), default=0.0),
+        "max_bond_ratio_dev": max_bond_ratio,
+    }
+    if h.meta.get("imaginary_restarts"):
+        # xtb 鞍点重启（2026-11-25）：只在发生时记录，未重启的 IR provenance 与此前逐位相同
+        bonded_prov["hessian_imaginary_restarts"] = [dict(r) for r in h.meta["imaginary_restarts"]]
     new_ir = ir.replace_terms(
         bonds=tuple(new_bonds),
         angles=tuple(new_angles),
-        provenance_update={
-            "bonded": {
-                "method": method,
-                "hessian_provider": h.provider,
-                "hessian_method": h.method,
-                "hessian_sha256": h.source_sha256,
-                "symmetrized": symmetrize,
-                "linear_angle_policy": linear_angle_policy,
-                "linear_angles_kept": [list(a) for a in sorted(kept_linear)],
-                "max_class_spread": max(class_spread.values(), default=0.0),
-                "max_bond_ratio_dev": max_bond_ratio,
-            }
-        },
+        provenance_update={"bonded": bonded_prov},
     )
     validate(new_ir)
     report = BondedReport(

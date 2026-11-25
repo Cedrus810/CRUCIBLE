@@ -18,9 +18,11 @@ from ffcompiler.hessian.base import check_hessian, harmonic_frequencies
 from ffcompiler.hessian.xtb import (
     XtbError,
     _check_success,
+    read_xtb_gradient,
     read_xtb_hessian,
     read_xtb_vibspectrum,
     run_xtb_hessian,
+    run_xtb_singlepoint,
 )
 
 FIXTURE = Path(__file__).resolve().parents[1] / "fixtures" / "hessian" / "xtb_ethanol_gfn2"
@@ -200,3 +202,187 @@ def test_vibspectrum_bad_mode_count_raises(tmp_path: Path) -> None:
     path.write_text(_VIB_HEADER + "\n".join(rows) + "\n$end\n")
     with pytest.raises(ValueError, match="3N"):
         read_xtb_vibspectrum(path)
+
+
+# ---- xtb 单点（覆盖集诊断 xtb_sp 阶段，2026-11-20 计划 §2.2 第 4 项） ----
+
+# 取自 xtb 6.7.1 `--gfn 2 --grad` 对水分子的真实输出（2026-11-24 本机）
+_WATER_GRADIENT = """$grad
+  cycle =      1    SCF energy =    -5.07037076185   |dE/dxyz| =  0.007222
+    0.00000000000000      0.00000000000000      0.22166487441798      O 
+    0.00000000000000      1.43090062156260     -0.88665949767191      H 
+    0.00000000000000     -1.43090062156260     -0.88665949767191      H 
+  -2.6881125797143E-18  -1.1519142618602E-16   2.9402221161207E-03
+   1.6496056751868E-18  -4.4262812903950E-03  -1.4701110580603E-03
+   1.0385069045275E-18   4.4262812903951E-03  -1.4701110580603E-03
+$end
+"""
+
+
+def test_read_xtb_gradient_water(tmp_path: Path) -> None:
+    path = tmp_path / "gradient"
+    path.write_text(_WATER_GRADIENT)
+    energy, grad = read_xtb_gradient(path, 3)
+    assert energy == -5.07037076185
+    assert grad.shape == (3, 3)
+    assert grad[0, 2] == 2.9402221161207e-03
+    assert grad[1, 1] == -4.4262812903950e-03
+    # 平移不变：梯度和为 0（量级 1e-18）
+    assert np.abs(grad.sum(axis=0)).max() < 1e-15
+
+
+def test_read_xtb_gradient_takes_last_cycle_and_d_exponent(tmp_path: Path) -> None:
+    second = """  cycle =      2    SCF energy =    -5.10000000000D+00   |dE/dxyz| =  0.000001
+    0.0 0.0 0.2 O
+    0.0 1.4 -0.9 H
+    0.0 -1.4 -0.9 H
+   1.0D-03  2.0D-03  3.0D-03
+   4.0D-03  5.0D-03  6.0D-03
+   7.0D-03  8.0D-03  9.0D-03
+$end
+"""
+    path = tmp_path / "gradient"
+    path.write_text(_WATER_GRADIENT.replace("$end\n", "") + second)
+    energy, grad = read_xtb_gradient(path, 3)
+    assert energy == -5.1
+    np.testing.assert_array_equal(grad[2], [7.0e-3, 8.0e-3, 9.0e-3])
+
+
+def test_read_xtb_gradient_wrong_atom_count_raises(tmp_path: Path) -> None:
+    path = tmp_path / "gradient"
+    path.write_text(_WATER_GRADIENT)
+    with pytest.raises(XtbError, match="2×4"):
+        read_xtb_gradient(path, 4)
+
+
+def test_read_xtb_gradient_not_gradient_file_raises(tmp_path: Path) -> None:
+    path = tmp_path / "gradient"
+    path.write_text("$energy\n 1 -5.0\n$end\n")
+    with pytest.raises(XtbError, match="cycle"):
+        read_xtb_gradient(path, 3)
+
+
+def test_singlepoint_odd_electrons_rejected_before_launch(tmp_path: Path) -> None:
+    # OH 中性：价电子 7 → 奇数；binary 指向不存在的路径，证明拒绝发生在启动 xtb 之前
+    z = np.array([8, 1])
+    pos = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.097]])
+    with pytest.raises(XtbError, match="奇数"):
+        run_xtb_singlepoint(z, pos, method="gfn2", charge=0, workdir=tmp_path,
+                            binary=tmp_path / "no-such-xtb")
+
+
+@pytest.mark.external
+def test_run_singlepoint_ethanol_gfn2(tmp_path: Path) -> None:
+    from ffcompiler.importers import from_amber
+
+    mdir = GAFF2 / "ethanol"
+    ir, pos = from_amber(
+        mdir / "ethanol.prmtop", mdir / "ethanol.inpcrd", mdir / "ethanol.sdf"
+    )
+    z = np.array([a.atomic_number for a in ir.atoms])
+    out = run_xtb_singlepoint(z, pos, method="gfn2", charge=ir.total_charge,
+                              workdir=tmp_path, threads=2)
+    assert out["gradient_hartree_per_bohr"].shape == (len(z), 3)
+    assert np.isfinite(out["energy_hartree"]) and out["energy_hartree"] < 0
+    assert np.abs(out["gradient_hartree_per_bohr"].sum(axis=0)).max() < 1e-6
+    assert out["xtb_version"] == "6.7.1"
+    # 重跑同一目录：旧 gradient 被清掉，结果逐位相同（不追加 cycle）
+    again = run_xtb_singlepoint(z, pos, method="gfn2", charge=ir.total_charge,
+                                workdir=tmp_path, threads=2)
+    assert again["energy_hartree"] == out["energy_hartree"]
+
+
+# ---- 鞍点重启（2026-11-25；诊断 experiments/20261125_saddle_diagnosis/） ----
+
+def _fake_ohess_factory(lowest_freqs: list[float], tmp_path: Path):
+    """替身 _ohess_once：第 i 次调用写出 vibspectrum（最低频率 lowest_freqs[i]）、xtbopt.xyz、
+    以及虚频时的 xtbhess.xyz；返回带标记的 CartesianHessian。"""
+    import ffcompiler.hessian.xtb as xtb_mod
+
+    h0 = _fixture_hessian()
+    n = len(h0.atomic_numbers)
+    calls: list[dict] = []
+
+    def fake(binary, z, pos, *, method, charge, workdir, threads):
+        i = len(calls)
+        calls.append({"workdir": Path(workdir), "pos": np.array(pos)})
+        workdir = Path(workdir)
+        workdir.mkdir(parents=True, exist_ok=True)
+        rows = ["$vibrational spectrum"] + [f"  {k + 1}  0.00  0.0  -" for k in range(6)]
+        freqs = [lowest_freqs[i]] + [100.0 + k for k in range(3 * n - 7)]
+        rows += [f"  {k + 7}  a  {f:.2f}  1.0  YES" for k, f in enumerate(freqs)] + ["$end"]
+        (workdir / "vibspectrum").write_text("\n".join(rows) + "\n")
+        xyz = [str(n), f" energy: {-1.0 - 0.001 * i:.6f} gnorm: 0.0001"] + \
+              [f"C {0.1 * k:.4f} {0.2 + i:.4f} 0.0" for k in range(n)]
+        (workdir / "xtbopt.xyz").write_text("\n".join(xyz) + "\n")
+        if lowest_freqs[i] < -5.0:
+            (workdir / "xtbhess.xyz").write_text("\n".join(xyz) + "\n")
+        return xtb_mod.replace(h0, source_file=str(workdir / "hessian"))
+
+    return fake, calls
+
+
+def _run_with_fake(monkeypatch, tmp_path, lowest, **kw):
+    import ffcompiler.hessian.xtb as xtb_mod
+
+    fake, calls = _fake_ohess_factory(lowest, tmp_path)
+    monkeypatch.setattr(xtb_mod, "_ohess_once", fake)
+    h0 = _fixture_hessian()
+    h = run_xtb_hessian(h0.atomic_numbers, h0.positions_nm, method="gfnff", charge=0,
+                        workdir=tmp_path, binary=tmp_path / "xtb", **kw)
+    return h, calls
+
+
+def test_no_restart_when_no_imaginary(tmp_path, monkeypatch):
+    h, calls = _run_with_fake(monkeypatch, tmp_path, [150.0])
+    assert len(calls) == 1
+    assert dict(h.meta) == {"stationary_by": "xtb ohess vtight"}     # 不加键，逐位同改动前
+
+
+def test_no_restart_for_small_imaginary_above_gate(tmp_path, monkeypatch):
+    # −10 cm⁻¹：xtb 自己会写 xtbhess.xyz，但 check_hessian 只警告不拒 → 不重启、行为不变
+    h, calls = _run_with_fake(monkeypatch, tmp_path, [-10.0])
+    assert len(calls) == 1 and "imaginary_restarts" not in h.meta
+
+
+def test_restart_from_xtbhess_then_success(tmp_path, monkeypatch):
+    h, calls = _run_with_fake(monkeypatch, tmp_path, [-56.0, 19.7])
+    assert len(calls) == 2
+    assert calls[1]["workdir"] == tmp_path / "imag_restart_1"
+    # 第二次的起点 = 第一次的 xtbhess.xyz（Å → nm）
+    assert calls[1]["pos"][0, 1] == pytest.approx(0.02)
+    rec = h.meta["imaginary_restarts"]
+    assert len(rec) == 1 and rec[0]["round"] == 1
+    assert rec[0]["lowest_freq_before_cm"] == -56.0
+    assert rec[0]["energy_before_hartree"] == -1.0 and rec[0]["energy_after_hartree"] == -1.001
+    assert h.source_file == str(tmp_path / "imag_restart_1" / "hessian")
+
+
+def test_restart_stops_at_limit_and_returns_last(tmp_path, monkeypatch):
+    h, calls = _run_with_fake(monkeypatch, tmp_path, [-60.0, -50.0, -40.0, -30.0],
+                              max_imaginary_restarts=2)
+    assert len(calls) == 3                                          # 原始 + 2 次重启
+    assert [r["round"] for r in h.meta["imaginary_restarts"]] == [1, 2]
+    assert h.source_file == str(tmp_path / "imag_restart_2" / "hessian")
+
+
+def test_restart_disabled_with_zero(tmp_path, monkeypatch):
+    h, calls = _run_with_fake(monkeypatch, tmp_path, [-60.0], max_imaginary_restarts=0)
+    assert len(calls) == 1 and "imaginary_restarts" not in h.meta
+
+
+@pytest.mark.external
+def test_acetone_gfnff_saddle_restart_passes_quality_gate(tmp_path):
+    """覆盖集 acetone：GFN-FF --ohess 停在 C2v 鞍点（2 虚频），重启后无虚频、过 check_hessian。"""
+    from rdkit import Chem
+
+    sdf = Path(__file__).resolve().parents[2] / "benchmarks" / "coverage_set" / "sdf" / "acetone.sdf"
+    mol = Chem.MolFromMolFile(str(sdf), removeHs=False)
+    z = np.array([a.GetAtomicNum() for a in mol.GetAtoms()])
+    pos = mol.GetConformer().GetPositions() * 0.1
+    h = run_xtb_hessian(z, pos, method="gfnff", charge=0, workdir=tmp_path, threads=2)
+    assert h.meta["imaginary_restarts"][0]["lowest_freq_before_cm"] < -20.0
+    e = h.meta["imaginary_restarts"][-1]
+    assert e["energy_after_hartree"] < e["energy_before_hartree"]
+    diag = check_hessian(h)
+    assert diag.n_imaginary == 0

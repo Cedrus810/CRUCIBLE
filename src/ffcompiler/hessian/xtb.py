@@ -11,6 +11,7 @@ import hashlib
 import os
 import re
 import subprocess
+from dataclasses import replace
 from pathlib import Path
 from typing import Literal
 
@@ -208,35 +209,19 @@ def _check_success(workdir: Path, returncode: int) -> None:
         _fail("没有生成 xtbopt.xyz")
 
 
-def run_xtb_hessian(
+def _ohess_once(
+    binary: Path,
     atomic_numbers: np.ndarray,
     positions_nm: np.ndarray,
     *,
     method: Literal["gfnff", "gfn2"],
     charge: int,
     workdir: Path,
-    threads: int = 4,
-    binary: Path | None = None,
+    threads: int,
 ) -> CartesianHessian:
-    """在 workdir 里跑 xtb 优化 + Hessian，返回 CartesianHessian（MVP-1 不支持开壳层）。
-
-    成功条件：退出码 0、xtb.out 含 GEOMETRY OPTIMIZATION CONVERGED、
-    hessian 与 xtbopt.xyz 存在；任何一条不满足抛 XtbError（附 xtb.out 末 30 行）。
-    ``binary`` 为 None 时按 toolconfig 解析（FFC_XTB → 配置 → 旧默认，决策 0026）。
-    """
-    if binary is None:
-        from ffcompiler.toolconfig import ToolNotFoundError, resolve
-
-        try:
-            binary = resolve("xtb").path
-        except ToolNotFoundError as exc:
-            raise XtbError(str(exc)) from exc
-    binary = Path(binary)
+    """一次 ``xtb --ohess vtight``（2026-11-24 之前 run_xtb_hessian 的函数体，逐行未改）。"""
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
-    _check_charge_and_electrons(
-        np.asarray(atomic_numbers, dtype=np.int64), int(charge)
-    )
     xyz_path = workdir / "input.xyz"
     n = len(atomic_numbers)
     xyz_lines = [str(n), "ffcompiler run_xtb_hessian"]
@@ -276,3 +261,223 @@ def run_xtb_hessian(
         method=method,
         version=_xtb_version(stdout_path.read_text()),
     )
+
+
+def _xyz_energy_hartree(path: Path) -> float | None:
+    """xtbopt.xyz 注释行 ``energy: E gnorm: g ...`` 的 E；格式不符返回 None（只用于记录）。"""
+    try:
+        match = re.search(r"energy:\s*(\S+)", Path(path).read_text().splitlines()[1])
+        return float(match.group(1)) if match else None
+    except (OSError, IndexError, ValueError):
+        return None
+
+
+def _restart_trigger(workdir: Path) -> float | None:
+    """该次 ohess 是否需要沿虚频重启：返回 xtb 报告的最低频率（cm⁻¹），不需要则 None。
+
+    只在结果本来就会被 ``check_hessian`` 拒绝时触发——最低频率低于同一报错线
+    ``_IMAGINARY_ERROR_CM``（−20 cm⁻¹）且 xtb 写出了 ``xtbhess.xyz``。xtb 自己的虚频
+    阈值（5 cm⁻¹）更宽；按它触发会改动现在只带警告、照常通过的分子，所以不用。
+    vibspectrum 解析失败 → 不重启（保持原行为，由 check_hessian 照常判定）。
+    """
+    from ffcompiler.hessian.base import _IMAGINARY_ERROR_CM
+
+    if not (workdir / "xtbhess.xyz").is_file():
+        return None
+    try:
+        freqs = read_xtb_vibspectrum(workdir / "vibspectrum")
+    except (OSError, ValueError):
+        return None
+    lowest = float(freqs.min()) if freqs.size else 0.0
+    return lowest if lowest < _IMAGINARY_ERROR_CM else None
+
+
+def run_xtb_hessian(
+    atomic_numbers: np.ndarray,
+    positions_nm: np.ndarray,
+    *,
+    method: Literal["gfnff", "gfn2"],
+    charge: int,
+    workdir: Path,
+    threads: int = 4,
+    binary: Path | None = None,
+    max_imaginary_restarts: int = 2,
+) -> CartesianHessian:
+    """在 workdir 里跑 xtb 优化 + Hessian，返回 CartesianHessian（MVP-1 不支持开壳层）。
+
+    成功条件：退出码 0、xtb.out 含 GEOMETRY OPTIMIZATION CONVERGED、
+    hessian 与 xtbopt.xyz 存在；任何一条不满足抛 XtbError（附 xtb.out 末 30 行）。
+    ``binary`` 为 None 时按 toolconfig 解析（FFC_XTB → 配置 → 旧默认，决策 0026）。
+
+    鞍点重启（2026-11-25，用户批准；诊断见 experiments/20261125_saddle_diagnosis/）：
+    优化停在鞍点时（最低频率 < −20 cm⁻¹，即 check_hessian 会拒绝的情形），从 xtb 写出的
+    ``xtbhess.xyz``（沿虚频扭曲的几何）在 ``workdir/imag_restart_<k>/`` 重跑同一 ohess，
+    最多 ``max_imaginary_restarts`` 次；返回最后一次的 Hessian，``meta["imaginary_restarts"]``
+    逐次记录。仍有虚频则原样返回，由 check_hessian 照常拒绝（不静默放行）。
+    不触发时返回值与改动前逐位相同（meta 不加键）。
+    """
+    if binary is None:
+        from ffcompiler.toolconfig import ToolNotFoundError, resolve
+
+        try:
+            binary = resolve("xtb").path
+        except ToolNotFoundError as exc:
+            raise XtbError(str(exc)) from exc
+    binary = Path(binary)
+    workdir = Path(workdir)
+    workdir.mkdir(parents=True, exist_ok=True)
+    _check_charge_and_electrons(
+        np.asarray(atomic_numbers, dtype=np.int64), int(charge)
+    )
+    h = _ohess_once(binary, atomic_numbers, positions_nm, method=method, charge=charge,
+                    workdir=workdir, threads=threads)
+    restarts: list[dict] = []
+    current = workdir
+    for k in range(1, int(max_imaginary_restarts) + 1):
+        lowest = _restart_trigger(current)
+        if lowest is None:
+            break
+        nxt = workdir / f"imag_restart_{k}"
+        _, start_pos, _ = _read_xyz_angstrom(current / "xtbhess.xyz")
+        h = _ohess_once(binary, atomic_numbers, start_pos * 0.1, method=method,
+                        charge=charge, workdir=nxt, threads=threads)
+        restarts.append({
+            "round": k,
+            "from": str(current / "xtbhess.xyz"),
+            "lowest_freq_before_cm": lowest,
+            "energy_before_hartree": _xyz_energy_hartree(current / "xtbopt.xyz"),
+            "energy_after_hartree": _xyz_energy_hartree(nxt / "xtbopt.xyz"),
+        })
+        current = nxt
+    if restarts:
+        h = replace(h, meta={**dict(h.meta), "imaginary_restarts": restarts})
+    return h
+
+
+def _read_xyz_angstrom(path: Path) -> tuple[list[str], np.ndarray, str]:
+    """xyz（Å）→ (元素, 坐标 Å, 注释行)。"""
+    lines = Path(path).read_text().splitlines()
+    n = int(lines[0].split()[0])
+    symbols, coords = [], []
+    for line in lines[2:2 + n]:
+        parts = line.split()
+        symbols.append(parts[0])
+        coords.append([float(x) for x in parts[1:4]])
+    if len(symbols) != n:
+        raise XtbError(f"{path}: 原子行数与声明的 {n} 不符")
+    return symbols, np.asarray(coords, dtype=np.float64), lines[1]
+
+
+def read_xtb_gradient(path: Path, n_atoms: int) -> tuple[float, np.ndarray]:
+    """读 xtb ``--grad`` 写出的 Turbomole 格式 ``gradient`` 文件，取最后一个 cycle。
+
+    结构：``$grad`` / 每 cycle 一行 ``cycle = k  SCF energy = E  |dE/dxyz| = g`` +
+    n 行坐标（Bohr，带元素）+ n 行梯度（Eh/Bohr）/ ``$end``。同一目录重复运行时 xtb
+    会追加 cycle，故只取最后一个。返回 ``(energy_hartree, gradient[n, 3])``，单位
+    Eh 与 Eh/Bohr（不换算，换算留给调用方，免得单位在读取层被悄悄改掉）。
+    """
+    lines = Path(path).read_text().splitlines()
+    cycle_idx = [i for i, line in enumerate(lines) if "cycle =" in line]
+    if not cycle_idx:
+        raise XtbError(f"{path}: 没有 'cycle =' 行，不是 xtb gradient 文件")
+    start = cycle_idx[-1]
+    match = re.search(r"SCF energy\s*=\s*(\S+)", lines[start])
+    if match is None:
+        raise XtbError(f"{path}: cycle 行没有 SCF energy：{lines[start]!r}")
+    energy = float(match.group(1).replace("D", "E"))
+    body = []
+    for line in lines[start + 1:]:
+        if line.strip().startswith("$"):
+            break
+        if line.strip():
+            body.append(line)
+    if len(body) != 2 * n_atoms:
+        raise XtbError(
+            f"{path}: 最后一个 cycle 有 {len(body)} 行数据，应为 2×{n_atoms}（坐标 + 梯度）")
+    grad_rows = []
+    for line in body[n_atoms:]:
+        tokens = line.replace("D", "E").split()
+        if len(tokens) != 3:
+            raise XtbError(f"{path}: 梯度行不是 3 列：{line!r}")
+        grad_rows.append([float(t) for t in tokens])
+    return energy, np.asarray(grad_rows, dtype=np.float64)
+
+
+def run_xtb_singlepoint(
+    atomic_numbers: np.ndarray,
+    positions_nm: np.ndarray,
+    *,
+    method: Literal["gfnff", "gfn2"],
+    charge: int,
+    workdir: Path,
+    threads: int = 4,
+    binary: Path | None = None,
+) -> dict:
+    """在给定几何上跑 xtb 单点 + 梯度（``--grad``，不优化），闭壳层（uhf 0）。
+
+    用于覆盖集诊断的参考势适用性检查（2026-11-20 计划 §2.2 第 4 项）。成功条件：
+    退出码 0、输出含 ``normal termination of xtb``、``gradient`` 文件可解析且全部有限；
+    否则抛 :class:`XtbError`。开壳层/非法电荷在运行前由同一电子数校验拒绝。
+    返回 ``{"energy_hartree", "gradient_hartree_per_bohr", "xtb_version", "command"}``。
+    """
+    if binary is None:
+        from ffcompiler.toolconfig import ToolNotFoundError, resolve
+
+        try:
+            binary = resolve("xtb").path
+        except ToolNotFoundError as exc:
+            raise XtbError(str(exc)) from exc
+    binary = Path(binary)
+    workdir = Path(workdir)
+    workdir.mkdir(parents=True, exist_ok=True)
+    atomic_numbers = np.asarray(atomic_numbers, dtype=np.int64)
+    _check_charge_and_electrons(atomic_numbers, int(charge))
+    for stale in ("gradient", "energy", "xtbrestart"):
+        (workdir / stale).unlink(missing_ok=True)   # 防止读到上一次运行追加的 cycle
+    n = len(atomic_numbers)
+    xyz_lines = [str(n), "ffcompiler run_xtb_singlepoint"]
+    for z, p in zip(atomic_numbers, positions_nm):
+        xyz_lines.append(
+            f"{_element_symbol(int(z))} {p[0] * 10.0:.10f} {p[1] * 10.0:.10f} {p[2] * 10.0:.10f}"
+        )
+    (workdir / "input.xyz").write_text("\n".join(xyz_lines) + "\n")
+
+    command = [str(binary), "input.xyz"]
+    if method == "gfnff":
+        command.append("--gfnff")
+    elif method == "gfn2":
+        command += ["--gfn", "2"]
+    else:
+        raise ValueError(f"未知 xtb method {method!r}")
+    command += ["--grad", "--chrg", str(int(charge)), "--uhf", "0"]
+
+    env = dict(os.environ)
+    env["OMP_NUM_THREADS"] = str(threads)
+    env["MKL_NUM_THREADS"] = str(threads)
+    env["OMP_STACKSIZE"] = "500M"
+    stdout_path = workdir / "xtb.out"
+    with stdout_path.open("w") as stdout_file:
+        try:
+            result = subprocess.run(
+                command, cwd=workdir, env=env, stdout=stdout_file,
+                stderr=subprocess.STDOUT, check=False,
+            )
+        except OSError as exc:
+            raise XtbError(f"无法启动 xtb（{binary}）：{exc}") from exc
+    stdout = stdout_path.read_text()
+    tail = "\n".join(stdout.splitlines()[-30:])
+    if result.returncode != 0:
+        raise XtbError(f"xtb 单点失败（退出码 {result.returncode}）：\n{tail}")
+    if "normal termination of xtb" not in stdout:
+        raise XtbError(f"xtb 单点失败（xtb.out 没有 normal termination）：\n{tail}")
+    if not (workdir / "gradient").is_file():
+        raise XtbError(f"xtb 单点失败（没有生成 gradient 文件）：\n{tail}")
+    energy, gradient = read_xtb_gradient(workdir / "gradient", n)
+    if not (np.isfinite(energy) and np.all(np.isfinite(gradient))):
+        raise XtbError(f"xtb 单点能量/梯度含非有限值（E={energy}）")
+    return {
+        "energy_hartree": energy,
+        "gradient_hartree_per_bohr": gradient,
+        "xtb_version": _xtb_version(stdout),
+        "command": command,
+    }

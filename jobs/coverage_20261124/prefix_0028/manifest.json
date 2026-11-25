@@ -1,0 +1,25 @@
+{
+  "task": "coverage diagnostic (plan 2026-11-20 §2)",
+  "argv": [
+    "scripts/coverage_diagnose.py",
+    "--table",
+    "benchmarks/coverage_set/molecules.json",
+    "--outdir",
+    "jobs/coverage_20261124"
+  ],
+  "table": "benchmarks/coverage_set/molecules.json",
+  "table_sha256": "2a80f617ddf238d5d52f5d2051bce3ddb35651ef9567b3bed59459480cd2f0fd",
+  "stages": [
+    "entry",
+    "rotors",
+    "frcmod",
+    "export",
+    "refcheck"
+  ],
+  "n_molecules": 34,
+  "verdicts": {
+    "ok": 30,
+    "ok_with_gaps": 4,
+    "blocked": 0
+  }
+}

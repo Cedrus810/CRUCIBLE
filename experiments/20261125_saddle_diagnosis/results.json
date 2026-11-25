@@ -1,0 +1,193 @@
+{
+  "acetone": {
+    "saddle_energy_Eh": -1.556337126852,
+    "imaginary_modes": [
+      {
+        "freq_cm": -56.0564,
+        "top_torsion_overlaps": [
+          [
+            [
+              1,
+              2
+            ],
+            0.711
+          ],
+          [
+            [
+              0,
+              1
+            ],
+            0.254
+          ]
+        ],
+        "elements_of_bond": [
+          [
+            "C",
+            "C"
+          ]
+        ]
+      },
+      {
+        "freq_cm": -50.3536,
+        "top_torsion_overlaps": [
+          [
+            [
+              1,
+              2
+            ],
+            0.659
+          ],
+          [
+            [
+              0,
+              1
+            ],
+            0.013
+          ]
+        ],
+        "elements_of_bond": [
+          [
+            "C",
+            "C"
+          ]
+        ]
+      }
+    ],
+    "restart_energy_Eh": -1.55658812721,
+    "restart_minus_saddle_kJ_mol": -0.6590013494377145,
+    "restart_check_hessian": "pass",
+    "restart_lowest_freq_cm": 19.70961949263917,
+    "restart_n_imaginary": 0,
+    "restart_symmetry": [
+      "symmetry                               c2"
+    ]
+  },
+  "methyl_acetate": {
+    "saddle_energy_Eh": -1.702330579811,
+    "imaginary_modes": [
+      {
+        "freq_cm": -62.8321,
+        "top_torsion_overlaps": [
+          [
+            [
+              2,
+              3
+            ],
+            0.968
+          ],
+          [
+            [
+              0,
+              1
+            ],
+            0.3
+          ],
+          [
+            [
+              1,
+              2
+            ],
+            0.147
+          ]
+        ],
+        "elements_of_bond": [
+          [
+            "C",
+            "C"
+          ]
+        ]
+      }
+    ],
+    "restart_energy_Eh": -1.702613232984,
+    "restart_minus_saddle_kJ_mol": -0.7421058038091606,
+    "restart_check_hessian": "pass",
+    "restart_lowest_freq_cm": 49.7246625050088,
+    "restart_n_imaginary": 0,
+    "restart_symmetry": [
+      "symmetry                               cs"
+    ]
+  },
+  "styrene": {
+    "saddle_energy_Eh": -3.133031695843,
+    "imaginary_modes": [
+      {
+        "freq_cm": -41.1713,
+        "top_torsion_overlaps": [
+          [
+            [
+              1,
+              2
+            ],
+            0.301
+          ],
+          [
+            [
+              2,
+              7
+            ],
+            0.246
+          ],
+          [
+            [
+              3,
+              4
+            ],
+            0.081
+          ]
+        ],
+        "elements_of_bond": [
+          [
+            "C",
+            "C"
+          ]
+        ]
+      }
+    ],
+    "restart_energy_Eh": -3.133098466325,
+    "restart_minus_saddle_kJ_mol": -0.17530587641851936,
+    "restart_check_hessian": "pass",
+    "restart_lowest_freq_cm": 49.16178936774617,
+    "restart_n_imaginary": 0,
+    "restart_symmetry": [
+      "symmetry                               c1"
+    ]
+  },
+  "glycine_zwitterion": {
+    "saddle_energy_Eh": -1.61827299417,
+    "imaginary_modes": [
+      {
+        "freq_cm": -221.9491,
+        "top_torsion_overlaps": [
+          [
+            [
+              0,
+              1
+            ],
+            0.184
+          ],
+          [
+            [
+              1,
+              2
+            ],
+            0.03
+          ]
+        ],
+        "elements_of_bond": [
+          [
+            "N",
+            "C"
+          ]
+        ]
+      }
+    ],
+    "restart_energy_Eh": -1.621860174238,
+    "restart_minus_saddle_kJ_mol": -9.418139975280447,
+    "restart_check_hessian": "pass",
+    "restart_lowest_freq_cm": 49.95129275185711,
+    "restart_n_imaginary": 0,
+    "restart_symmetry": [
+      "symmetry                               c1"
+    ]
+  }
+}
